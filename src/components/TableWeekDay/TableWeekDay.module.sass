@@ -1,0 +1,31 @@
+@import '../../variables'
+
+.day
+  width: calc(100% / 7)
+  height: 100px
+  @include flex-start-center()
+
+.month-date
+  width: 100%
+  @include flex-start-center()
+
+.month-date-button
+  width: 46px
+  height: 46px
+  border-radius: 50%
+  cursor: pointer
+  background-color: $content-bgd
+  transition: background-color .3s ease
+  @include roboto-normal(20px, 24px, $primary-text-color-dark)
+  @include flex-center()
+
+  &:hover
+    background-color: $select-bgd-hover
+
+.month-date-button-today
+  background-color: $active-menu-bgd
+  @include roboto-normal(20px, 24px, $button-text-color-light)
+  @include flex-center()
+
+  &:hover
+    background-color: $primary-color

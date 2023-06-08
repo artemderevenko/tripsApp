@@ -1,0 +1,1 @@
+export { TableWeekDay } from './TableWeekDay';

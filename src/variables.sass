@@ -1,0 +1,91 @@
+$primary-color: #3e8aaf
+$active-menu-bgd: #6badcd
+$body-bgd: #ffffff
+$content-bgd: #ffffff
+$button-text-color-light: #ffffff
+$primary-text-color-dark: #585858
+$primary-border-color: #DEE4EC
+$primary-box-shadow: 0 5px 12px 3px rgba(0,0,0,0.1)
+$select-bgd-hover: #f0f3f7
+$text-disable-color: #adabab
+$layout-bgd-shadow: 0 0 15px rgba(0, 0, 0, .1)
+$layout-border-color: rgba(0, 0, 0, .1)
+
+@mixin roboto-normal($font-size, $line-height, $color)
+  font-family: 'Roboto', sans-serif
+  font-size: $font-size
+  line-height: $line-height
+  color: $color
+  font-weight: 400
+
+@mixin roboto-bold($font-size, $line-height, $color)
+  font-family: 'Roboto', sans-serif
+  font-size: $font-size
+  line-height: $line-height
+  color: $color
+  font-weight: 600
+
+@mixin flex-center()
+  display: flex
+  align-items: center
+  justify-content: center
+  flex-wrap: wrap
+
+@mixin flex-start-center()
+  display: flex
+  align-items: flex-start
+  justify-content: center
+  flex-wrap: wrap
+
+@mixin flex-start()
+  display: flex
+  align-items: flex-start
+  justify-content: flex-start
+  flex-wrap: wrap
+
+@mixin flex-center-start()
+  display: flex
+  align-items: center
+  justify-content: flex-start
+  flex-wrap: wrap
+
+@mixin flex-center-between()
+  display: flex
+  align-items: center
+  justify-content: space-between
+  flex-wrap: wrap
+
+@mixin flex-start-between()
+  display: flex
+  align-items: flex-start
+  justify-content: space-between
+  flex-wrap: wrap
+
+@mixin ellipsis-text()
+  overflow: hidden
+  white-space: nowrap
+  text-overflow: ellipsis
+
+@mixin scrollLeft($duration: .2s)
+  animation: scrollLeft $duration 1 linear
+
+  @keyframes scrollLeft
+    0%
+      transform: translateX(0)
+      opacity: 1
+
+    100%
+      transform: translateX(-15%)
+      opacity: 0
+
+@mixin scrollRight($duration: .2s)
+  animation: scrollRight $duration 1 linear
+
+  @keyframes scrollRight
+    0%
+      transform: translateX(0)
+      opacity: 1
+
+    100%
+      transform: translateX(15%)
+      opacity: 0

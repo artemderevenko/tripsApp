@@ -1,0 +1,35 @@
+@import '../../variables'
+
+.table-month
+  width: 100%
+  height: auto
+  position: relative
+  user-select: none
+  @include flex-center()
+
+.table-month-wrap
+  width: 100%
+  height: 531px
+  position: relative
+  overflow: hidden
+
+.rows-4
+  height: 431px
+
+.rows-5
+  height: 531px
+
+.rows-6
+  height: 631px
+
+.table-month-content
+  width: 100%
+  height: 500px
+  position: relative
+  @include flex-start-between()
+
+.scroll-right
+  @include scrollRight()
+
+.scroll-left
+  @include scrollLeft()
