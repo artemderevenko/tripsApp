@@ -10,6 +10,9 @@ $select-bgd-hover: #f0f3f7
 $text-disable-color: #adabab
 $layout-bgd-shadow: 0 0 15px rgba(0, 0, 0, .1)
 $layout-border-color: rgba(0, 0, 0, .1)
+$task-bgd: #0b6ba3
+$holiday-bgd: #078d36
+$neutral-bgd: #d8d8d8
 
 @mixin roboto-normal($font-size, $line-height, $color)
   font-family: 'Roboto', sans-serif
@@ -67,7 +70,7 @@ $layout-border-color: rgba(0, 0, 0, .1)
   text-overflow: ellipsis
 
 @mixin scrollLeft($duration: .2s)
-  animation: scrollLeft $duration 1 linear
+  animation: scrollLeft $duration 1 ease-in-out 
 
   @keyframes scrollLeft
     0%
@@ -79,7 +82,7 @@ $layout-border-color: rgba(0, 0, 0, .1)
       opacity: 0
 
 @mixin scrollRight($duration: .2s)
-  animation: scrollRight $duration 1 linear
+  animation: scrollRight $duration 1 ease-in-out 
 
   @keyframes scrollRight
     0%
@@ -89,3 +92,13 @@ $layout-border-color: rgba(0, 0, 0, .1)
     100%
       transform: translateX(15%)
       opacity: 0
+
+@mixin fade($duration: .3s)
+  animation: fade $duration 1 linear
+
+  @keyframes fade
+    0%
+      opacity: 0
+
+    100%
+      opacity: 1

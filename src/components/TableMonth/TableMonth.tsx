@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import moment from 'moment';
 
 import styles from './TableMonth.module.sass';
-import { TableWeekDay } from '../TableWeekDay';
+import { TableDayItem } from '../TableDayItem';
 import { TableDaysPagination } from '../TableDaysPagination';
 import { TableDaysHeader } from '../TableDaysHeader';
 
@@ -11,15 +11,24 @@ const TableMonth: React.FC = () => {
   const [daysMonth, setDaysMonth] = useState<moment.Moment[]>([]);
   const [scrollDirection, setScrollDirection] = useState<string>('');
   const [fadeAnimation, setFadeAnimation] = useState<boolean>(false);
+  const [tableTitle, setTableTitle] = useState<string>('');
 
-  const handleScrollDirection = (direction: string, getDaysMonth: moment.Moment[]) => {
+  const handleScrollDirection = (direction: string, daysMonthList: moment.Moment[]) => {
     setScrollDirection(direction);
 
     setTimeout(() => {
       setScrollDirection('');
-      setDaysMonth(getDaysMonth);
+      getTableTitle(daysMonthList);
+      setDaysMonth(daysMonthList);
     }, 180);
   };
+
+  const getTableTitle = (daysList: moment.Moment[]): void => {
+    const middleMonth = daysList[15];
+    const yearMiddleMonth = middleMonth.year(); 
+    const fullMonthMiddleMonth = middleMonth.format('MMMM');
+    setTableTitle(`${fullMonthMiddleMonth} ${yearMiddleMonth}`);
+  }
 
   const getDaysMonth = (day: moment.Moment): moment.Moment[] => {
     const firstDayOfMonth = day.clone().startOf('month');
@@ -37,10 +46,21 @@ const TableMonth: React.FC = () => {
     return daysList;
   };
 
-  useEffect(() => {
+  const getStartDaysMonth = (): void => {
     const currentDate = moment();
     const daysMonthList = getDaysMonth(currentDate);
     setDaysMonth(daysMonthList);
+    getTableTitle(daysMonthList);
+    setFadeAnimation(true);
+
+    setTimeout(() => {
+      setFadeAnimation(false)
+    }, 300);
+  }
+
+  useEffect(() => {
+    getStartDaysMonth()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const clickPrev = (): void => {
@@ -56,18 +76,11 @@ const TableMonth: React.FC = () => {
   }
 
   const getScrollClass = (): string => {
-    return `${scrollDirection === 'right' ? styles['scroll-right'] : ''} ${scrollDirection === 'left' ? styles['scroll-left'] : ''}`
+    return `${scrollDirection === 'right' ? styles['scroll-right'] : ''} ${scrollDirection === 'left' ? styles['scroll-left'] : ''} ${fadeAnimation ? styles['fade'] : ''}`
   }
 
   const backToToday = (): void => {
-    const currentDate = moment();
-    const daysMonthList = getDaysMonth(currentDate);
-    setDaysMonth(daysMonthList);
-    setFadeAnimation(true);
-
-    setTimeout(() => {
-      setFadeAnimation(false)
-    }, 180);
+    getStartDaysMonth()
   }
 
   return (
@@ -75,17 +88,17 @@ const TableMonth: React.FC = () => {
       <TableDaysPagination
         clickPrev={clickPrev}
         clickNext={clickNext}
-        tableTitle={'Janvar'}
+        tableTitle={tableTitle}
         backToToday={backToToday}
       />
       {
         daysMonth && daysMonth.length ?
           <div className={`${styles['table-month-wrap']} ${styles[`rows-${daysMonth.length / 7 || 5}`]}`}>
-            <TableDaysHeader />
+            <TableDaysHeader mode={'week'} />
             <div className={`${styles['table-month-content']} ${getScrollClass()}`}>
               {
                 daysMonth.map(item => (
-                  <TableWeekDay
+                  <TableDayItem
                     key={item.format()}
                     date={item}
                   />))
