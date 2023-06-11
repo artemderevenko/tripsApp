@@ -1,15 +1,9 @@
 @import '../../variables'
   
-.table-month-item
+.schedule-month-item
   width: 238px
   margin-bottom: 20px
   height: 250px
-  margin-right: 30px
-
-  &:nth-child(4),
-  &:nth-child(8),
-  &:nth-child(12)
-    margin-right: 0
 
   &:nth-child(9),
   &:nth-child(10),
@@ -44,3 +38,10 @@
 
   &:hover
     background-color: $select-bgd-hover
+
+.date-button-today
+  background-color: $active-menu-bgd
+  @include roboto-normal(11px, 13px, $button-text-color-light)
+
+  &:hover
+    background-color: $primary-color

@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import moment from 'moment';
 
-import styles from './TableYear.module.sass';
+import styles from './ScheduleYear.module.sass';
 import { MONTHS_LIST as monthsList } from '../../constants/monthsList';
-import { TableDaysPagination } from '../TableDaysPagination';
-import { TableMonthItem } from '../TableMonthItem';
+import { ScheduleDaysPagination } from '../ScheduleDaysPagination';
+import { ScheduleMonthItem } from '../ScheduleMonthItem';
 
-const TableYear: React.FC = () => {
+const ScheduleYear: React.FC = () => {
   const [year, setYear] = useState<number>();
   const [scrollDirection, setScrollDirection] = useState<string>('');
-  const [fadeAnimation, setFadeAnimation] = useState<boolean>(false);
+  const [fadeAnimation, setFadeAnimation] = useState<boolean>(true);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps  
@@ -55,20 +55,20 @@ const TableYear: React.FC = () => {
   }
 
   return (
-    <div className={styles['table-year']}>
-      <TableDaysPagination
+    <div className={styles['schedule-year']}>
+      <ScheduleDaysPagination
         clickPrev={clickPrev}
         clickNext={clickNext}
-        tableTitle={`${year}`}
+        scheduleTitle={`${year}`}
         backToToday={backToToday}
       />
       {
         monthsList && monthsList.length ?
-          <div className={styles['table-year-wrap']}>
-            <div className={`${styles['table-year-content']} ${getScrollClass()}`}>
+          <div className={styles['schedule-year-wrap']}>
+            <div className={`${styles['schedule-year-content']} ${getScrollClass()}`}>
               {
                 monthsList.map(month => (
-                  <TableMonthItem
+                  <ScheduleMonthItem
                     key={`month-${month.value}`}
                     month={month}
                     year={year || moment().year()}
@@ -82,4 +82,4 @@ const TableYear: React.FC = () => {
   )
 };
 
-export { TableYear };
+export { ScheduleYear };

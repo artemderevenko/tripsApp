@@ -1,59 +1,61 @@
 import { useState, useEffect } from 'react';
 import moment from 'moment';
 
-import styles from './TableWeek.module.sass';
-import { TableDayItem } from '../TableDayItem';
-import { TableDaysPagination } from '../TableDaysPagination';
-import { TableDaysHeader } from '../TableDaysHeader';                        
+import styles from './ScheduleWeek.module.sass';
+import { ScheduleDayItem } from '../ScheduleDayItem';
+import { ScheduleDaysPagination } from '../ScheduleDaysPagination';
+import { ScheduleDaysHeader } from '../ScheduleDaysHeader';                        
 
-const TableWeek: React.FC = () => {
+const ScheduleWeek: React.FC = () => {
 
   const [daysWeek, setDaysWeek] = useState<moment.Moment[]>([]);
   const [scrollDirection, setScrollDirection] = useState<string>('');
-  const [fadeAnimation, setFadeAnimation] = useState<boolean>(false);
-  const [tableTitle, setTableTitle] = useState<string>('');
+  const [fadeAnimation, setFadeAnimation] = useState<boolean>(true);
+  const [scheduleTitle, setScheduleTitle] = useState<string>('');
 
   const handleScrollDirection = (direction: string, daysList: moment.Moment[]) => {
     setScrollDirection(direction);
 
     setTimeout(() => {
       setScrollDirection('');
-      getTableTitle(daysList);
+      getScheduleTitle(daysList);
       setDaysWeek(daysList);
     }, 180);
   };
 
-  const getTableTitle = (daysList: moment.Moment[]): void => {
+  const getScheduleTitle = (daysList: moment.Moment[]): void => {
     const firstDay = daysList[0];
     const lastDay = daysList[daysList.length - 1];
     const yearFirstDay = firstDay.year(); 
     const fullMonthFirstDay = firstDay.format('MMMM');
     const yearLastDay = lastDay.year(); 
     const fullMonthLastDay = lastDay.format('MMMM');
-    let tableTitle = `${fullMonthFirstDay} ${yearFirstDay}`;
+    let scheduleTitle = `${fullMonthFirstDay} ${yearFirstDay}`;
 
     if (yearFirstDay === yearLastDay && fullMonthFirstDay !== fullMonthLastDay) { 
-      tableTitle = `${firstDay.format('MMM')} - ${lastDay.format('MMM')} ${yearFirstDay}`
+      scheduleTitle = `${firstDay.format('MMM')} - ${lastDay.format('MMM')} ${yearFirstDay}`
     }
 
     if (yearFirstDay !== yearLastDay && fullMonthFirstDay !== fullMonthLastDay) { 
-      tableTitle = `${firstDay.format('MMM')} ${yearFirstDay} - ${lastDay.format('MMM')} ${yearLastDay}`
+      scheduleTitle = `${firstDay.format('MMM')} ${yearFirstDay} - ${lastDay.format('MMM')} ${yearLastDay}`
     }
 
-    setTableTitle(tableTitle);
+    setScheduleTitle(scheduleTitle);
   }
 
   const getStartDaysWeek = (): void => {
     const currentDate = moment();
     const getFirstDayWeek = currentDate.startOf('week');
+    const firstDayWeekNumber = getFirstDayWeek.day();
+    const firstDayWeekCorrection = firstDayWeekNumber === 0 ? getFirstDayWeek.add(-7, 'day') : getFirstDayWeek;
 
     const daysList = Array.from({ length: 7 }, (_, index) => {
-      const copyFirstDay = getFirstDayWeek.clone();
+      const copyFirstDay = firstDayWeekCorrection.clone();
       return moment(copyFirstDay).add(index + 1, 'day');
     })
 
     setDaysWeek(daysList);
-    getTableTitle(daysList);
+    getScheduleTitle(daysList);
     setFadeAnimation(true);
 
     setTimeout(() => {
@@ -93,21 +95,21 @@ const TableWeek: React.FC = () => {
   }
 
   return (
-    <div className={styles['table-week']}>
-      <TableDaysPagination
+    <div className={styles['schedule-week']}>
+      <ScheduleDaysPagination
         clickPrev={clickPrev}
         clickNext={clickNext}
-        tableTitle={tableTitle}
+        scheduleTitle={scheduleTitle}
         backToToday={backToToday}
       />
       {
         daysWeek && daysWeek.length ?
-          <div className={styles['table-week-wrap']}>
-            <TableDaysHeader mode={'week'} />
-            <div className={`${styles['table-week-content']} ${getScrollClass()}`}>
+          <div className={styles['schedule-week-wrap']}>
+            <ScheduleDaysHeader mode={'week'} />
+            <div className={`${styles['schedule-week-content']} ${getScrollClass()}`}>
               {
                 daysWeek.map(item => (
-                  <TableDayItem
+                  <ScheduleDayItem
                     key={item.format()}
                     date={item}
                   />))
@@ -119,4 +121,4 @@ const TableWeek: React.FC = () => {
   )
 };
 
-export { TableWeek };
+export { ScheduleWeek };

@@ -1,15 +1,15 @@
 import React from 'react';
 import moment from 'moment';
 
-import styles from './TableDayItem.module.sass';
+import styles from './ScheduleDayItem.module.sass';
 import { useAppdSelector } from '../../hook';
 import { IHoliday } from '../../types/holiday';
 
-interface ITableDayItem {
+interface IScheduleDayItem {
   date: moment.Moment,
 }
 
-const TableDayItem: React.FC<ITableDayItem> = ({ date }) => {
+const ScheduleDayItem: React.FC<IScheduleDayItem> = ({ date }) => {
 
   const compareDates = (
     dateA: moment.Moment,
@@ -65,4 +65,4 @@ const TableDayItem: React.FC<ITableDayItem> = ({ date }) => {
   )
 };
 
-export { TableDayItem };
+export { ScheduleDayItem };

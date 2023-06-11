@@ -3,10 +3,10 @@ import styles from '../components/Sitebar/Sitebar.module.sass';
 
 export const MENU = [
   {
-    title: 'Events',
-    id: 'events',
-    to: ROUTES.Events,
-    icon: (<svg className={styles.events} xmlns="http://www.w3.org/2000/svg" version="1.1" x="0px" y="0px" viewBox="0 0 1000 1000" enableBackground="new 0 0 1000 1000">
+    title: 'Schedule',
+    id: 'schedule',
+    to: ROUTES.Schedule,
+    icon: (<svg className={styles.schedule} xmlns="http://www.w3.org/2000/svg" version="1.1" x="0px" y="0px" viewBox="0 0 1000 1000" enableBackground="new 0 0 1000 1000">
     <g><path d="M271.9,834.8c-8.6,0-16.9-3.3-23.1-9.3L20.1,604.3c-13.2-12.8-13.5-33.8-0.8-47c12.8-13.2,33.8-13.5,47-0.8L268,751.6l446.6-593.2c11-14.7,31.9-17.6,46.5-6.6c14.7,11,17.6,31.9,6.6,46.5L298.5,821.6c-5.7,7.6-14.5,12.4-23.9,13.1C273.7,834.8,272.8,834.8,271.9,834.8z"/><path d="M956.8,508.6H735.6c-18.3,0-33.2-14.9-33.2-33.2c0-18.4,14.9-33.2,33.2-33.2h221.2c18.4,0,33.2,14.9,33.2,33.2C990,493.7,975.1,508.6,956.8,508.6z"/><path d="M956.8,681.7h-364c-18.3,0-33.2-14.9-33.2-33.2c0-18.3,14.9-33.2,33.2-33.2h364c18.4,0,33.2,14.9,33.2,33.2C990,666.9,975.1,681.7,956.8,681.7z"/><path d="M956.8,854.9H481.9c-18.4,0-33.2-14.9-33.2-33.2c0-18.4,14.9-33.2,33.2-33.2h474.9c18.4,0,33.2,14.9,33.2,33.2C990,840,975.1,854.9,956.8,854.9z"/></g>
     </svg>)
   },

@@ -1,1 +1,0 @@
-export { TableDaysHeader } from './TableDaysHeader';

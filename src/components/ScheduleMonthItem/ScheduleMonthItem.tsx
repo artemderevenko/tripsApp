@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import moment from 'moment';
 
-import styles from './TableMonthItem.module.sass';
-import { TableDaysHeader } from '../TableDaysHeader';
+import styles from './ScheduleMonthItem.module.sass';
+import { ScheduleDaysHeader } from '../ScheduleDaysHeader';
 
-interface ITableMonthItem {
+interface IScheduleMonthItem {
   month: any,
   year: number,
 }
 
-const TableMonthItem: React.FC<ITableMonthItem> = ({ month, year }) => {
+const ScheduleMonthItem: React.FC<IScheduleMonthItem> = ({ month, year }) => {
   const [daysMonth, setDaysMonth] = useState<(moment.Moment | null)[]>([]);
 
   useEffect(() => {
@@ -38,12 +38,20 @@ const TableMonthItem: React.FC<ITableMonthItem> = ({ month, year }) => {
 
   const getScrollClass = (): string => {
     return ``
+  };
+
+  const compareDates = (
+    dateA: moment.Moment,
+    dateB: moment.Moment,
+    format: string,
+  ): boolean => {
+    return dateA.format(format) === dateB.format(format);
   }
 
   return (
-    <div className={styles['table-month-item']}>
+    <div className={styles['schedule-month-item']}>
       <div className={styles['month-name']}>{month.label}</div>
-      <TableDaysHeader mode={'month'} />
+      <ScheduleDaysHeader mode={'month'} />
       {
         daysMonth && daysMonth.length ?
           <div className={styles['month-days-list']}>
@@ -54,7 +62,7 @@ const TableMonthItem: React.FC<ITableMonthItem> = ({ month, year }) => {
                     key={item.format()}
                     className={`${styles['month-days-item']} ${getScrollClass()}`}
                   >
-                    <div className={styles['date-button']}>
+                    <div className={`${styles['date-button']} ${compareDates(moment(), item, 'D-M-YY') ? styles['date-button-today'] : ''}`}>
                       {item.format('D')}
                     </div>
                   </div> :
@@ -72,4 +80,4 @@ const TableMonthItem: React.FC<ITableMonthItem> = ({ month, year }) => {
   )
 };
 
-export { TableMonthItem };
+export { ScheduleMonthItem };

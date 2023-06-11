@@ -1,4 +1,4 @@
 export const ROUTES = {
-  'Events': 'events',
+  'Schedule': 'schedule',
   'Report': 'report'
 };

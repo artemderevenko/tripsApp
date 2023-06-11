@@ -1,1 +1,0 @@
-export { TableDaysPagination } from './TableDaysPagination';

@@ -1,1 +1,0 @@
-export { TableMonth } from './TableMonth';

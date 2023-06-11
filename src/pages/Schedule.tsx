@@ -7,13 +7,13 @@ import { CustomSelect } from '../components/CustomSelect';
 import { IHoliday } from '../types/holiday';
 import { CALENDAR_MODE_OPTIONS as calendarModeOptions, CALENDAR_MODE as mode } from '../constants/selectOptions';
 import { ICalendarModeOption } from '../types/calendarModeOption';
-import { TableWeek } from '../components/TableWeek';
-import { TableMonth } from '../components/TableMonth';
-import { TableYear } from '../components/TableYear';
+import { ScheduleWeek } from '../components/ScheduleWeek';
+import { ScheduleMonth } from '../components/ScheduleMonth';
+import { ScheduleYear } from '../components/ScheduleYear';
 import { useAppDispatch } from '../hook';
 import { addHolidays } from '../store/holydaySlice';
 
-const Events: React.FC = () => {
+const Schedule: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const [calendarMode, setCalendarMode] = useState('week');
@@ -82,18 +82,18 @@ const Events: React.FC = () => {
       </PageHeader>
       {
         calendarMode === mode.week ?
-          <TableWeek /> : null
+          <ScheduleWeek /> : null
       }
       {
         calendarMode === mode.month ?
-          <TableMonth /> : null
+          <ScheduleMonth /> : null
       }
       {
         calendarMode === mode.year ?
-          <TableYear /> : null
+          <ScheduleYear /> : null
       }
     </>
   )
 };
 
-export default Events;
+export default Schedule;

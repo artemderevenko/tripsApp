@@ -6,7 +6,7 @@ import { PageLoader } from './PageLoader';
 import { Layout } from './Layout';
 
 
-const Events = lazy(() => import('../pages/Events'));
+const Schedule = lazy(() => import('../pages/Schedule'));
 const Report = lazy(() => import('../pages/Report'));
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
 
@@ -17,12 +17,12 @@ const App: React.FC = () => {
         <Route path="/" element={<Layout />}>
           <Route index element={
             <Suspense fallback={<PageLoader />}>
-              <Events />
+              <Schedule />
             </Suspense>
           } />
-          <Route path={ROUTES.Events} element={
+          <Route path={ROUTES.Schedule} element={
             <Suspense fallback={<PageLoader />}>
-              <Events />
+              <Schedule />
             </Suspense>
           } />
           <Route path={ROUTES.Report} element={

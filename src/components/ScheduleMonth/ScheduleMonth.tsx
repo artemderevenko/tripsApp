@@ -1,33 +1,33 @@
 import { useState, useEffect } from 'react';
 import moment from 'moment';
 
-import styles from './TableMonth.module.sass';
-import { TableDayItem } from '../TableDayItem';
-import { TableDaysPagination } from '../TableDaysPagination';
-import { TableDaysHeader } from '../TableDaysHeader';
+import styles from './ScheduleMonth.module.sass';
+import { ScheduleDayItem } from '../ScheduleDayItem';
+import { ScheduleDaysPagination } from '../ScheduleDaysPagination';
+import { ScheduleDaysHeader } from '../ScheduleDaysHeader';
 
-const TableMonth: React.FC = () => {
+const ScheduleMonth: React.FC = () => {
 
   const [daysMonth, setDaysMonth] = useState<moment.Moment[]>([]);
   const [scrollDirection, setScrollDirection] = useState<string>('');
-  const [fadeAnimation, setFadeAnimation] = useState<boolean>(false);
-  const [tableTitle, setTableTitle] = useState<string>('');
+  const [fadeAnimation, setFadeAnimation] = useState<boolean>(true);
+  const [scheduleTitle, setScheduleTitle] = useState<string>('');
 
   const handleScrollDirection = (direction: string, daysMonthList: moment.Moment[]) => {
     setScrollDirection(direction);
 
     setTimeout(() => {
       setScrollDirection('');
-      getTableTitle(daysMonthList);
+      getScheduleTitle(daysMonthList);
       setDaysMonth(daysMonthList);
     }, 180);
   };
 
-  const getTableTitle = (daysList: moment.Moment[]): void => {
+  const getScheduleTitle = (daysList: moment.Moment[]): void => {
     const middleMonth = daysList[15];
     const yearMiddleMonth = middleMonth.year(); 
     const fullMonthMiddleMonth = middleMonth.format('MMMM');
-    setTableTitle(`${fullMonthMiddleMonth} ${yearMiddleMonth}`);
+    setScheduleTitle(`${fullMonthMiddleMonth} ${yearMiddleMonth}`);
   }
 
   const getDaysMonth = (day: moment.Moment): moment.Moment[] => {
@@ -36,10 +36,10 @@ const TableMonth: React.FC = () => {
     const diff = firstDayOfWeek === 0 ? -6 : 1 - firstDayOfWeek;
     const startDay = moment(firstDayOfMonth.add(diff, 'day'));
     const daysInMonth = day.daysInMonth();
-    const tableWeekCount = Math.ceil((daysInMonth + Math.abs(diff)) / 7);
-    const tableDaysCount = tableWeekCount * 7;
+    const scheduleWeekCount = Math.ceil((daysInMonth + Math.abs(diff)) / 7);
+    const scheduleDaysCount = scheduleWeekCount * 7;
 
-    const daysList = Array.from({ length: tableDaysCount }, (_, index) => {
+    const daysList = Array.from({ length: scheduleDaysCount }, (_, index) => {
       const copyFirstDay = startDay.clone();
       return moment(copyFirstDay).add(index, 'day');
     });
@@ -50,7 +50,7 @@ const TableMonth: React.FC = () => {
     const currentDate = moment();
     const daysMonthList = getDaysMonth(currentDate);
     setDaysMonth(daysMonthList);
-    getTableTitle(daysMonthList);
+    getScheduleTitle(daysMonthList);
     setFadeAnimation(true);
 
     setTimeout(() => {
@@ -84,21 +84,21 @@ const TableMonth: React.FC = () => {
   }
 
   return (
-    <div className={styles['table-month']}>
-      <TableDaysPagination
+    <div className={styles['schedule-month']}>
+      <ScheduleDaysPagination
         clickPrev={clickPrev}
         clickNext={clickNext}
-        tableTitle={tableTitle}
+        scheduleTitle={scheduleTitle}
         backToToday={backToToday}
       />
       {
         daysMonth && daysMonth.length ?
-          <div className={`${styles['table-month-wrap']} ${styles[`rows-${daysMonth.length / 7 || 5}`]}`}>
-            <TableDaysHeader mode={'week'} />
-            <div className={`${styles['table-month-content']} ${getScrollClass()}`}>
+          <div className={`${styles['schedule-month-wrap']} ${styles[`rows-${daysMonth.length / 7 || 5}`]}`}>
+            <ScheduleDaysHeader mode={'week'} />
+            <div className={`${styles['schedule-month-content']} ${getScrollClass()}`}>
               {
                 daysMonth.map(item => (
-                  <TableDayItem
+                  <ScheduleDayItem
                     key={item.format()}
                     date={item}
                   />))
@@ -110,4 +110,4 @@ const TableMonth: React.FC = () => {
   )
 };
 
-export { TableMonth };
+export { ScheduleMonth };

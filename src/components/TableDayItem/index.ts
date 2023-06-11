@@ -1,1 +1,0 @@
-export { TableDayItem } from './TableDayItem';
