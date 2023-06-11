@@ -35,7 +35,7 @@ const ScheduleYear: React.FC = () => {
     setTimeout(() => {
       setScrollDirection('');
       setYear(nextYear);
-    }, 180);
+    }, 150);
   };
 
   const clickPrev = (): void => {

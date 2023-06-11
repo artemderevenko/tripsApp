@@ -1,0 +1,32 @@
+@import '../../variables'
+
+.table-row
+  width: 100%
+  height: 36px
+  border: 1px solid $primary-border-color
+  border-top: none
+  @include flex-start-between()
+
+  & > div 
+    height: 100%
+    padding: 0 10px
+    @include flex-center-start()
+    @include roboto-normal(14px, 18px, $primary-text-color-dark)
+
+.clients-first-name
+  width: 20%
+
+.clients-name
+  width: 20%
+
+.clients-surname
+  width: 20%
+
+.clients-birth
+  width: 15%
+
+.clients-sex
+  width: 10%
+
+.clients-passport
+  width: 15%
