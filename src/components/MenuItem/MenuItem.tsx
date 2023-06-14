@@ -1,11 +1,7 @@
 import { ReactNode } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useMatch } from 'react-router-dom';
 
 import styles from './MenuItem.module.sass';
-
-const setActive = ({ isActive = false }) => {
-  return isActive ? [styles['active-menu-link'], styles['menu-link']].join(' ') : styles['menu-link']
-}
 
 interface IMenuItemProps {
   children: ReactNode,
@@ -13,11 +9,17 @@ interface IMenuItemProps {
 }
 
 const MenuItem: React.FC<IMenuItemProps> = ({ children, to }) => {
+  const match = useMatch(to);
+
+  const setActive = () => {
+    return match ? [styles['active-menu-link'], styles['menu-link']].join(' ') : styles['menu-link']
+  }
+
   return (
     <div className={styles['menu-item']}>
       <NavLink
         to={to}
-        className={setActive}
+        className={setActive()}
       >
         {children}
       </NavLink>

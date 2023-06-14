@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import holydayReducer from './holydaySlice';
+import holydayReducer from './slices/holydaySlice';
+import userReducer from './slices/userSlice';
 
 const store = configureStore({
   reducer: {
     holidays: holydayReducer,
+    user: userReducer,
   }
 });
 

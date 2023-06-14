@@ -44,14 +44,11 @@ const ScheduleWeek: React.FC = () => {
   }
 
   const getStartDaysWeek = (): void => {
-    const currentDate = moment();
+    const currentDate = moment(); 
     const getFirstDayWeek = currentDate.startOf('week');
-    const firstDayWeekNumber = getFirstDayWeek.day();
-    const firstDayWeekCorrection = firstDayWeekNumber === 0 ? getFirstDayWeek.add(-7, 'day') : getFirstDayWeek;
-
     const daysList = Array.from({ length: 7 }, (_, index) => {
-      const copyFirstDay = firstDayWeekCorrection.clone();
-      return moment(copyFirstDay).add(index + 1, 'day');
+      const copyFirstDay = getFirstDayWeek.clone();
+      return moment(copyFirstDay).add(index, 'day');
     })
 
     setDaysWeek(daysList);
@@ -68,7 +65,7 @@ const ScheduleWeek: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps  
   }, []);
 
-  const clickPrev = (): void => {
+  const handlePrev = (): void => {
     const daysList = Array.from({ length: 7 }, (_, index) => {
       const copyFirstDay = daysWeek[0].clone();
       return moment(copyFirstDay).add(index - 7, 'day');
@@ -77,7 +74,7 @@ const ScheduleWeek: React.FC = () => {
     handleScrollDirection('right', daysList);
   }
 
-  const clickNext = (): void => {
+  const handleNext = (): void => {
     const daysList = Array.from({ length: 7 }, (_, index) => {
       const copyFirstDay = daysWeek[daysWeek.length - 1].clone();
       return moment(copyFirstDay).add(index + 1, 'day');
@@ -97,8 +94,8 @@ const ScheduleWeek: React.FC = () => {
   return (
     <div className={styles['schedule-week']}>
       <ScheduleDaysPagination
-        clickPrev={clickPrev}
-        clickNext={clickNext}
+        handlePrev={handlePrev}
+        handleNext={handleNext}
         scheduleTitle={scheduleTitle}
         backToToday={backToToday}
       />

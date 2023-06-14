@@ -14,7 +14,7 @@ const CustomSelect: React.FC<ICustomSelect> = ({
   onChange,
 }) => {
 
-  const [optionsIsOpened, setOptionsIsOpened] = useState(false);
+  const [optionsIsOpened, setOptionsIsOpened] = useState<boolean>(false);
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 

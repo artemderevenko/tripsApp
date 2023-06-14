@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 
 import styles from './ScheduleDayItem.module.sass';
-import { useAppdSelector } from '../../hook';
+import { useAppdSelector } from '../../hooks/reduxHook';
 import { IHoliday } from '../../types/holiday';
 
 interface IScheduleDayItem {
@@ -58,10 +58,10 @@ const ScheduleDayItem: React.FC<IScheduleDayItem> = ({ date }) => {
               holidayList.map((holiday) => (<div key={holiday.date} className={styles['event-holiday']}>{holiday.name}</div>)) : null
           }
           {date.day() % 3 === 0 ?
-            <>
+            <div>
               <div className={styles['event-task']}>Call a friend to check the train departure time</div>
               <div className={styles['event-more']}>5 more</div>
-            </> : null
+            </div> : null
           }
 
         </div>

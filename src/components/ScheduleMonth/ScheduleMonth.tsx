@@ -63,13 +63,13 @@ const ScheduleMonth: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const clickPrev = (): void => {
+  const handlePrev = (): void => {
     const currentMonthFirstDay = daysMonth[0];
     const middlePrevMonth = moment(currentMonthFirstDay).add(-15, 'day');
     handleScrollDirection('right', getDaysMonth(middlePrevMonth));
   }
 
-  const clickNext = (): void => {
+  const handleNext = (): void => {
     const currentMonthLastDay = daysMonth[daysMonth.length - 1];
     const middleNextMonth = moment(currentMonthLastDay).add(15, 'day');
     handleScrollDirection('left', getDaysMonth(middleNextMonth));
@@ -86,8 +86,8 @@ const ScheduleMonth: React.FC = () => {
   return (
     <div className={styles['schedule-month']}>
       <ScheduleDaysPagination
-        clickPrev={clickPrev}
-        clickNext={clickNext}
+        handlePrev={handlePrev}
+        handleNext={handleNext}
         scheduleTitle={scheduleTitle}
         backToToday={backToToday}
       />

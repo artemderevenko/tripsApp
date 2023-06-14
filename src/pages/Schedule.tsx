@@ -10,8 +10,8 @@ import { ICalendarModeOption } from '../types/calendarModeOption';
 import { ScheduleWeek } from '../components/ScheduleWeek';
 import { ScheduleMonth } from '../components/ScheduleMonth';
 import { ScheduleYear } from '../components/ScheduleYear';
-import { useAppDispatch } from '../hook';
-import { addHolidays } from '../store/holydaySlice';
+import { useAppDispatch } from '../hooks/reduxHook';
+import { addHolidays } from '../store/slices/holydaySlice';
 
 const Schedule: React.FC = () => {
   const dispatch = useAppDispatch();

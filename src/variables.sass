@@ -13,6 +13,9 @@ $layout-border-color: rgba(0, 0, 0, .1)
 $task-bgd: #0b6ba3
 $holiday-bgd: #078d36
 $neutral-bgd: #d8d8d8
+$error-color: #ED6F67
+$warning-color: #F8B952
+$success-color: #43C175
 
 @mixin roboto-normal($font-size, $line-height, $color)
   font-family: 'Roboto', sans-serif
@@ -28,43 +31,43 @@ $neutral-bgd: #d8d8d8
   color: $color
   font-weight: 600
 
-@mixin flex-center()
+@mixin flex-center
   display: flex
   align-items: center
   justify-content: center
   flex-wrap: wrap
 
-@mixin flex-start-center()
+@mixin flex-start-center
   display: flex
   align-items: flex-start
   justify-content: center
   flex-wrap: wrap
 
-@mixin flex-start()
+@mixin flex-start
   display: flex
   align-items: flex-start
   justify-content: flex-start
   flex-wrap: wrap
 
-@mixin flex-center-start()
+@mixin flex-center-start
   display: flex
   align-items: center
   justify-content: flex-start
   flex-wrap: wrap
 
-@mixin flex-center-between()
+@mixin flex-center-between
   display: flex
   align-items: center
   justify-content: space-between
   flex-wrap: wrap
 
-@mixin flex-start-between()
+@mixin flex-start-between
   display: flex
   align-items: flex-start
   justify-content: space-between
   flex-wrap: wrap
 
-@mixin ellipsis-text()
+@mixin ellipsis-text
   overflow: hidden
   white-space: nowrap
   text-overflow: ellipsis
@@ -102,3 +105,19 @@ $neutral-bgd: #d8d8d8
 
     100%
       opacity: 1
+
+@mixin blink-fade($duration: 4s)
+  animation: fade $duration 1 linear
+
+  @keyframes fade
+    0%
+      opacity: 0
+
+    10%
+      opacity: 1
+
+    90%
+      opacity: 1
+
+    100%
+      opacity: 0

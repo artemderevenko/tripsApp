@@ -38,11 +38,11 @@ const ScheduleYear: React.FC = () => {
     }, 150);
   };
 
-  const clickPrev = (): void => {
+  const handlePrev = (): void => {
     handleScrollDirection('right', year ? year - 1 : moment().year());
   }
 
-  const clickNext = (): void => {
+  const handleNext = (): void => {
     handleScrollDirection('left', year ? year + 1 : moment().year());
   }
 
@@ -57,8 +57,8 @@ const ScheduleYear: React.FC = () => {
   return (
     <div className={styles['schedule-year']}>
       <ScheduleDaysPagination
-        clickPrev={clickPrev}
-        clickNext={clickNext}
+        handlePrev={handlePrev}
+        handleNext={handleNext}
         scheduleTitle={`${year}`}
         backToToday={backToToday}
       />

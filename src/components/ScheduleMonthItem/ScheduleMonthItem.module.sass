@@ -14,17 +14,17 @@
 .month-name
   width: 100%
   margin-bottom: 10px
-  @include flex-start-center()
+  @include flex-start-center
   @include roboto-normal(16px, 18px, $primary-text-color-dark)
 
 .month-days-list
   width: 100%
-  @include flex-start()
+  @include flex-start
 
 .month-days-item
   width: calc(100% / 7)
   height: 34px
-  @include flex-start-center()
+  @include flex-start-center
 
 .date-button
   width: 34px
@@ -34,7 +34,7 @@
   background-color: $content-bgd
   transition: background-color .3s ease
   @include roboto-normal(11px, 13px, $primary-text-color-dark)
-  @include flex-center()
+  @include flex-center
 
   &:hover
     background-color: $select-bgd-hover

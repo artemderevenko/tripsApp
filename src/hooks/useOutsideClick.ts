@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { useLatest } from "./useLatest";
+import React, { useEffect } from 'react';
+import { useLatest } from './useLatest';
 
 export const useOutsideClick = (
   elementRef: React.RefObject<Element>,
