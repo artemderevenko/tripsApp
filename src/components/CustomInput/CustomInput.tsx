@@ -72,7 +72,7 @@ const CustomInput: React.FC<ICustomInput> = ({ type, value, onChange, onBlur, on
           {
             !textError ?
               <div
-                className={`${styles['placeholder']} ${isFocus || value ? styles['placeholder-focus'] : ''}`}
+                className={`${styles['placeholder']} ${isFocus || value ? styles['placeholder-up'] : ''}`}
               >
                 {placeholder}
               </div> : null

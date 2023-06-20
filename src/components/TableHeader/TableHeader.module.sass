@@ -3,7 +3,7 @@
 .table-header
   width: 100%
   height: 36px
-  background-color: $active-menu-bgd
+  background-color: $table-header-color
   border-radius: 4px 4px 0 0
   @include flex-start-between
 
@@ -11,22 +11,28 @@
     height: 100%
     padding: 0 10px
     @include flex-center-start
-    @include roboto-normal(14px, 18px, $primary-text-color-light)
+    @include montserrat-normal(14px, 18px, $primary-text-color-light)
 
-.clients-first-name
+.clients-first-name,
+.managers-first-name
   width: 20%
 
-.clients-name
+.clients-name,
+.managers-name
   width: 20%
 
-.clients-surname
+.clients-surname,
+.managers-surname
   width: 20%
 
-.clients-birth
+.clients-birth,
+.managers-birth
   width: 15%
 
-.clients-sex
+.clients-sex,
+.managers-sex
   width: 10%
 
-.clients-passport
+.clients-passport,
+.managers-passport
   width: 15%

@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export interface ICustomSelectOption {
+export interface ISelectOption {
   optionRenderer?: ReactNode,
   value: string | number,
   label: string

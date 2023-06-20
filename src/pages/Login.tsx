@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
@@ -10,16 +10,9 @@ import { Notification } from '../components/Notification';
 
 const Login: React.FC = () => {
   const [notify, setNotify] = useState<string>('');
-  const [showNotify, setShowNotify] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!!notify !== showNotify) {
-      setShowNotify(!!notify)
-    }
-  }, [notify]);
 
   const handleLogin = (email: string, password: string): void => {
     const auth = getAuth();
@@ -61,6 +54,10 @@ const Login: React.FC = () => {
       });
   }
 
+  const afterHideNotify = () => {
+    setNotify('');
+  }
+
   return (
     <>
       <AuthForm
@@ -70,11 +67,11 @@ const Login: React.FC = () => {
         formType={'login'}
       />
       {
-        showNotify ?
+        notify ?
           <Notification
             type={'error'}
             message={notify}
-            afterHide={() => setNotify('')}
+            afterHide={afterHideNotify}
           /> : null
       }
     </>

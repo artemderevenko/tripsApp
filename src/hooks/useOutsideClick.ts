@@ -4,7 +4,8 @@ import { useLatest } from './useLatest';
 export const useOutsideClick = (
   elementRef: React.RefObject<Element>,
   handler: any,
-  attached = true
+  attached = true,
+  cb?: () => void,
 ) => {
   const latestHandler = useLatest(handler);
 
@@ -16,6 +17,7 @@ export const useOutsideClick = (
 
       if (!elementRef.current.contains(e.target as Node)) {
         latestHandler.current()
+        if (cb) { cb() }
       }
     };
 

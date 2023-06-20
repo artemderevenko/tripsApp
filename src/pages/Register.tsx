@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
@@ -10,16 +10,9 @@ import { Notification } from '../components/Notification';
 
 const Register: React.FC = () => {
   const [notify, setNotify] = useState<string>('');
-  const [showNotify, setShowNotify] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!!notify !== showNotify) {
-      setShowNotify(!!notify)
-    }
-  }, [notify]);
 
   const handleRegister = (email: string, password: string): void => {
     const auth = getAuth();
@@ -53,6 +46,10 @@ const Register: React.FC = () => {
       });
   }
 
+  const afterHideNotify = () => {
+    setNotify('');
+  }
+
   return (
     <>
       <AuthForm
@@ -62,11 +59,11 @@ const Register: React.FC = () => {
         formType={'register'}
       />
       {
-        showNotify ?
+        notify ?
           <Notification
             type={'error'}
             message={notify}
-            afterHide={() => setNotify('')}
+            afterHide={afterHideNotify}
           /> : null
       }
     </>

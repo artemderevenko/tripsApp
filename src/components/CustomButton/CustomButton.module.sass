@@ -5,12 +5,55 @@
   max-width: 100%
   min-width: 120px
   min-height: 36px
-  padding: 10px 20px
-  background-color: $active-menu-bgd
+  padding: 9px 20px
   border-radius: 4px
-  transition: background-color .3s ease
+  transition: background-color .3s ease, border-color .3s ease, color .3s ease, 
   @include flex-center
-  @include roboto-normal(14px, 16px, $primary-text-color-light)
+
+.icon
+  margin-right: 8px
+  @include flex-center
+
+  svg 
+    width: auto
+    height: 18px
+
+.confirm
+  background-color: $active-menu-bgd
+  @include montserrat-normal(14px, 16px, $primary-text-color-light)
 
   &:hover
     background-color: $primary-color
+
+  svg 
+    path 
+      fill: $primary-text-color-light
+
+.delete
+  background-color: $button-delete-bgd
+  @include montserrat-normal(14px, 16px, $primary-text-color-light)
+
+  &:hover
+    background-color: $button-delete-bgd-hover
+
+  svg 
+    path 
+      fill: $primary-text-color-light
+
+.cancel
+  border: 1px solid $button-cancel-border
+  background-color: $content-bgd
+  @include montserrat-normal(14px, 16px, $button-cancel-border)
+
+  &:hover
+    border-color: $button-cancel-border-hover
+    color: $button-cancel-border-hover
+    background-color: $select-bgd-hover
+
+  svg 
+    path 
+      fill: $button-cancel-border
+
+.disable
+  opacity: .8
+  pointer-events: none

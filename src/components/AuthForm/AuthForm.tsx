@@ -67,26 +67,31 @@ const AuthForm: React.FC<IAuthForm> = ({ title, handleClick, buttonName, formTyp
     <div className={styles['page-wrap']}>
       <div className={styles['auth-form']}>
         <div className={styles['title']}>{title}</div>
-        <CustomInput
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          onBlur={() => checkEmailError()}
-          placeholder="Email"
-          textError={emailError}
-        />
-        <CustomInput
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          onBlur={() => checkPasswordError()}
-          placeholder="Password"
-          textError={passwordError}
-        />
+        <div className={styles['input-row']}>
+          <CustomInput
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            onBlur={() => checkEmailError()}
+            placeholder="Email"
+            textError={emailError}
+          />
+        </div>
+        <div className={styles['input-row']}>
+          <CustomInput
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            onBlur={() => checkPasswordError()}
+            placeholder="Password"
+            textError={passwordError}
+          />
+        </div>
         <div className={styles['button-row']}>
           <CustomButton
             onClick={clickButton}
-            label={buttonName}
+            buttonText={buttonName}
+            type={'confirm'}
           />
         </div>
         {

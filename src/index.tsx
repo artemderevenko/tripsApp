@@ -8,6 +8,7 @@ import './index.sass';
 import store from './store';
 import './firebase';
 
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

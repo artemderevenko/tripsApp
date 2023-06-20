@@ -10,3 +10,8 @@ export const CALENDAR_MODE_OPTIONS = [
   { value: CALENDAR_MODE.year, label: 'Year'},
 ];
 
+export const SEX_OPTIONS = [
+  { value: 'M', label: 'M'},
+  { value: 'F', label: 'F'},
+];
+

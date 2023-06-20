@@ -14,28 +14,33 @@
   box-shadow: $layout-bgd-shadow
   border: 1px solid $layout-border-color
   border-radius: 4px
-  margin-top: 200px
+  margin-top: 150px
   @include flex-center
 
 .title
   width: 100%
   margin-bottom: 30px
   @include flex-center
-  @include roboto-normal(22px, 26px, $primary-text-color-dark)
+  @include montserrat-normal(22px, 26px, $primary-text-color-dark)
+
+.input-row
+  width: 100%
+  margin-bottom: 15px
 
 .button-row
   width: 100%
+  margin-top: 15px
   @include flex-center
 
 .redirect-box
   width: 100%
   margin-top: 40px
   @include flex-center
-  @include roboto-normal(14px, 18px, $primary-text-color-dark)
+  @include montserrat-normal(14px, 18px, $primary-text-color-dark)
 
   a
     margin: 0 5px
-    @include roboto-normal(14px, 18px, $primary-color)
+    @include montserrat-normal(14px, 18px, $primary-color)
 
     &:hover
       text-decoration: none

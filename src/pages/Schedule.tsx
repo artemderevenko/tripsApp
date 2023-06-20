@@ -3,7 +3,7 @@ import axios from 'axios';
 import moment from 'moment';
 
 import { PageHeader } from '../components/PageHeader';
-import { CustomSelect } from '../components/CustomSelect';
+import { CustomButtonSelect } from '../components/CustomButtonSelect';
 import { IHoliday } from '../types/holiday';
 import { CALENDAR_MODE_OPTIONS as calendarModeOptions, CALENDAR_MODE as mode } from '../constants/selectOptions';
 import { ICalendarModeOption } from '../types/calendarModeOption';
@@ -74,7 +74,7 @@ const Schedule: React.FC = () => {
   return (
     <>
       <PageHeader align={'right'}>
-        <CustomSelect
+        <CustomButtonSelect
           selectValue={getCalendarModeValue(calendarMode, calendarModeOptions)}
           selectOptions={calendarModeOptions}
           onChange={changeCalendarMode}

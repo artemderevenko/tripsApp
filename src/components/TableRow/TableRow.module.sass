@@ -5,28 +5,55 @@
   height: 36px
   border: 1px solid $primary-border-color
   border-top: none
+  transition: background-color .3s ease
+  position: relative
   @include flex-start-between
 
-  & > div 
-    height: 100%
-    padding: 0 10px
-    @include flex-center-start
-    @include roboto-normal(14px, 18px, $primary-text-color-dark)
+  &:hover
+    background-color: $table-row-hover
 
-.clients-first-name
+.clients-first-name,
+.clients-name,
+.clients-surname,
+.clients-birth,
+.clients-sex,
+.clients-passport,
+.managers-first-name,
+.managers-name,
+.managers-surname,
+.managers-birth,
+.managers-sex,
+.managers-passport
+  height: 100%
+  padding: 0 10px
+  @include flex-center-start
+  @include montserrat-normal(14px, 18px, $primary-text-color-dark)
+
+.clients-first-name,
+.managers-first-name
   width: 20%
 
-.clients-name
+.clients-name,
+.managers-name
   width: 20%
 
-.clients-surname
+.clients-surname,
+.managers-surname
   width: 20%
 
-.clients-birth
+.clients-birth,
+.managers-birth
   width: 15%
 
-.clients-sex
+.clients-sex,
+.managers-sex
   width: 10%
 
-.clients-passport
+.clients-passport,
+.managers-passport
   width: 15%
+  padding-right: 30px !important
+
+.field-value
+  max-width: 100%
+  @include ellipsis-text
