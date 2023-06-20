@@ -1,8 +1,18 @@
+import { PageTitle } from '../components/PageTitle';
+import { PageContent } from '../components/PageContent';
+
 const Report: React.FC = () => {
   return (
-    <div className="report-page">
-      Report
-    </div>
+    <>
+      <PageTitle>Report</PageTitle>
+      <PageContent>
+        <>
+          <div className="report-page">
+            Report
+          </div>
+        </>
+      </PageContent>
+    </>
   )
 };
 

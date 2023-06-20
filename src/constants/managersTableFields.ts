@@ -1,4 +1,4 @@
-export const CLIENTS_TABLE_FIELDS = [
+export const MANAGERS_TABLE_FIELDS = [
   { value: 'first-name', label: 'First name', dataField: 'firstName'},
   { value: 'name', label: 'Name', dataField: 'name'},
   { value: 'surname', label: 'Surname', dataField: 'surname'},

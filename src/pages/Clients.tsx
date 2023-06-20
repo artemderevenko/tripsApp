@@ -15,10 +15,12 @@ import { NoResults } from '../components/NoResults';
 import { AddClientModal } from '../components/AddClientModal';
 import { Notification } from '../components/Notification';
 import { useAppDispatch, useAppdSelector } from '../hooks/reduxHook';
-import { setClient } from '../store/slices/clientsSlice';
+import { setClients } from '../store/slices/clientsSlice';
 import { PageLoader } from '../components/PageLoader';
 import { CustomModal } from '../components/CustomModal';
 import { database } from '../firebase';
+import { PageTitle } from '../components/PageTitle';
+import { PageContent } from '../components/PageContent';
 
 const Clients: React.FC = () => {
   const [showAddClientModal, setShowAddClientModal] = useState<boolean>(false);
@@ -54,12 +56,12 @@ const Clients: React.FC = () => {
       const clientList: DocumentData[] = querySnapshot.docs.map((doc) => doc.data());
       const typedClientList: IClient[] = clientList as IClient[];
       if (clientList && clientList.length) {
-        dispatch(setClient(typedClientList));
+        dispatch(setClients(typedClientList));
       } else {
-        dispatch(setClient([]));
+        dispatch(setClients([]));
       }
     } catch (error) {
-      dispatch(setClient([]));
+      dispatch(setClients([]));
     }
     setIsFetching(false);
   }
@@ -144,119 +146,124 @@ const Clients: React.FC = () => {
 
   return (
     <>
-      <PageHeader align={'between'}>
+      <PageTitle>Clients</PageTitle>
+      <PageContent>
         <>
-          <CustomButton
-            onClick={() => setShowAddClientModal(true)}
-            buttonText={'Add new client'}
-            type={'confirm'}
-            disable={isFetching}
-            icon={<svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
-              <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/>
-            </svg>}
-          />
-          <CustomSearchField
-            placeholder={'Search by name, surname or passport'}
-            disable={isFetching || ((!filteredClients || !filteredClients.length) && !searchValue)}
-            onSearch={onSearch}
-          />
-        </>
-      </PageHeader>
-      {
-        isFetching ? <PageLoader /> : null
-      }
-      {
-        !isFetching && (!filteredClients || !filteredClients.length) ? <NoResults text={textNoSearch} /> : null
-      }
-      {
-        !isFetching && filteredClients && filteredClients.length && tableFields && tableFields.length ?
-          <>
-            <TableHeader>
-              {
-                tableFields.map(field => (
-                  <div
-                    key={field.value}
-                    className={headerStyles[`clients-${field.value}`]}
-                  >
-                    {field.label}
-                  </div>
-                ))
-              }
-            </TableHeader>
-            {
-              filteredClients.map((data: IClient): ReactNode => (
-                <TableRow
-                  key={data.passport}
-                  optionsList={[
-                    {
-                      label: 'Edit',
-                      onClick: () => setEditClientData(data),
-                    },
-                    {
-                      label: 'Delete',
-                      className: "delete",
-                      onClick: () => setDeleteClientId(data.id),
-                    }
-                  ]}
-                >
+          <PageHeader align={'between'}>
+            <>
+              <CustomButton
+                onClick={() => setShowAddClientModal(true)}
+                buttonText={'Add new client'}
+                type={'confirm'}
+                disable={isFetching}
+                icon={<svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
+                  <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
+                </svg>}
+              />
+              <CustomSearchField
+                placeholder={'Search by name, surname or passport'}
+                disable={isFetching || ((!filteredClients || !filteredClients.length) && !searchValue)}
+                onSearch={onSearch}
+              />
+            </>
+          </PageHeader>
+          {
+            isFetching ? <PageLoader /> : null
+          }
+          {
+            !isFetching && (!filteredClients || !filteredClients.length) ? <NoResults text={textNoSearch} /> : null
+          }
+          {
+            !isFetching && filteredClients && filteredClients.length && tableFields && tableFields.length ?
+              <>
+                <TableHeader>
                   {
-                    tableFields.map((field): ReactNode => (
+                    tableFields.map(field => (
                       <div
                         key={field.value}
-                        className={rowStyles[`clients-${field.value}`]}
+                        className={headerStyles[`clients-${field.value}`]}
                       >
-                        <div className={rowStyles['field-value']}>{data[field.dataField]}</div>
-                      </div>))
+                        {field.label}
+                      </div>
+                    ))
                   }
-                </TableRow>
-              ))
-            }
-          </> : null
-      }
-      {
-        showAddClientModal ?
-          <AddClientModal
-            onClose={() => setShowAddClientModal(false)}
-            onAddClient={addClient}
-          /> : null
-      }
-      {
-        editClientData ?
-          <AddClientModal
-            onClose={() => setEditClientData(null)}
-            onAddClient={editClient}
-            data={editClientData}
-          /> : null
-      }
-      {
-        deleteClientId ?
-          <CustomModal
-            title={'Delete client'}
-            onClose={() => setDeleteClientId('')}
-            buttonsList={[
-              {
-                onButtonClick: () => setDeleteClientId(''),
-                buttonText: 'Cancel',
-                type: 'cancel',
-              },
-              {
-                onButtonClick: deleteClient,
-                buttonText: 'Delete',
-                type: 'delete',
-              }
-            ]}
-          >
-            <div>After you delete a client, it's permanently deleted.</div>
-          </CustomModal> : null
-      }
-      {
-        notify ?
-          <Notification
-            type={notifyType}
-            message={notify}
-            afterHide={afterHideNotify}
-          /> : null
-      }
+                </TableHeader>
+                {
+                  filteredClients.map((data: IClient): ReactNode => (
+                    <TableRow
+                      key={data.passport}
+                      optionsList={[
+                        {
+                          label: 'Edit',
+                          onClick: () => setEditClientData(data),
+                        },
+                        {
+                          label: 'Delete',
+                          className: "delete",
+                          onClick: () => setDeleteClientId(data.id),
+                        }
+                      ]}
+                    >
+                      {
+                        tableFields.map((field): ReactNode => (
+                          <div
+                            key={field.value}
+                            className={rowStyles[`clients-${field.value}`]}
+                          >
+                            <div className={rowStyles['field-value']}>{data[field.dataField]}</div>
+                          </div>))
+                      }
+                    </TableRow>
+                  ))
+                }
+              </> : null
+          }
+          {
+            showAddClientModal ?
+              <AddClientModal
+                onClose={() => setShowAddClientModal(false)}
+                onAddClient={addClient}
+              /> : null
+          }
+          {
+            editClientData ?
+              <AddClientModal
+                onClose={() => setEditClientData(null)}
+                onAddClient={editClient}
+                data={editClientData}
+              /> : null
+          }
+          {
+            deleteClientId ?
+              <CustomModal
+                title={'Delete client'}
+                onClose={() => setDeleteClientId('')}
+                buttonsList={[
+                  {
+                    onButtonClick: () => setDeleteClientId(''),
+                    buttonText: 'Cancel',
+                    type: 'cancel',
+                  },
+                  {
+                    onButtonClick: deleteClient,
+                    buttonText: 'Delete',
+                    type: 'delete',
+                  }
+                ]}
+              >
+                <div>After you delete a client, it's permanently deleted.</div>
+              </CustomModal> : null
+          }
+          {
+            notify ?
+              <Notification
+                type={notifyType}
+                message={notify}
+                afterHide={afterHideNotify}
+              /> : null
+          }
+        </>
+      </PageContent>
     </>
   )
 };

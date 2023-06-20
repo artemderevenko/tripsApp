@@ -17,6 +17,7 @@ const CustomSelect: React.FC<ICustomSelect> = ({
   onChange,
   onBlur,
   textError,
+  className,
 }) => {
 
   const [optionsIsOpened, setOptionsIsOpened] = useState<boolean>(false);
@@ -48,7 +49,7 @@ const CustomSelect: React.FC<ICustomSelect> = ({
   const classList = `${styles['custom-select']} ${optionsIsOpened ? styles['is-opened'] : ''} ${textError ? styles['is-error'] : ''}`;
 
   return (
-    <div className={styles['custom-select-wrap']}>
+    <div className={`${styles['custom-select-wrap']} ${className || ''}`}>
       <div
         className={classList}
         ref={wrapperRef}

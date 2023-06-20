@@ -5,5 +5,7 @@ export const ROUTES = {
   'Managers': 'managers',
   'Tours': 'tours',
   'Schedule': 'schedule',
-  'Report': 'report'
+  'Report': 'report',
+  'TourDetails': 'tours/:id',
+  'TourNew': 'tours/new',
 };

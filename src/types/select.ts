@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import { ISelectOption } from './selectOption';
 import { ICalendarModeOption } from './calendarModeOption';
 
@@ -9,4 +8,5 @@ export interface ISelect {
   positionDropDown?: string,
   onChange: (value: ICalendarModeOption) => void,
   onBlur?: (value?:any) => void,
+  className?: string,
 };

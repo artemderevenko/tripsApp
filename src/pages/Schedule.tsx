@@ -12,11 +12,13 @@ import { ScheduleMonth } from '../components/ScheduleMonth';
 import { ScheduleYear } from '../components/ScheduleYear';
 import { useAppDispatch } from '../hooks/reduxHook';
 import { addHolidays } from '../store/slices/holydaySlice';
+import { PageTitle } from '../components/PageTitle';
+import { PageContent } from '../components/PageContent';
 
 const Schedule: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const [calendarMode, setCalendarMode] = useState('week');
+  const [calendarMode, setCalendarMode] = useState<string>(mode && mode.week ? mode.week : '');
 
   const fetchHolidayList = async () => {
     try {
@@ -73,25 +75,30 @@ const Schedule: React.FC = () => {
 
   return (
     <>
-      <PageHeader align={'right'}>
-        <CustomButtonSelect
-          selectValue={getCalendarModeValue(calendarMode, calendarModeOptions)}
-          selectOptions={calendarModeOptions}
-          onChange={changeCalendarMode}
-        />
-      </PageHeader>
-      {
-        calendarMode === mode.week ?
-          <ScheduleWeek /> : null
-      }
-      {
-        calendarMode === mode.month ?
-          <ScheduleMonth /> : null
-      }
-      {
-        calendarMode === mode.year ?
-          <ScheduleYear /> : null
-      }
+      <PageTitle>Tour schedule</PageTitle>
+      <PageContent>
+        <>
+          <PageHeader align={'right'}>
+            <CustomButtonSelect
+              selectValue={getCalendarModeValue(calendarMode, calendarModeOptions)}
+              selectOptions={calendarModeOptions}
+              onChange={changeCalendarMode}
+            />
+          </PageHeader>
+          {
+            calendarMode === mode.week ?
+              <ScheduleWeek /> : null
+          }
+          {
+            calendarMode === mode.month ?
+              <ScheduleMonth /> : null
+          }
+          {
+            calendarMode === mode.year ?
+              <ScheduleYear /> : null
+          }
+        </>
+      </PageContent>
     </>
   )
 };

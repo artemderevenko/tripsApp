@@ -14,6 +14,7 @@ const Tours = lazy(() => import('../pages/Tours'));
 const Schedule = lazy(() => import('../pages/Schedule'));
 const Report = lazy(() => import('../pages/Report'));
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
+const TourDetails = lazy(() => import('../pages/TourDetails'));
 
 const App: React.FC = () => {
   return (
@@ -47,6 +48,16 @@ const App: React.FC = () => {
         <Route path={ROUTES.Tours} element={
           <Suspense fallback={<PageLoader />}>
             <Tours />
+          </Suspense>
+        } />
+        <Route path={ROUTES.TourNew} element={
+          <Suspense fallback={<PageLoader />}>
+            <TourDetails />
+          </Suspense>
+        } />
+        <Route path={ROUTES.TourDetails} element={
+          <Suspense fallback={<PageLoader />}>
+            <TourDetails />
           </Suspense>
         } />
         <Route path={ROUTES.Schedule} element={
