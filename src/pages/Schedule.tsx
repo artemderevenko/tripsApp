@@ -6,7 +6,7 @@ import { PageHeader } from '../components/PageHeader';
 import { CustomButtonSelect } from '../components/CustomButtonSelect';
 import { IHoliday } from '../types/holiday';
 import { CALENDAR_MODE_OPTIONS as calendarModeOptions, CALENDAR_MODE as mode } from '../constants/selectOptions';
-import { ICalendarModeOption } from '../types/calendarModeOption';
+import { ISelectOption } from '../types/selectOption';
 import { ScheduleWeek } from '../components/ScheduleWeek';
 import { ScheduleMonth } from '../components/ScheduleMonth';
 import { ScheduleYear } from '../components/ScheduleYear';
@@ -14,6 +14,7 @@ import { useAppDispatch } from '../hooks/reduxHook';
 import { addHolidays } from '../store/slices/holydaySlice';
 import { PageTitle } from '../components/PageTitle';
 import { PageContent } from '../components/PageContent';
+import { useGetSelectOption } from '../hooks/useGetSelectOption';
 
 const Schedule: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -58,16 +59,6 @@ const Schedule: React.FC = () => {
     return listOfMonths;
   }
 
-  const getCalendarModeValue = (value: string, options: ICalendarModeOption[]) => {
-    if (value && options && options.length) {
-      return options.filter(option => option.value === value)[0]
-    }
-  }
-
-  const changeCalendarMode = (option: ICalendarModeOption): void => {
-    setCalendarMode(option.value)
-  }
-
   useEffect(() => {
     fetchHolidayList()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -80,9 +71,9 @@ const Schedule: React.FC = () => {
         <>
           <PageHeader align={'right'}>
             <CustomButtonSelect
-              selectValue={getCalendarModeValue(calendarMode, calendarModeOptions)}
+              selectValue={useGetSelectOption(calendarMode, calendarModeOptions)}
               selectOptions={calendarModeOptions}
-              onChange={changeCalendarMode}
+              onChange={(option) => setCalendarMode(option.value)}
             />
           </PageHeader>
           {

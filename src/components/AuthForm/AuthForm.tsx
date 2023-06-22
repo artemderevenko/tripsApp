@@ -25,7 +25,7 @@ const AuthForm: React.FC<IAuthForm> = ({ title, handleClick, buttonName, formTyp
   }
 
   const checkEmailError = () => {
-    if (!email) {
+    if (!email.trim().length) {
       setEmailError('Email required');
       return true;
     }
@@ -40,7 +40,7 @@ const AuthForm: React.FC<IAuthForm> = ({ title, handleClick, buttonName, formTyp
   }
 
   const checkPasswordError = () => {
-    if (!password) {
+    if (!password.trim().length) {
       setPasswordError('Password required');
       return true;
     }

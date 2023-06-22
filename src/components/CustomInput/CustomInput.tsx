@@ -10,7 +10,7 @@ interface ICustomInput {
   onFocus?: () => void,
   placeholder: string,
   className?: string | null,
-  textError: string,
+  textError?: string,
 }
 
 const CustomInput: React.FC<ICustomInput> = ({ type, value, onChange, onBlur, onFocus, placeholder, className, textError }) => {

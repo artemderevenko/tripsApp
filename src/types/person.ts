@@ -1,8 +1,8 @@
 export interface IPerson {
   [key: string]: any,
   firstName: string,
-  name: string,
-  surname: string,
+  lastName: string,
+  middleName: string,
   birth: string,
   sex: string,
   passport: string,

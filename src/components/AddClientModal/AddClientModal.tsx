@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import moment from 'moment';
 
 import styles from './AddClientModal.module.sass';
 import { CustomInput } from '../CustomInput';
@@ -7,7 +8,6 @@ import { CustomSelect } from '../CustomSelect';
 import { SEX_OPTIONS as sexOptions } from '../../constants/selectOptions';
 import { IPerson } from '../../types/person';
 import { IClient } from '../../types/client';
-import moment from 'moment';
 
 interface IAddClientModal {
   onClose: () => void,
@@ -17,20 +17,20 @@ interface IAddClientModal {
 
 const AddClientModal: React.FC<IAddClientModal> = ({ onClose, onAddClient, data={} }) => {
   const [firstName, setFirstName] = useState<string>(data && data.firstName ? data.firstName : '');
-  const [name, setName] = useState<string>(data && data.name ? data.name : '');
-  const [surname, setSurname] = useState<string>(data && data.surname ? data.surname : '');
+  const [lastName, setLastName] = useState<string>(data && data.lastName ? data.lastName : '');
+  const [middleName, setMiddleName] = useState<string>(data && data.middleName ? data.middleName : '');
   const [birth, setBirth] = useState<string>(data && data.birth ? data.birth : '');
   const [sex, setSex] = useState<string>(data && data.sex ? data.sex : '');
   const [passport, setPassport] = useState<string>(data && data.passport ? data.passport : '');
   const [firstNameError, setFirstNameError] = useState<string>('');
-  const [nameError, setNameError] = useState<string>('');
-  const [surnameError, setSurnameError] = useState<string>('');
+  const [lastNameError, setLastNameError] = useState<string>('');
+  const [middleNameError, setMiddleNameError] = useState<string>('');
   const [birthError, setBirthError] = useState<string>('');
   const [sexError, setSexError] = useState<string>('');
   const [passportError, setPassportError] = useState<string>('');
 
   const checkFirstNameError = () => {
-    if (!firstName) {
+    if (!firstName.trim().length) {
       setFirstNameError('First name required');
       return true;
     }
@@ -38,21 +38,21 @@ const AddClientModal: React.FC<IAddClientModal> = ({ onClose, onAddClient, data=
     return false;
   }
 
-  const checkNameError = () => {
-    if (!name) {
-      setNameError('Name required');
+  const checkLastNameError = () => {
+    if (!lastName.trim().length) {
+      setLastNameError('Last name required');
       return true;
     }
-    setNameError('');
+    setLastNameError('');
     return false;
   }
 
-  const checkSurnameError = () => {
-    if (!surname) {
-      setSurnameError('Surname required');
+  const checkMiddleNameError = () => {
+    if (!middleName.trim().length) {
+      setMiddleNameError('Middle name required');
       return true;
     }
-    setSurnameError('');
+    setMiddleNameError('');
     return false;
   }
 
@@ -61,7 +61,7 @@ const AddClientModal: React.FC<IAddClientModal> = ({ onClose, onAddClient, data=
     const isValidFormat = birthDate.isValid();
     const isPast = birthDate.isSameOrBefore(moment());
 
-    if (!birth) {
+    if (!birth.trim().length) {
       setBirthError('Date of birth is required');
       return true;
     }
@@ -81,7 +81,7 @@ const AddClientModal: React.FC<IAddClientModal> = ({ onClose, onAddClient, data=
   }
 
   const checkSexError = (value: string): boolean => {
-    if (!value) {
+    if (!value.trim().length) {
       setSexError('Sex is required');
       return true;
     }
@@ -90,7 +90,7 @@ const AddClientModal: React.FC<IAddClientModal> = ({ onClose, onAddClient, data=
   }
 
   const checkPassportError = () => {
-    if (!passport) {
+    if (!passport.trim().length) {
       setPassportError('Passport required');
       return true;
     }
@@ -105,14 +105,22 @@ const AddClientModal: React.FC<IAddClientModal> = ({ onClose, onAddClient, data=
 
   const handleSave = () => {
     const firstNameError = checkFirstNameError();
-    const nameError = checkNameError();
-    const surnameError = checkSurnameError();
+    const lastNameError = checkLastNameError();
+    const middleNameError = checkMiddleNameError();
     const birthError = checkBirthError();
     const sexError = checkSexError(sex);
     const passportError = checkPassportError();
 
-    if (!firstNameError && !nameError && !surnameError && !birthError && !sexError && !passportError) {
-      onAddClient({ ...data, firstName, name, surname, birth, sex, passport });
+    if (!firstNameError && !lastNameError && !middleNameError && !birthError && !sexError && !passportError) {
+      onAddClient({ 
+        ...data, 
+        firstName: firstName.trim(), 
+        lastName: lastName.trim(), 
+        middleName: middleName.trim(), 
+        birth: birth.trim(), 
+        sex: sex.trim(), 
+        passport: passport.trim() 
+      });
       onClose();
     }
   }
@@ -157,21 +165,21 @@ const AddClientModal: React.FC<IAddClientModal> = ({ onClose, onAddClient, data=
           <div className={styles['input-row']}>
             <CustomInput
               type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              onBlur={checkNameError}
-              placeholder="Name"
-              textError={nameError}
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              onBlur={checkLastNameError}
+              placeholder="Last name"
+              textError={lastNameError}
             />
           </div>
           <div className={styles['input-row']}>
             <CustomInput
               type="text"
-              value={surname}
-              onChange={(e) => setSurname(e.target.value)}
-              onBlur={checkSurnameError}
-              placeholder="Surname"
-              textError={surnameError}
+              value={middleName}
+              onChange={(e) => setMiddleName(e.target.value)}
+              onBlur={checkMiddleNameError}
+              placeholder="Middle name"
+              textError={middleNameError}
             />
           </div>
         </div>

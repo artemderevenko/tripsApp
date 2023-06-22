@@ -4,6 +4,7 @@ import holydayReducer from './slices/holydaySlice';
 import userReducer from './slices/userSlice';
 import clientsReducer from './slices/clientsSlice';
 import managersReducer from './slices/managersSlice';
+import tourReducer from './slices/tourSlice';
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     user: userReducer,
     clients: clientsReducer,
     managers: managersReducer,
+    tour: tourReducer,
   }
 });
 

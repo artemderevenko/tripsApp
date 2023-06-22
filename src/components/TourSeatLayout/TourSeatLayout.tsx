@@ -1,21 +1,24 @@
-import { useEffect, useState } from 'react';
-
 import styles from './TourSeatLayout.module.sass';
 import { PageHeader } from '../PageHeader';
 import { CustomButtonSelect } from '../CustomButtonSelect';
 import { TRANSPORT_TYPE_OPTIONS as transportTypeOptions } from '../../constants/selectOptions';
-import { ISelectOption } from '../../types/selectOption';
+import { useGetSelectOption } from '../../hooks/useGetSelectOption';
+import { SeatLayoutMinibus19 } from '../SeatLayoutMinibus19';
+import { SeatLayoutBus35 } from '../SeatLayoutBus35';
+import { useAppDispatch, useAppdSelector } from '../../hooks/reduxHook';
+import { changeTourInfo } from '../../store/slices/tourSlice';
 
-interface ITourSeatLayout {
-  // children: ReactNode,
-};
+const TourSeatLayout: React.FC = ({ }) => {
+  const dispatch = useAppDispatch();
+  const { transportType } = useAppdSelector(state => state.tour);
 
-const TourSeatLayout: React.FC<ITourSeatLayout> = ({ }) => {
-  const [transportType, setTransportType] = useState<string | number>(transportTypeOptions && transportTypeOptions[0] ? transportTypeOptions[0].value : '');
+  const getSeatLayoutBox = () => {
+    switch (transportType) {
+      case transportTypeOptions[0].value:
+        return <SeatLayoutMinibus19 />;
 
-  const getTransportTypeValue = (value: string | number, options: ISelectOption[]) => {
-    if (value && options && options.length) {
-      return options.filter(option => option.value === value)[0]
+      case transportTypeOptions[1].value:
+        return <SeatLayoutBus35 />;
     }
   }
 
@@ -24,14 +27,14 @@ const TourSeatLayout: React.FC<ITourSeatLayout> = ({ }) => {
       <PageHeader align={'between'}>
         <div className={styles['block-title']}>Passenger Seating Plan</div>
         <CustomButtonSelect
-          selectValue={getTransportTypeValue(transportType, transportTypeOptions)}
+          selectValue={useGetSelectOption(transportType, transportTypeOptions)}
           selectOptions={transportTypeOptions}
-          onChange={(option) => setTransportType(option.value)}
+          onChange={(option) => dispatch(changeTourInfo({ fieldName: 'transportType', value: option.value }))}
           className={styles['transport-type']}
         />
       </PageHeader>
-      <div>
-        
+      <div className={styles['seat-layout-box']}>
+        {getSeatLayoutBox()}
       </div>
     </div>
   )

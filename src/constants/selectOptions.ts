@@ -19,3 +19,8 @@ export const TRANSPORT_TYPE_OPTIONS = [
   { value: 'minibus_19', label: 'Mercedes-Benz (19 seats)'},
   { value: 'bus_35', label: 'Bus Yutong (35 seats)'},
 ];
+
+export const INSURANCE_OPTIONS = [
+  { value: 'yes', label: 'Yes'},
+  { value: 'no', label: 'No'},
+];

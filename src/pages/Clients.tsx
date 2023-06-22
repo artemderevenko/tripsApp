@@ -122,7 +122,7 @@ const Clients: React.FC = () => {
     const result: IClient[] = [];
     if (clientsList && clientsList.length) {
       clientsList.forEach((client: IClient): void => {
-        if (searchSubstring(client.firstName, value) || searchSubstring(client.name, value) || searchSubstring(client.passport, value)) {
+        if (searchSubstring(client.firstName, value) || searchSubstring(client.lastName, value) || searchSubstring(client.passport, value)) {
           result.push(client)
         }
       })
@@ -161,7 +161,7 @@ const Clients: React.FC = () => {
                 </svg>}
               />
               <CustomSearchField
-                placeholder={'Search by name, surname or passport'}
+                placeholder={'Search by first name, last name or passport'}
                 disable={isFetching || ((!filteredClients || !filteredClients.length) && !searchValue)}
                 onSearch={onSearch}
               />

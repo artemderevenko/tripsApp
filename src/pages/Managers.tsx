@@ -122,7 +122,7 @@ const Managers: React.FC = () => {
     const result: IManager[] = [];
     if (managersList && managersList.length) {
       managersList.forEach((manager: IManager): void => {
-        if (searchSubstring(manager.firstName, value) || searchSubstring(manager.name, value) || searchSubstring(manager.passport, value)) {
+        if (searchSubstring(manager.firstName, value) || searchSubstring(manager.lastName, value) || searchSubstring(manager.passport, value)) {
           result.push(manager)
         }
       })
@@ -161,7 +161,7 @@ const Managers: React.FC = () => {
                 </svg>}
               />
               <CustomSearchField
-                placeholder={'Search by name, surname or passport'}
+                placeholder={'Search by first name, last name or passport'}
                 disable={isFetching || ((!filteredManagers || !filteredManagers.length) && !searchValue)}
                 onSearch={onSearch}
               />

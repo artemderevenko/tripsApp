@@ -161,7 +161,7 @@ const Tours: React.FC = () => {
                 linkPath={`/${ROUTES.TourNew}`}
               />
               <CustomSearchField
-                placeholder={'Search by name, surname or passport'}
+                placeholder={'Search by first name, last name or passport'}
                 disable={isFetching || ((!filteredTours || !filteredTours.length) && !searchValue)}
                 onSearch={onSearch}
               />
