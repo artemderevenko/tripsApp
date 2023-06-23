@@ -236,7 +236,6 @@ const TourInfo: React.FC = ({ }) => {
               selectValue={getManagerValue()}
               selectOptions={getManagerOptions()}
               onChange={(e) => dispatch(changeTourInfo({ fieldName: 'managerId', value: e.value || null }))}
-              textError={managerIdError}
             />
           </div>
           <div className={styles['row']}>
@@ -245,7 +244,6 @@ const TourInfo: React.FC = ({ }) => {
               selectValue={useGetSelectOption(insurance, insuranceOptions)}
               selectOptions={insuranceOptions}
               onChange={(e) => dispatch(changeTourInfo({ fieldName: 'insurance', value: e.value }))}
-              textError={insuranceError}
             />
           </div>
         </div>

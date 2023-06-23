@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+
 import styles from './SeatLayoutMinibus19.module.sass';
 
 const SeatLayoutMinibus19: React.FC = () => {
@@ -21,6 +22,7 @@ const SeatLayoutMinibus19: React.FC = () => {
         {
           seatsList.map(seat => (
             <div
+              key={`minibus-19-${seat}`}
               className={`${styles['seat']} ${styles[`seat-${seat}`]}`}
             >
               {seat}

@@ -21,6 +21,7 @@ const SeatLayoutBus35: React.FC = () => {
         {
           seatsList.map(seat => (
             <div
+              key={`bus-35-${seat}`}
               className={`${styles['seat']} ${styles[`seat-${seat}`]}`}
             >
               {seat}

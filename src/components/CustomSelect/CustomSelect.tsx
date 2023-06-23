@@ -6,7 +6,7 @@ import { useOutsideClick } from '../../hooks/useOutsideClick';
 import { ISelectOption } from '../../types/selectOption';
 
 interface ICustomSelect extends ISelect {
-  textError: string,
+  textError?: string,
 }
 
 const CustomSelect: React.FC<ICustomSelect> = ({
@@ -34,7 +34,7 @@ const CustomSelect: React.FC<ICustomSelect> = ({
     setOptionsIsOpened(!optionsIsOpened);
   }
 
-  const changeOption = (item: any): void => {
+  const changeOption = (item: ISelectOption): void => {
     onChange(item);
     setOptionsIsOpened(false);
   }
@@ -86,7 +86,7 @@ const CustomSelect: React.FC<ICustomSelect> = ({
           <div className={`${styles['dropdown-menu']} ${positionDropDown === 'right' ? styles.right : styles.left}`}>
             {
               selectOptions && selectOptions.length ?
-                selectOptions.map((item, ind: number) => (<div
+                selectOptions.map((item: ISelectOption, ind: number) => (<div
                   key={ind}
                   className={`${styles['dropdown-menu-item']} ${checkSelectedClass(selectValue, item)}`}
                   onClick={() => changeOption(item)}

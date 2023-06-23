@@ -1,3 +1,5 @@
+import { ITourist } from './tourist';
+
 export interface ITour {
   [key: string]: any,
   name: string,
@@ -8,4 +10,5 @@ export interface ITour {
   cost: string,
   managerId: string | null,
   insurance: string | null,
+  touristsList: ITourist[] | [],
 };

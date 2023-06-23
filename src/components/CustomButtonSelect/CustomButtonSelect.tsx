@@ -29,7 +29,7 @@ const CustomButtonSelect: React.FC<TCustomButtonSelect> = ({
     setOptionsIsOpened(!optionsIsOpened)
   }
 
-  const changeOption = (item: any): void => {
+  const changeOption = (item: ISelectOption): void => {
     onChange(item);
     setOptionsIsOpened(false);
   }
@@ -67,7 +67,7 @@ const CustomButtonSelect: React.FC<TCustomButtonSelect> = ({
         <div className={`${styles['dropdown-menu']} ${positionDropDown === 'left' ? styles.left : styles.right}`}>
           {
             selectOptions && selectOptions.length ?
-              selectOptions.map((item, ind: number) => (<div
+              selectOptions.map((item: ISelectOption, ind: number) => (<div
                 key={ind}
                 className={`${styles['dropdown-menu-item']} ${checkSelectedClass(selectValue, item)}`}
                 onClick={() => changeOption(item)}
