@@ -19,6 +19,7 @@ const TourDetails: React.FC = () => {
     };
 
     return resetTour;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

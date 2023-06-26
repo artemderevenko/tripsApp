@@ -2,13 +2,13 @@ import { useState } from 'react';
 
 import styles from './CustomSearchField.module.sass';
 
-interface ICustomSearchField {
+interface ICustomSearchFieldProps {
   placeholder: string,
   disable: boolean,
   onSearch: (value: string) => void,
 }
 
-const CustomSearchField: React.FC<ICustomSearchField> = ({ placeholder = 'Search...', disable, onSearch }) => {
+const CustomSearchField: React.FC<ICustomSearchFieldProps> = ({ placeholder = 'Search...', disable, onSearch }) => {
   const [searchValue, setSearchValue] = useState<string>('');
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {

@@ -9,14 +9,14 @@ interface IButtonsList {
   type: string,
 }
 
-interface ICustomModal {
+interface ICustomModalProps {
   title: string,
   onClose: () => void,
   buttonsList?: IButtonsList[] | [],
   children: ReactNode,
 }
 
-const CustomModal: React.FC<ICustomModal> = ({ title, onClose, buttonsList, children }) => {
+const CustomModal: React.FC<ICustomModalProps> = ({ title, onClose, buttonsList, children }) => {
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -24,6 +24,7 @@ const CustomModal: React.FC<ICustomModal> = ({ title, onClose, buttonsList, chil
     return () => {
       document.body.style.overflow = 'auto';
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderButtonsList = () => {

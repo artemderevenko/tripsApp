@@ -4,12 +4,13 @@ import styles from './CustomSelect.module.sass';
 import { ISelect } from '../../types/select';
 import { useOutsideClick } from '../../hooks/useOutsideClick';
 import { ISelectOption } from '../../types/selectOption';
+import { DropdownOptions } from '../DropdownOptions';
 
-interface ICustomSelect extends ISelect {
+interface ICustomSelectProps extends ISelect {
   textError?: string,
 }
 
-const CustomSelect: React.FC<ICustomSelect> = ({
+const CustomSelect: React.FC<ICustomSelectProps> = ({
   placeholder,
   selectValue,
   selectOptions,
@@ -39,11 +40,8 @@ const CustomSelect: React.FC<ICustomSelect> = ({
     setOptionsIsOpened(false);
   }
 
-  const checkSelectedClass = (
-    selectValue: ISelectOption | null | '' | undefined,
-    item: ISelectOption | null | '' | undefined
-  ): string => {
-    return selectValue && selectValue.value && item && item.value && item.value === selectValue.value ? styles['is-selected'] : ''
+  const checkSelectedClass = (item: ISelectOption | null): boolean => {
+    return selectValue && selectValue.value && item && item.value && item.value === selectValue.value ? true : false
   }
 
   const classList = `${styles['custom-select']} ${optionsIsOpened ? styles['is-opened'] : ''} ${textError ? styles['is-error'] : ''}`;
@@ -83,19 +81,12 @@ const CustomSelect: React.FC<ICustomSelect> = ({
             </div> : null
         }
         {optionsIsOpened ?
-          <div className={`${styles['dropdown-menu']} ${positionDropDown === 'right' ? styles.right : styles.left}`}>
-            {
-              selectOptions && selectOptions.length ?
-                selectOptions.map((item: ISelectOption, ind: number) => (<div
-                  key={ind}
-                  className={`${styles['dropdown-menu-item']} ${checkSelectedClass(selectValue, item)}`}
-                  onClick={() => changeOption(item)}
-                >
-                  {item.optionRenderer ? item.optionRenderer : item.label}
-                </div>)) :
-                <div className={`${styles['no-result']}`}>No options</div>
-            }
-          </div> : null
+          <DropdownOptions
+            positionDropDown={positionDropDown}
+            options={selectOptions}
+            changeOption={changeOption}
+            checkSelectedClass={checkSelectedClass}
+          /> : null
         }
       </div>
     </div>

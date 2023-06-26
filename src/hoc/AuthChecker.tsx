@@ -4,11 +4,11 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { ROUTES } from '../constants/routes';
 
-// interface IAuthChecker {
+// interface IAuthCheckerProps {
 //   children: ReactNode
 // }
 
-// const AuthChecker: React.FC<IAuthChecker> = ({ children }) => {
+// const AuthChecker: React.FC<IAuthCheckerProps> = ({ children }) => {
 //   const location = useLocation();
 //   const { isAuth } = useAuth();
 

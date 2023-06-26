@@ -1,4 +1,4 @@
-import { ReactNode, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { collection, doc, getDocs, setDoc, updateDoc, deleteDoc, DocumentData } from "firebase/firestore";
 
 import { PageHeader } from '../components/PageHeader';
@@ -6,47 +6,35 @@ import { CustomSearchField } from '../components/CustomSearchField';
 import { MANAGERS_TABLE_FIELDS as tableFields } from '../constants/managersTableFields';
 import { IPerson } from '../types/person';
 import { IManager } from '../types/manager';
-import { TableHeader } from '../components/TableHeader';
-import { TableRow } from '../components/TableRow';
-import headerStyles from '../components/TableHeader/TableHeader.module.sass';
-import rowStyles from '../components/TableRow/TableRow.module.sass';
 import { CustomButton } from '../components/CustomButton';
-import { NoResults } from '../components/NoResults';
 import { AddManagerModal } from '../components/AddManagerModal';
 import { Notification } from '../components/Notification';
 import { useAppDispatch, useAppdSelector } from '../hooks/reduxHook';
 import { setManagers } from '../store/slices/managersSlice';
-import { PageLoader } from '../components/PageLoader';
 import { CustomModal } from '../components/CustomModal';
 import { database } from '../firebase';
 import { PageTitle } from '../components/PageTitle';
 import { PageContent } from '../components/PageContent';
+import { useFilteredList } from '../hooks/useFilteredList';
+import { Table } from '../components/Table';
 
 const Managers: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const managers = useAppdSelector(state => state.managers.list);
+
   const [showAddManagerModal, setShowAddManagerModal] = useState<boolean>(false);
   const [deleteManagerId, setDeleteManagerId] = useState<string>('');
   const [editManagerData, setEditManagerData] = useState<IManager | null>(null);
   const [isFetching, setIsFetching] = useState<boolean>(true);
   const [notify, setNotify] = useState<string>('');
-  const [searchValue, setSearchValue] = useState<string>('');
   const [notifyType, setNotifyType] = useState<string>('');
-  const [filteredManagers, setFilteredManagers] = useState<IManager[] | []>([]);
-
-  const dispatch = useAppDispatch();
-  const managers = useAppdSelector(state => state.managers.list);
+  const [activeSearchValue, setActiveSearchValue] = useState<string>('');
+  const filteredManagers = useFilteredList(managers, activeSearchValue, ['firstName', 'lastName', 'passport']);
 
   useEffect(() => {
     getManagerList()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    if (!searchValue) {
-      setFilteredManagers(managers)
-    } else {
-      filteredManagerList(searchValue, managers)
-    }
-  }, [searchValue, managers]);
 
   const getManagerList = async () => {
     setIsFetching(true);
@@ -114,25 +102,8 @@ const Managers: React.FC = () => {
     setDeleteManagerId('');
   }
 
-  const searchSubstring = (searchString: string, substring: string): boolean => {
-    return searchString.toLowerCase().includes(substring.toLowerCase());
-  }
-
-  const filteredManagerList = (value: string, managersList: IManager[] | []): void => {
-    const result: IManager[] = [];
-    if (managersList && managersList.length) {
-      managersList.forEach((manager: IManager): void => {
-        if (searchSubstring(manager.firstName, value) || searchSubstring(manager.lastName, value) || searchSubstring(manager.passport, value)) {
-          result.push(manager)
-        }
-      })
-    }
-
-    setFilteredManagers(result);
-  }
-
   const onSearch = (value: string): void => {
-    setSearchValue(value)
+    setActiveSearchValue(value)
   }
 
   const afterHideNotify = () => {
@@ -140,7 +111,7 @@ const Managers: React.FC = () => {
     setNotifyType('');
   }
 
-  const textNoSearch = searchValue ?
+  const textNoSearch = activeSearchValue ?
     'No managers found. Try another search criteria.' :
     <div>You haven`t created any manager yet. <br /> Start with adding a new manager.</div>;
 
@@ -162,62 +133,29 @@ const Managers: React.FC = () => {
               />
               <CustomSearchField
                 placeholder={'Search by first name, last name or passport'}
-                disable={isFetching || ((!filteredManagers || !filteredManagers.length) && !searchValue)}
+                disable={isFetching || ((!filteredManagers || !filteredManagers.length) && !activeSearchValue)}
                 onSearch={onSearch}
               />
             </>
           </PageHeader>
-          {
-            isFetching ? <PageLoader /> : null
-          }
-          {
-            !isFetching && (!filteredManagers || !filteredManagers.length) ? <NoResults text={textNoSearch} /> : null
-          }
-          {
-            !isFetching && filteredManagers && filteredManagers.length && tableFields && tableFields.length ?
-              <>
-                <TableHeader>
-                  {
-                    tableFields.map(field => (
-                      <div
-                        key={field.value}
-                        className={headerStyles[`managers-${field.value}`]}
-                      >
-                        {field.label}
-                      </div>
-                    ))
-                  }
-                </TableHeader>
-                {
-                  filteredManagers.map((data: IManager): ReactNode => (
-                    <TableRow
-                      key={data.passport}
-                      optionsList={[
-                        {
-                          label: 'Edit',
-                          onClick: () => setEditManagerData(data),
-                        },
-                        {
-                          label: 'Delete',
-                          className: "delete",
-                          onClick: () => setDeleteManagerId(data.id),
-                        }
-                      ]}
-                    >
-                      {
-                        tableFields.map((field): ReactNode => (
-                          <div
-                            key={field.value}
-                            className={rowStyles[`managers-${field.value}`]}
-                          >
-                            <div className={rowStyles['field-value']}>{data[field.dataField]}</div>
-                          </div>))
-                      }
-                    </TableRow>
-                  ))
-                }
-              </> : null
-          }
+          <Table
+            tableFields={tableFields}
+            isFetching={isFetching}
+            textNoSearch={textNoSearch}
+            data={filteredManagers}
+            className={'managers'}
+            optionsList={(option) => ([
+              {
+                label: 'Edit',
+                onClick: () => setEditManagerData(option),
+              },
+              {
+                label: 'Delete',
+                className: "delete",
+                onClick: () => setDeleteManagerId(option && option.id ? option.id : ''),
+              }
+            ])}
+          />
           {
             showAddManagerModal ?
               <AddManagerModal

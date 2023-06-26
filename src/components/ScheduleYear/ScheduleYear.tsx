@@ -11,10 +11,6 @@ const ScheduleYear: React.FC = () => {
   const [scrollDirection, setScrollDirection] = useState<string>('');
   const [fadeAnimation, setFadeAnimation] = useState<boolean>(true);
 
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps  
-  }, []);
-
   const getStartYear = (): void => {
     setYear(moment().year());
     setFadeAnimation(true);

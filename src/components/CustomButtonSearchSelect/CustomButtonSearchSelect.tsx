@@ -1,11 +1,13 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 
 import styles from './CustomButtonSearchSelect.module.sass';
-import { TCustomButtonSearchSelect } from '../../types/customButtonSearchSelect';
+import { TCustomButtonSearchSelectProps } from '../../types/customButtonSearchSelect';
 import { useOutsideClick } from '../../hooks/useOutsideClick';
 import { ISelectOption } from '../../types/selectOption';
+import { useFilteredList } from '../../hooks/useFilteredList';
+import { DropdownOptions } from '../DropdownOptions';
 
-const CustomButtonSearchSelect: React.FC<TCustomButtonSearchSelect> = ({
+const CustomButtonSearchSelect: React.FC<TCustomButtonSearchSelectProps> = ({
   icon,
   label,
   selectOptions,
@@ -16,39 +18,17 @@ const CustomButtonSearchSelect: React.FC<TCustomButtonSearchSelect> = ({
 
   const [optionsIsOpened, setOptionsIsOpened] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>('');
-  const [filteredOptions, setFilteredOptions] = useState<ISelectOption[] | []>(selectOptions);
-
-  useEffect(() => {
-    filteredSelectOptions(selectOptions)
-  }, [selectOptions]);
+  const [activeSearchValue, setActiveSearchValue] = useState<string>('');
+  const filteredOptions = useFilteredList(selectOptions, activeSearchValue, ['label']);
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const clearSearchValue = (): void => {
     setSearchValue('');
-    setFilteredOptions(selectOptions);
+    setActiveSearchValue('');
   }
 
   useOutsideClick(wrapperRef, setOptionsIsOpened, optionsIsOpened, clearSearchValue);
-
-  const searchSubstring = (searchString: string, substring: string): boolean => {
-    return searchString.toLowerCase().includes(substring.toLowerCase());
-  }
-
-  const filteredSelectOptions = (qqq: any) => {
-    if (!searchValue) { return setFilteredOptions(selectOptions) }
-
-    const result: ISelectOption[] = [];
-    if (selectOptions && selectOptions.length) {
-      selectOptions.forEach((option: ISelectOption): void => {
-        if (searchSubstring(option.label, searchValue)) {
-          result.push(option)
-        }
-      })
-    }
-
-    setFilteredOptions(result);
-  }
 
   const handleOpenedOptions = (): void => {
     setOptionsIsOpened(!optionsIsOpened)
@@ -57,10 +37,11 @@ const CustomButtonSearchSelect: React.FC<TCustomButtonSearchSelect> = ({
   const changeOption = (item: ISelectOption): void => {
     onChange(item);
     setOptionsIsOpened(false);
+    clearSearchValue();
   }
 
   const searchClients = () => {
-    filteredSelectOptions(selectOptions)
+    setActiveSearchValue(searchValue)
   }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
@@ -108,19 +89,12 @@ const CustomButtonSearchSelect: React.FC<TCustomButtonSearchSelect> = ({
           </div> : null
       }
       {optionsIsOpened ?
-        <div className={`${styles['dropdown-menu']} ${positionDropDown === 'left' ? styles.left : styles.right}`}>
-          {
-            filteredOptions && filteredOptions.length ?
-              filteredOptions.map((item: ISelectOption, ind: number) => (<div
-                key={ind}
-                className={styles['dropdown-menu-item']}
-                onClick={() => changeOption(item)}
-              >
-                {item.optionRenderer ? item.optionRenderer : item.label}
-              </div>)) :
-              <div className={`${styles['no-result']}`}>No options</div>
-          }
-        </div> : null
+        <DropdownOptions
+          positionDropDown={positionDropDown}
+          options={filteredOptions}
+          changeOption={changeOption}
+        />
+        : null
       }
     </div>
   )

@@ -1,4 +1,4 @@
-import { ReactNode, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { collection, doc, getDocs, setDoc, updateDoc, deleteDoc, DocumentData } from "firebase/firestore";
 
 import { PageHeader } from '../components/PageHeader';
@@ -6,47 +6,36 @@ import { CustomSearchField } from '../components/CustomSearchField';
 import { CLIENTS_TABLE_FIELDS as tableFields } from '../constants/clientsTableFields';
 import { IPerson } from '../types/person';
 import { IClient } from '../types/client';
-import { TableHeader } from '../components/TableHeader';
-import { TableRow } from '../components/TableRow';
-import headerStyles from '../components/TableHeader/TableHeader.module.sass';
-import rowStyles from '../components/TableRow/TableRow.module.sass';
 import { CustomButton } from '../components/CustomButton';
-import { NoResults } from '../components/NoResults';
 import { AddClientModal } from '../components/AddClientModal';
 import { Notification } from '../components/Notification';
 import { useAppDispatch, useAppdSelector } from '../hooks/reduxHook';
 import { setClients } from '../store/slices/clientsSlice';
-import { PageLoader } from '../components/PageLoader';
 import { CustomModal } from '../components/CustomModal';
 import { database } from '../firebase';
 import { PageTitle } from '../components/PageTitle';
 import { PageContent } from '../components/PageContent';
+import { useFilteredList } from '../hooks/useFilteredList';
+import { Table } from '../components/Table';
 
 const Clients: React.FC = () => {
+
+  const dispatch = useAppDispatch();
+  const clients = useAppdSelector(state => state.clients.list);
+
   const [showAddClientModal, setShowAddClientModal] = useState<boolean>(false);
   const [deleteClientId, setDeleteClientId] = useState<string>('');
   const [editClientData, setEditClientData] = useState<IClient | null>(null);
   const [isFetching, setIsFetching] = useState<boolean>(true);
   const [notify, setNotify] = useState<string>('');
-  const [searchValue, setSearchValue] = useState<string>('');
   const [notifyType, setNotifyType] = useState<string>('');
-  const [filteredClients, setFilteredClients] = useState<IClient[] | []>([]);
-
-  const dispatch = useAppDispatch();
-  const clients = useAppdSelector(state => state.clients.list);
+  const [activeSearchValue, setActiveSearchValue] = useState<string>('');
+  const filteredClients = useFilteredList(clients, activeSearchValue, ['firstName', 'lastName', 'passport']);
 
   useEffect(() => {
     getClientList()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    if (!searchValue) {
-      setFilteredClients(clients)
-    } else {
-      filteredClientList(searchValue, clients)
-    }
-  }, [searchValue, clients]);
 
   const getClientList = async () => {
     setIsFetching(true);
@@ -114,25 +103,8 @@ const Clients: React.FC = () => {
     setDeleteClientId('');
   }
 
-  const searchSubstring = (searchString: string, substring: string): boolean => {
-    return searchString.toLowerCase().includes(substring.toLowerCase());
-  }
-
-  const filteredClientList = (value: string, clientsList: IClient[] | []): void => {
-    const result: IClient[] = [];
-    if (clientsList && clientsList.length) {
-      clientsList.forEach((client: IClient): void => {
-        if (searchSubstring(client.firstName, value) || searchSubstring(client.lastName, value) || searchSubstring(client.passport, value)) {
-          result.push(client)
-        }
-      })
-    }
-
-    setFilteredClients(result);
-  }
-
   const onSearch = (value: string): void => {
-    setSearchValue(value)
+    setActiveSearchValue(value)
   }
 
   const afterHideNotify = () => {
@@ -140,7 +112,7 @@ const Clients: React.FC = () => {
     setNotifyType('');
   }
 
-  const textNoSearch = searchValue ?
+  const textNoSearch = activeSearchValue ?
     'No clients found. Try another search criteria.' :
     <div>You haven`t created any client yet. <br /> Start with adding a new client.</div>;
 
@@ -162,62 +134,29 @@ const Clients: React.FC = () => {
               />
               <CustomSearchField
                 placeholder={'Search by first name, last name or passport'}
-                disable={isFetching || ((!filteredClients || !filteredClients.length) && !searchValue)}
+                disable={isFetching || ((!filteredClients || !filteredClients.length) && !activeSearchValue)}
                 onSearch={onSearch}
               />
             </>
           </PageHeader>
-          {
-            isFetching ? <PageLoader /> : null
-          }
-          {
-            !isFetching && (!filteredClients || !filteredClients.length) ? <NoResults text={textNoSearch} /> : null
-          }
-          {
-            !isFetching && filteredClients && filteredClients.length && tableFields && tableFields.length ?
-              <>
-                <TableHeader>
-                  {
-                    tableFields.map(field => (
-                      <div
-                        key={field.value}
-                        className={headerStyles[`clients-${field.value}`]}
-                      >
-                        {field.label}
-                      </div>
-                    ))
-                  }
-                </TableHeader>
-                {
-                  filteredClients.map((data: IClient): ReactNode => (
-                    <TableRow
-                      key={data.passport}
-                      optionsList={[
-                        {
-                          label: 'Edit',
-                          onClick: () => setEditClientData(data),
-                        },
-                        {
-                          label: 'Delete',
-                          className: "delete",
-                          onClick: () => setDeleteClientId(data.id),
-                        }
-                      ]}
-                    >
-                      {
-                        tableFields.map((field): ReactNode => (
-                          <div
-                            key={field.value}
-                            className={rowStyles[`clients-${field.value}`]}
-                          >
-                            <div className={rowStyles['field-value']}>{data[field.dataField]}</div>
-                          </div>))
-                      }
-                    </TableRow>
-                  ))
-                }
-              </> : null
-          }
+          <Table
+            tableFields={tableFields}
+            isFetching={isFetching}
+            textNoSearch={textNoSearch}
+            data={filteredClients}
+            className={'clients'}
+            optionsList={(option) => ([
+              {
+                label: 'Edit',
+                onClick: () => setEditClientData(option),
+              },
+              {
+                label: 'Delete',
+                className: "delete",
+                onClick: () => setDeleteClientId(option && option.id ? option.id : ''),
+              }
+            ])}
+          />
           {
             showAddClientModal ?
               <AddClientModal

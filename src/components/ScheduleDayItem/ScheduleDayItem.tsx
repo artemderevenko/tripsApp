@@ -5,11 +5,11 @@ import styles from './ScheduleDayItem.module.sass';
 import { useAppdSelector } from '../../hooks/reduxHook';
 import { IHoliday } from '../../types/holiday';
 
-interface IScheduleDayItem {
+interface IScheduleDayItemProps {
   date: moment.Moment,
 }
 
-const ScheduleDayItem: React.FC<IScheduleDayItem> = ({ date }) => {
+const ScheduleDayItem: React.FC<IScheduleDayItemProps> = ({ date }) => {
 
   const compareDates = (
     dateA: moment.Moment,

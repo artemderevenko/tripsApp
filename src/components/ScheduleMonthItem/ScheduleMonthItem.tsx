@@ -4,12 +4,12 @@ import moment from 'moment';
 import styles from './ScheduleMonthItem.module.sass';
 import { ScheduleDaysHeader } from '../ScheduleDaysHeader';
 
-interface IScheduleMonthItem {
+interface IScheduleMonthItemProps {
   month: any,
   year: number,
 }
 
-const ScheduleMonthItem: React.FC<IScheduleMonthItem> = ({ month, year }) => {
+const ScheduleMonthItem: React.FC<IScheduleMonthItemProps> = ({ month, year }) => {
   const [daysMonth, setDaysMonth] = useState<(moment.Moment | null)[]>([]);
 
   useEffect(() => {

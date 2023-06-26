@@ -1,11 +1,11 @@
 import { ReactNode } from 'react';
 import styles from './NoResults.module.sass';
 
-interface INoResults {
+interface INoResultsProps {
   text: ReactNode | string,
 }
 
-const NoResults: React.FC<INoResults> = ({ text }) => {
+const NoResults: React.FC<INoResultsProps> = ({ text }) => {
   return (
     <div className={styles['no-results-wrap']}>
       <div className={styles['no-results']}>

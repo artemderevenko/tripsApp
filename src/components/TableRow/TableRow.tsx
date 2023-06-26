@@ -2,19 +2,14 @@ import { ReactNode, useState } from 'react';
 
 import styles from './TableRow.module.sass';
 import { TableRowOptions } from '../TableRowOptions';
+import { ITableRowOption } from '../../types/tableRowOptions';
 
-interface IOptionItem {
-  label: string,
-  className?: string,
-  onClick: () => void,
-}
-
-interface ITableRow {
+interface ITableRowProps {
   children: ReactNode,
-  optionsList?: IOptionItem[] | [],
+  optionsList?: ITableRowOption[] | [],
 }
 
-const TableRow: React.FC<ITableRow> = ({ children, optionsList }) => {
+const TableRow: React.FC<ITableRowProps> = ({ children, optionsList }) => {
   const [isVisibleOptions, setIsVisibleOptions] = useState<boolean>(false);
 
   return (
@@ -25,7 +20,7 @@ const TableRow: React.FC<ITableRow> = ({ children, optionsList }) => {
     >
       {children}
       {
-        optionsList ?
+        optionsList && optionsList.length ?
           <TableRowOptions visible={isVisibleOptions} optionsList={optionsList} /> : null
       }
     </div>

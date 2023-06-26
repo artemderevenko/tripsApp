@@ -61,10 +61,10 @@ const TourClientsList: React.FC = ({ }) => {
       clientId: id,
       paymentAmount: 0,
       seatNumber: null,
-      firstName: client.firstName,
-      lastName: client.lastName,
-      middleName: client.middleName,
-      passport: client.passport,
+      firstName: client.firstName || '',
+      lastName: client.lastName || '',
+      middleName: client.middleName || '',
+      passport: client.passport || '',
     };
 
     dispatch(addTourist(tourist));

@@ -2,14 +2,14 @@ import styles from './ScheduleDaysPagination.module.sass';
 import { Pagination } from '../Pagination';
 import { CustomButton } from '../CustomButton';
 
-interface IScheduleDaysPagination {
+interface IScheduleDaysPaginationProps {
   handlePrev: () => void,
   handleNext: () => void,
   scheduleTitle: string,
   backToToday: () => void,
 }
 
-const ScheduleDaysPagination: React.FC<IScheduleDaysPagination> = ({ handlePrev, handleNext, scheduleTitle, backToToday }) => {
+const ScheduleDaysPagination: React.FC<IScheduleDaysPaginationProps> = ({ handlePrev, handleNext, scheduleTitle, backToToday }) => {
   return (
     <div className={styles['schedule-days-pagination']}>
       <div className={styles['today-button']}>

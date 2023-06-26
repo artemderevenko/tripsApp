@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 
 import styles from './Notification.module.sass';
 
-interface INotification {
+interface INotificationProps {
   message: string,
   type: string,
   afterHide: () => void,
 }
 
-const Notification: React.FC<INotification> = ({ message, type, afterHide }) => {
+const Notification: React.FC<INotificationProps> = ({ message, type, afterHide }) => {
   const [isVisible, setIsVisible] = useState<boolean>(true);
 
   useEffect(() => {
@@ -20,6 +20,7 @@ const Notification: React.FC<INotification> = ({ message, type, afterHide }) => 
     return () => {
       clearTimeout(timer);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
 

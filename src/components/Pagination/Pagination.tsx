@@ -1,11 +1,11 @@
 import styles from './Pagination.module.sass';
 
-interface IPagination {
+interface IPaginationProps {
   handlePrev: () => void,
   handleNext: () => void,
 }
 
-const Pagination: React.FC<IPagination> = ({ handlePrev, handleNext }) => {
+const Pagination: React.FC<IPaginationProps> = ({ handlePrev, handleNext }) => {
   return (
     <div className={styles.paginationw}>
       <div className={styles.previous} onClick={handlePrev}>

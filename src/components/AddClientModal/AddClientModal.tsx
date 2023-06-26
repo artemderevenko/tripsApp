@@ -8,19 +8,20 @@ import { CustomSelect } from '../CustomSelect';
 import { SEX_OPTIONS as sexOptions } from '../../constants/selectOptions';
 import { IPerson } from '../../types/person';
 import { IClient } from '../../types/client';
+import { useGetSelectOption } from '../../hooks/useGetSelectOption';
 
-interface IAddClientModal {
+interface IAddClientModalProps {
   onClose: () => void,
   onAddClient: (client: IPerson) => void,
   data?: IClient, 
 }
 
-const AddClientModal: React.FC<IAddClientModal> = ({ onClose, onAddClient, data={} }) => {
+const AddClientModal: React.FC<IAddClientModalProps> = ({ onClose, onAddClient, data={} }) => {
   const [firstName, setFirstName] = useState<string>(data && data.firstName ? data.firstName : '');
   const [lastName, setLastName] = useState<string>(data && data.lastName ? data.lastName : '');
   const [middleName, setMiddleName] = useState<string>(data && data.middleName ? data.middleName : '');
   const [birth, setBirth] = useState<string>(data && data.birth ? data.birth : '');
-  const [sex, setSex] = useState<string>(data && data.sex ? data.sex : '');
+  const [sex, setSex] = useState<string | null>(data && data.sex ? data.sex : '');
   const [passport, setPassport] = useState<string>(data && data.passport ? data.passport : '');
   const [firstNameError, setFirstNameError] = useState<string>('');
   const [lastNameError, setLastNameError] = useState<string>('');
@@ -80,8 +81,8 @@ const AddClientModal: React.FC<IAddClientModal> = ({ onClose, onAddClient, data=
     return false;
   }
 
-  const checkSexError = (value: string): boolean => {
-    if (!value.trim().length) {
+  const checkSexError = (value: string | null): boolean => {
+    if (!value || !value.trim().length) {
       setSexError('Sex is required');
       return true;
     }
@@ -118,19 +119,11 @@ const AddClientModal: React.FC<IAddClientModal> = ({ onClose, onAddClient, data=
         lastName: lastName.trim(), 
         middleName: middleName.trim(), 
         birth: birth.trim(), 
-        sex: sex.trim(), 
+        sex: sex ? sex.trim() : '', 
         passport: passport.trim() 
       });
       onClose();
     }
-  }
-
-  const getSexOption = () => {
-    if (sexOptions && sexOptions.length) {
-      const option = sexOptions.filter(item => item.value === sex)[0];
-      return option || null;
-    }
-    return null;
   }
 
   return (
@@ -187,7 +180,7 @@ const AddClientModal: React.FC<IAddClientModal> = ({ onClose, onAddClient, data=
           <div className={styles['input-row']}>
             <CustomSelect
               placeholder="Sex"
-              selectValue={getSexOption()}
+              selectValue={useGetSelectOption(sex, sexOptions)}
               selectOptions={sexOptions}
               onChange={(option) => setSexValue(option.value)}
               onBlur={() => checkSexError(sex)}

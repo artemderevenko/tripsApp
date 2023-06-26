@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import styles from './CustomInput.module.sass';
 
-interface ICustomInput {
+interface ICustomInputProps {
   type: string,
   value: string,
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
@@ -13,7 +13,7 @@ interface ICustomInput {
   textError?: string,
 }
 
-const CustomInput: React.FC<ICustomInput> = ({ type, value, onChange, onBlur, onFocus, placeholder, className, textError }) => {
+const CustomInput: React.FC<ICustomInputProps> = ({ type, value, onChange, onBlur, onFocus, placeholder, className, textError }) => {
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [passwordShow, setPasswordShow] = useState<boolean>(false);
 

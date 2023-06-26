@@ -1,18 +1,13 @@
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 import styles from './TableRowOptions.module.sass';
+import { ITableRowOption } from '../../types/tableRowOptions';
 
-interface IOptionItem {
-  label: string,
-  className?: string,
-  onClick: () => void,
-}
-
-interface ITableRowOptions {
-  optionsList: IOptionItem[] | [],
+interface ITableRowOptionsProps {
+  optionsList: ITableRowOption[] | [],
   visible: boolean
 }
 
-const TableRowOptions: React.FC<ITableRowOptions> = ({ visible, optionsList }) => {
+const TableRowOptions: React.FC<ITableRowOptionsProps> = ({ visible, optionsList }) => {
   const [isVisibleList, setIsVisibleList] = useState<boolean>(false);
 
   if (!optionsList || !optionsList.length) { return null }

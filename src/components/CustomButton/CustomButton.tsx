@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 import styles from './CustomButton.module.sass';
 
-interface ICustomButton {
+interface ICustomButtonProps {
   buttonText: string,
   onClick: () => void,
   type: string,
@@ -13,7 +13,7 @@ interface ICustomButton {
   linkPath?: string,
 }
 
-const CustomButton: React.FC<ICustomButton> = ({ buttonText, onClick, className, type = 'confirm', disable, icon, linkPath }) => {
+const CustomButton: React.FC<ICustomButtonProps> = ({ buttonText, onClick, className, type = 'confirm', disable, icon, linkPath }) => {
   return (
     linkPath ?
 

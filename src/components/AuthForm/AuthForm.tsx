@@ -6,14 +6,14 @@ import { ROUTES } from '../../constants/routes';
 import { CustomInput } from '../CustomInput';
 import { CustomButton } from '../CustomButton';
 
-interface IAuthForm {
+interface IAuthFormProps {
   title: string,
   handleClick: (email: string, password: string) => void,
   buttonName: string,
   formType: string,
 }
 
-const AuthForm: React.FC<IAuthForm> = ({ title, handleClick, buttonName, formType }) => {
+const AuthForm: React.FC<IAuthFormProps> = ({ title, handleClick, buttonName, formType }) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [emailError, setEmailError] = useState<string>('');
