@@ -1,8 +1,8 @@
 import styles from './Pagination.module.sass';
 
 interface IPaginationProps {
-  handlePrev: () => void,
-  handleNext: () => void,
+  handlePrev: () => void;
+  handleNext: () => void;
 }
 
 const Pagination: React.FC<IPaginationProps> = ({ handlePrev, handleNext }) => {

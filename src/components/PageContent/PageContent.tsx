@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import styles from './PageContent.module.sass';
 
 interface IPageContentProps {
-  children: ReactNode,
+  children: ReactNode;
 };
 
 const PageContent: React.FC<IPageContentProps> = ({ children }) => {

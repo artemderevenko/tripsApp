@@ -7,7 +7,7 @@ import { ISelectOption } from '../../types/selectOption';
 import { DropdownOptions } from '../DropdownOptions';
 
 interface ICustomSelectProps extends ISelect {
-  textError?: string,
+  textError?: string;
 }
 
 const CustomSelect: React.FC<ICustomSelectProps> = ({

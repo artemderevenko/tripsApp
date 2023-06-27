@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import styles from './TableHeader.module.sass';
 
 interface ITableHeaderProps {
-  children: ReactNode,
+  children: ReactNode;
 }
 
 const TableHeader: React.FC<ITableHeaderProps> = ({ children }) => {

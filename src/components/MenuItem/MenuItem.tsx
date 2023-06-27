@@ -4,8 +4,8 @@ import { NavLink, useMatch } from 'react-router-dom';
 import styles from './MenuItem.module.sass';
 
 interface IMenuItemProps {
-  children: ReactNode,
-  to: string
+  children: ReactNode;
+  to: string;
 }
 
 const MenuItem: React.FC<IMenuItemProps> = ({ children, to }) => {

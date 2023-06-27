@@ -6,7 +6,7 @@ import { useAppdSelector } from '../../hooks/reduxHook';
 import { IHoliday } from '../../types/holiday';
 
 interface IScheduleDayItemProps {
-  date: moment.Moment,
+  date: moment.Moment;
 }
 
 const ScheduleDayItem: React.FC<IScheduleDayItemProps> = ({ date }) => {

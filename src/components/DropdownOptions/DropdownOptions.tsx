@@ -2,10 +2,10 @@ import styles from './DropdownOptions.module.sass';
 import { ISelectOption } from '../../types/selectOption';
 
 interface IDropdownOptionsProps {
-  positionDropDown?: string,
-  options: ISelectOption[] | [],
-  changeOption: (value: ISelectOption) => void,
-  checkSelectedClass?: (option: ISelectOption) => boolean,
+  positionDropDown?: string;
+  options: ISelectOption[] | [];
+  changeOption: (value: ISelectOption) => void;
+  checkSelectedClass?: (option: ISelectOption) => boolean;
 }
 
 const DropdownOptions: React.FC<IDropdownOptionsProps> = ({

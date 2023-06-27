@@ -3,9 +3,9 @@ import { useState } from 'react';
 import styles from './CustomSearchField.module.sass';
 
 interface ICustomSearchFieldProps {
-  placeholder: string,
-  disable: boolean,
-  onSearch: (value: string) => void,
+  placeholder: string;
+  disable: boolean;
+  onSearch: (value: string) => void;
 }
 
 const CustomSearchField: React.FC<ICustomSearchFieldProps> = ({ placeholder = 'Search...', disable, onSearch }) => {

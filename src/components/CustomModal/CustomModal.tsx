@@ -4,16 +4,16 @@ import styles from './CustomModal.module.sass';
 import { CustomButton } from '../CustomButton';
 
 interface IButtonsList {
-  onButtonClick: () => void,
-  buttonText: string,
-  type: string,
+  onButtonClick: () => void;
+  buttonText: string;
+  type: string;
 }
 
 interface ICustomModalProps {
-  title: string,
-  onClose: () => void,
-  buttonsList?: IButtonsList[] | [],
-  children: ReactNode,
+  title: string;
+  onClose: () => void;
+  buttonsList?: IButtonsList[] | [];
+  children: ReactNode;
 }
 
 const CustomModal: React.FC<ICustomModalProps> = ({ title, onClose, buttonsList, children }) => {

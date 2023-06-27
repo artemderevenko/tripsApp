@@ -1,65 +1,48 @@
-import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import styles from './AuthForm.module.sass';
 import { ROUTES } from '../../constants/routes';
 import { CustomInput } from '../CustomInput';
 import { CustomButton } from '../CustomButton';
+import { useInput } from '../../hooks/useInput';
 
 interface IAuthFormProps {
-  title: string,
-  handleClick: (email: string, password: string) => void,
-  buttonName: string,
-  formType: string,
+  title: string;
+  handleClick: (email: string, password: string) => void;
+  buttonName: string;
+  formType: string;
 }
 
 const AuthForm: React.FC<IAuthFormProps> = ({ title, handleClick, buttonName, formType }) => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [emailError, setEmailError] = useState<string>('');
-  const [passwordError, setPasswordError] = useState<string>('');
-
-  const validateEmail = (email: string) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  }
-
-  const checkEmailError = () => {
-    if (!email.trim().length) {
-      setEmailError('Email required');
-      return true;
+  const email = useInput({ 
+    initialValue: '', 
+    name: 'Email',
+    validations: {
+      isEmpty: true,
+      isEmail: true
     }
+  });
 
-    if (!validateEmail(email)) {
-      setEmailError('Email must be valid');
-      return true;
+  const password = useInput({ 
+    initialValue: '', 
+    name: 'Password',
+    validations: {
+      isEmpty: true,
+      minLength: 8
     }
-
-    setEmailError('');
-    return false;
-  }
-
-  const checkPasswordError = () => {
-    if (!password.trim().length) {
-      setPasswordError('Password required');
-      return true;
-    }
-
-    if (password.length < 8) {
-      setPasswordError('Password should be at least 8 characters');
-      return true;
-    }
-
-    setPasswordError('');
-    return false;
-  }
+  });
 
   const clickButton = () => {
-    const emailError = checkEmailError();
-    const passwordError = checkPasswordError();
+    if (email.isValid && email.value && password.isValid && password.value) {
+      return handleClick(email.value, password.value)
+    } 
+    
+    if (email.isValid && !email.value) {
+      email.onCheckError();
+    }
 
-    if (!emailError && !passwordError) {
-      handleClick(email, password)
+    if (password.isValid && !password.value) {
+      password.onCheckError();
     }
   }
 
@@ -70,21 +53,21 @@ const AuthForm: React.FC<IAuthFormProps> = ({ title, handleClick, buttonName, fo
         <div className={styles['input-row']}>
           <CustomInput
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            onBlur={() => checkEmailError()}
-            placeholder="Email"
-            textError={emailError}
+            value={email.value}
+            onChange={email.onChange}
+            onBlur={email.onBlur}
+            placeholder={email.name}
+            textError={email.textError}
           />
         </div>
         <div className={styles['input-row']}>
           <CustomInput
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            onBlur={() => checkPasswordError()}
-            placeholder="Password"
-            textError={passwordError}
+            value={password.value}
+            onChange={password.onChange}
+            onBlur={password.onBlur}
+            placeholder={password.name}
+            textError={password.textError}
           />
         </div>
         <div className={styles['button-row']}>

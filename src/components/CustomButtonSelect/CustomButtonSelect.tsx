@@ -7,7 +7,7 @@ import { ISelectOption } from '../../types/selectOption';
 import { DropdownOptions } from '../DropdownOptions';
 
 interface TCustomButtonSelectProps extends ISelect {
-  selectIcon?: ReactNode,
+  selectIcon?: ReactNode;
 }
 
 const CustomButtonSelect: React.FC<TCustomButtonSelectProps> = ({

@@ -3,14 +3,14 @@ import { useState } from 'react';
 import styles from './CustomInput.module.sass';
 
 interface ICustomInputProps {
-  type: string,
-  value: string,
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
-  onBlur?: () => void,
-  onFocus?: () => void,
-  placeholder: string,
-  className?: string | null,
-  textError?: string,
+  type: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: () => void;
+  onFocus?: () => void;
+  placeholder: string;
+  className?: string | null;
+  textError?: string;
 }
 
 const CustomInput: React.FC<ICustomInputProps> = ({ type, value, onChange, onBlur, onFocus, placeholder, className, textError }) => {

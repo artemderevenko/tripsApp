@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IClient } from '../../types/client';
 
 interface IClientsState {
-  list: IClient[] | [],
+  list: IClient[] | [];
 };
 
 const initialState: IClientsState = {

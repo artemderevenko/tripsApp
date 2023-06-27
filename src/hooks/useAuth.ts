@@ -3,7 +3,7 @@ import { useAppdSelector } from './reduxHook';
 import { IUser } from '../types/user';
 
 interface IUseAuth extends IUser {
-  isAuth: boolean
+  isAuth: boolean;
 }
 
 export const useAuth = (): IUseAuth => {

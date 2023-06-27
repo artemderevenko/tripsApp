@@ -5,8 +5,8 @@ import styles from './ScheduleMonthItem.module.sass';
 import { ScheduleDaysHeader } from '../ScheduleDaysHeader';
 
 interface IScheduleMonthItemProps {
-  month: any,
-  year: number,
+  month: any;
+  year: number;
 }
 
 const ScheduleMonthItem: React.FC<IScheduleMonthItemProps> = ({ month, year }) => {

@@ -3,10 +3,10 @@ import { Pagination } from '../Pagination';
 import { CustomButton } from '../CustomButton';
 
 interface IScheduleDaysPaginationProps {
-  handlePrev: () => void,
-  handleNext: () => void,
-  scheduleTitle: string,
-  backToToday: () => void,
+  handlePrev: () => void;
+  handleNext: () => void;
+  scheduleTitle: string;
+  backToToday: () => void;
 }
 
 const ScheduleDaysPagination: React.FC<IScheduleDaysPaginationProps> = ({ handlePrev, handleNext, scheduleTitle, backToToday }) => {

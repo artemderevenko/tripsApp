@@ -3,8 +3,8 @@ import styles from './TableRowOptions.module.sass';
 import { ITableRowOption } from '../../types/tableRowOptions';
 
 interface ITableRowOptionsProps {
-  optionsList: ITableRowOption[] | [],
-  visible: boolean
+  optionsList: ITableRowOption[] | [];
+  visible: boolean;
 }
 
 const TableRowOptions: React.FC<ITableRowOptionsProps> = ({ visible, optionsList }) => {

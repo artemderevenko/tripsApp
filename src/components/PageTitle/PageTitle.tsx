@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import styles from './PageTitle.module.sass';
 
 interface IPageTitleProps {
-  children: ReactNode,
+  children: ReactNode;
 };
 
 const PageTitle: React.FC<IPageTitleProps> = ({ children }) => {

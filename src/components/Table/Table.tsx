@@ -21,7 +21,7 @@ interface ITableProps {
   textNoSearch: string | ReactNode;
   data: IDataProps[] | [];
   optionsList?: (data: IDataProps) => ITableRowOption[] | [];
-  className?: string,
+  className?: string;
 }
 
 const Table: React.FC<ITableProps> = ({

@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IHoliday } from '../../types/holiday';
 
 interface IHolidayState {
-  list: Array<Array<{}> | IHoliday[]>,
+  list: Array<Array<{}> | IHoliday[]>;
 };
 
 const initialState: IHolidayState = {

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import moment from 'moment';
 
 import styles from './AddClientModal.module.sass';
@@ -9,121 +8,86 @@ import { SEX_OPTIONS as sexOptions } from '../../constants/selectOptions';
 import { IPerson } from '../../types/person';
 import { IClient } from '../../types/client';
 import { useGetSelectOption } from '../../hooks/useGetSelectOption';
+import { useInput } from '../../hooks/useInput';
+import { useSelect } from '../../hooks/useSelect';
 
 interface IAddClientModalProps {
-  onClose: () => void,
-  onAddClient: (client: IPerson) => void,
-  data?: IClient, 
+  onClose: () => void;
+  onAddClient: (client: IPerson) => void;
+  data?: IClient;
 }
 
-const AddClientModal: React.FC<IAddClientModalProps> = ({ onClose, onAddClient, data={} }) => {
-  const [firstName, setFirstName] = useState<string>(data && data.firstName ? data.firstName : '');
-  const [lastName, setLastName] = useState<string>(data && data.lastName ? data.lastName : '');
-  const [middleName, setMiddleName] = useState<string>(data && data.middleName ? data.middleName : '');
-  const [birth, setBirth] = useState<string>(data && data.birth ? data.birth : '');
-  const [sex, setSex] = useState<string | null>(data && data.sex ? data.sex : '');
-  const [passport, setPassport] = useState<string>(data && data.passport ? data.passport : '');
-  const [firstNameError, setFirstNameError] = useState<string>('');
-  const [lastNameError, setLastNameError] = useState<string>('');
-  const [middleNameError, setMiddleNameError] = useState<string>('');
-  const [birthError, setBirthError] = useState<string>('');
-  const [sexError, setSexError] = useState<string>('');
-  const [passportError, setPassportError] = useState<string>('');
+const AddClientModal: React.FC<IAddClientModalProps> = ({ onClose, onAddClient, data = {} }) => {
+  const firstName = useInput({
+    initialValue: data && data.firstName ? data.firstName : '',
+    name: 'First name',
+    validations: { isEmpty: true }
+  });
 
-  const checkFirstNameError = () => {
-    if (!firstName.trim().length) {
-      setFirstNameError('First name required');
-      return true;
+  const lastName = useInput({
+    initialValue: data && data.lastName ? data.lastName : '',
+    name: 'Last name',
+    validations: { isEmpty: true }
+  });
+
+  const middleName = useInput({
+    initialValue: data && data.middleName ? data.middleName : '',
+    name: 'Middle name',
+    validations: { isEmpty: true }
+  });
+
+  const birth = useInput({
+    initialValue: data && data.birth ? data.birth : '',
+    name: 'Date of birth',
+    validations: {
+      isEmpty: true,
+      isDateFormat: 'DD/MM/YYYY',
+      isDatePast: {
+        format: 'DD/MM/YYYY',
+        comparedDate: moment().format('DD/MM/YYYY')
+      },
     }
-    setFirstNameError('');
-    return false;
-  }
+  });
 
-  const checkLastNameError = () => {
-    if (!lastName.trim().length) {
-      setLastNameError('Last name required');
-      return true;
-    }
-    setLastNameError('');
-    return false;
-  }
+  const sex = useSelect({
+    initialValue: data && data.sex ? data.sex : '',
+    name: 'Sex',
+  });
 
-  const checkMiddleNameError = () => {
-    if (!middleName.trim().length) {
-      setMiddleNameError('Middle name required');
-      return true;
-    }
-    setMiddleNameError('');
-    return false;
-  }
-
-  const checkBirthError = () => {
-    const birthDate = moment(birth, 'DD/MM/YYYY', true);
-    const isValidFormat = birthDate.isValid();
-    const isPast = birthDate.isSameOrBefore(moment());
-
-    if (!birth.trim().length) {
-      setBirthError('Date of birth is required');
-      return true;
-    }
-
-    if (!isValidFormat) {
-      setBirthError('Date of birth must be in DD/MM/YYYY format');
-      return true;
-    }
-
-    if (!isPast) {
-      setBirthError('Date must be in the past');
-      return true;
-    }
-    
-    setBirthError('');
-    return false;
-  }
-
-  const checkSexError = (value: string | null): boolean => {
-    if (!value || !value.trim().length) {
-      setSexError('Sex is required');
-      return true;
-    }
-    setSexError('');
-    return false;
-  }
-
-  const checkPassportError = () => {
-    if (!passport.trim().length) {
-      setPassportError('Passport required');
-      return true;
-    }
-    setPassportError('');
-    return false;
-  }
-
-  const setSexValue = (value: string): void => {
-    checkSexError(value)
-    setSex(value)
-  }
+  const passport = useInput({
+    initialValue: data && data.passport ? data.passport : '',
+    name: 'Passport',
+    validations: { isEmpty: true }
+  });
 
   const handleSave = () => {
-    const firstNameError = checkFirstNameError();
-    const lastNameError = checkLastNameError();
-    const middleNameError = checkMiddleNameError();
-    const birthError = checkBirthError();
-    const sexError = checkSexError(sex);
-    const passportError = checkPassportError();
+    const firstNameValid = firstName.isValid && firstName.value;
+    const lastNameValid = lastName.isValid && lastName.value;
+    const middleNameValid = middleName.isValid && middleName.value;
+    const birthValid = birth.isValid && birth.value;
+    const sexValid = sex.isValid && sex.value;
+    const passportValid = passport.isValid && passport.value;
 
-    if (!firstNameError && !lastNameError && !middleNameError && !birthError && !sexError && !passportError) {
+    if (firstNameValid && lastNameValid && middleNameValid && birthValid && sexValid && passportValid) {
       onAddClient({ 
         ...data, 
-        firstName: firstName.trim(), 
-        lastName: lastName.trim(), 
-        middleName: middleName.trim(), 
-        birth: birth.trim(), 
-        sex: sex ? sex.trim() : '', 
-        passport: passport.trim() 
+        firstName: firstName.value.trim(), 
+        lastName: lastName.value.trim(), 
+        middleName: middleName.value.trim(), 
+        birth: birth.value.trim(), 
+        sex: sex ? sex.value.trim() : '', 
+        passport: passport.value.trim() 
       });
       onClose();
-    }
+      return;
+    } 
+    
+    if (!firstNameValid) { firstName.onCheckError() }
+    if (!lastNameValid) { lastName.onCheckError() }
+    if (!middleNameValid) { middleName.onCheckError() }
+    if (!birthValid) { birth.onCheckError() }
+    if (!sexValid) { sex.onCheckError() }
+    if (!passportValid) { passport.onCheckError() }
   }
 
   return (
@@ -148,63 +112,63 @@ const AddClientModal: React.FC<IAddClientModalProps> = ({ onClose, onAddClient, 
           <div className={styles['input-row']}>
             <CustomInput
               type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              onBlur={checkFirstNameError}
-              placeholder="First name"
-              textError={firstNameError}
+              value={firstName.value}
+              onChange={firstName.onChange}
+              onBlur={firstName.onBlur}
+              placeholder={firstName.name}
+              textError={firstName.textError}
             />
           </div>
           <div className={styles['input-row']}>
             <CustomInput
               type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              onBlur={checkLastNameError}
-              placeholder="Last name"
-              textError={lastNameError}
+              value={lastName.value}
+              onChange={lastName.onChange}
+              onBlur={lastName.onBlur}
+              placeholder={lastName.name}
+              textError={lastName.textError}
             />
           </div>
           <div className={styles['input-row']}>
             <CustomInput
               type="text"
-              value={middleName}
-              onChange={(e) => setMiddleName(e.target.value)}
-              onBlur={checkMiddleNameError}
-              placeholder="Middle name"
-              textError={middleNameError}
+              value={middleName.value}
+              onChange={middleName.onChange}
+              onBlur={middleName.onBlur}
+              placeholder={middleName.name}
+              textError={middleName.textError}
             />
           </div>
         </div>
         <div className={styles['column']}>
           <div className={styles['input-row']}>
             <CustomSelect
-              placeholder="Sex"
-              selectValue={useGetSelectOption(sex, sexOptions)}
+              placeholder={sex.name}
+              selectValue={useGetSelectOption(sex.value, sexOptions)}
               selectOptions={sexOptions}
-              onChange={(option) => setSexValue(option.value)}
-              onBlur={() => checkSexError(sex)}
-              textError={sexError}
+              onChange={sex.onChange}
+              onBlur={sex.onBlur}
+              textError={sex.textError}
             />
           </div>
           <div className={styles['input-row']}>
             <CustomInput
               type="text"
-              value={birth}
-              onChange={(e) => setBirth(e.target.value)}
-              onBlur={checkBirthError}
-              placeholder="Date of birth"
-              textError={birthError}
+              value={birth.value}
+              onChange={birth.onChange}
+              onBlur={birth.onBlur}
+              placeholder={birth.name}
+              textError={birth.textError}
             />
           </div>
           <div className={styles['input-row']}>
             <CustomInput
               type="text"
-              value={passport}
-              onChange={(e) => setPassport(e.target.value)}
-              onBlur={checkPassportError}
-              placeholder="Passport"
-              textError={passportError}
+              value={passport.value}
+              onChange={passport.onChange}
+              onBlur={passport.onBlur}
+              placeholder={passport.name}
+              textError={passport.textError}
             />
           </div>
         </div>

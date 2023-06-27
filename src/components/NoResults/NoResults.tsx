@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import styles from './NoResults.module.sass';
 
 interface INoResultsProps {
-  text: ReactNode | string,
+  text: ReactNode | string;
 }
 
 const NoResults: React.FC<INoResultsProps> = ({ text }) => {

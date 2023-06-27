@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import styles from './Notification.module.sass';
 
 interface INotificationProps {
-  message: string,
-  type: string,
-  afterHide: () => void,
+  message: string;
+  type: string;
+  afterHide: () => void;
 }
 
 const Notification: React.FC<INotificationProps> = ({ message, type, afterHide }) => {

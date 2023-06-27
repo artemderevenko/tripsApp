@@ -2,8 +2,8 @@ import { ReactNode } from 'react';
 import styles from './PageHeader.module.sass';
 
 interface IPageHeaderProps {
-  children: ReactNode,
-  align: string
+  children: ReactNode;
+  align: string;
 };
 
 const PageHeader: React.FC<IPageHeaderProps> = ({ children, align }) => {

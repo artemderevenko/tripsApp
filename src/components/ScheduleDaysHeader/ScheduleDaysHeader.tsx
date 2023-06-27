@@ -2,7 +2,7 @@ import { DAYS_OF_WEEK as daysOfWeek } from '../../constants/daysOfWeek';
 import styles from './ScheduleDaysHeader.module.sass';
 
 interface IScheduleDaysHeaderProps {
-  mode: string,
+  mode: string;
 }
 
 const ScheduleDaysHeader: React.FC<IScheduleDaysHeaderProps> = ({ mode }) => {
