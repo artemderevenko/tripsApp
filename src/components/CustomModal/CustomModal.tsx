@@ -1,20 +1,8 @@
-import { ReactNode, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import styles from './CustomModal.module.sass';
 import { CustomButton } from '../CustomButton';
-
-interface IButtonsList {
-  onButtonClick: () => void;
-  buttonText: string;
-  type: string;
-}
-
-interface ICustomModalProps {
-  title: string;
-  onClose: () => void;
-  buttonsList?: IButtonsList[];
-  children: ReactNode;
-}
+import { ICustomModalProps } from '../../types/customModalProps';
 
 const CustomModal: React.FC<ICustomModalProps> = ({ title, onClose, buttonsList, children }) => {
 

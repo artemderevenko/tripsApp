@@ -5,17 +5,10 @@ import { CustomInput } from '../CustomInput';
 import { CustomModal } from '../CustomModal';
 import { CustomSelect } from '../CustomSelect';
 import { SEX_OPTIONS as sexOptions } from '../../constants/selectOptions';
-import { IPerson } from '../../types/person';
-import { IManager } from '../../types/manager';
+import { IAddManagerModalProps } from '../../types/addManagerModalProps';
 import { useGetSelectOption } from '../../hooks/useGetSelectOption';
 import { useInput } from '../../hooks/useInput';
 import { useSelect } from '../../hooks/useSelect';
-
-interface IAddManagerModalProps {
-  onClose: () => void;
-  onAddManager: (manager: IPerson) => void;
-  data?: IManager;
-}
 
 const AddManagerModal: React.FC<IAddManagerModalProps> = ({ onClose, onAddManager, data = {} }) => {
   const firstName = useInput({

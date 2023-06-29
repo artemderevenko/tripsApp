@@ -1,19 +1,16 @@
 import { useState, useEffect } from 'react';
 
-export interface HasId {
-  id: string;
-}
-
-export const useExcludedList = <T extends HasId>( 
+export const useExcludedList = <T, K extends keyof T>( 
   list: T[],
   excludedIds: string[],
+  fieldName: K,
  ): T[] => {
   const [excludedList, setExcludedList] = useState<T[]>(list);
 
   useEffect(() => {
-    const filteredList = list.filter(option => !excludedIds.includes(option.id));
+    const filteredList = list.filter(option => !excludedIds.includes(option[fieldName] as unknown as string));
     setExcludedList(filteredList);
-  }, [list, excludedIds]);
+  }, [list, excludedIds, fieldName]);
 
   return excludedList;
 }

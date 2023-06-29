@@ -14,6 +14,8 @@ const CustomButtonSearchSelect: React.FC<TCustomButtonSearchSelectProps> = ({
   positionDropDown,
   onChange,
   className,
+  disable,
+  onDisableAction,
 }) => {
 
   const [optionsIsOpened, setOptionsIsOpened] = useState<boolean>(false);
@@ -31,7 +33,13 @@ const CustomButtonSearchSelect: React.FC<TCustomButtonSearchSelectProps> = ({
   useOutsideClick(wrapperRef, setOptionsIsOpened, optionsIsOpened, clearSearchValue);
 
   const handleOpenedOptions = (): void => {
-    setOptionsIsOpened(!optionsIsOpened)
+    if (disable) {
+      if (onDisableAction) {
+        onDisableAction()
+      }
+    } else {
+      setOptionsIsOpened(!optionsIsOpened)
+    }
   }
 
   const changeOption = (item: ISelectOption): void => {

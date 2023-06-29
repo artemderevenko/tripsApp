@@ -47,10 +47,6 @@ const Register: React.FC = () => {
       });
   }
 
-  const afterHideNotify = () => {
-    setNotify({type: '', text: ''});
-  }
-
   return (
     <>
       <AuthForm
@@ -64,7 +60,7 @@ const Register: React.FC = () => {
           <Notification
             type={notify.type}
             message={notify.text}
-            afterHide={afterHideNotify}
+            afterHide={() => setNotify({ type: '', text: '' })}
           /> : null
       }
     </>

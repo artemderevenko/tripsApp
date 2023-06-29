@@ -134,10 +134,6 @@ const Tours: React.FC = () => {
     setSearchValue(value)
   }
 
-  const afterHideNotify = () => {
-    setNotify({type: '', text: ''});
-  }
-
   const textNoSearch = searchValue ?
     'No tours found. Try another search criteria.' :
     <div>You haven`t created any tour yet. <br /> Start with adding a new tour.</div>;
@@ -239,7 +235,7 @@ const Tours: React.FC = () => {
           <Notification
             type={notifyType}
             message={notify}
-            afterHide={afterHideNotify}
+            afterHide={() => setNotify({ type: '', text: '' })}
           /> : null
       } */}
         </>

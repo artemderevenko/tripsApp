@@ -3,16 +3,10 @@ import { TRANSPORT_TYPE_OPTIONS as transportTypeOptions } from '../../constants/
 
 import { ITour } from '../../types/tour';
 import { ITourist } from '../../types/tourist';
-
-interface IChangeInfoPayload {
-  fieldName: string;
-  value: string | number | null;
-};
-
-interface IPaymentPayload {
-  clientId: string;
-  payment: string;
-};
+import { IChangeInfoPayload } from '../../types/changeInfoPayload';
+import { IPaymentPayload } from '../../types/paymentPayload';
+import { IChangeTransportTypePayload } from '../../types/changeTransportTypePayload';
+import { IChangeSeatPayload } from '../../types/changeSeatPayload';
 
 const initialState: ITour = {
   name: '',
@@ -24,6 +18,7 @@ const initialState: ITour = {
   managerId: '',
   insurance: '',
   transportType: transportTypeOptions && transportTypeOptions[0] ? transportTypeOptions[0].value : '',
+  seats: transportTypeOptions && transportTypeOptions[0] ? transportTypeOptions[0].seats : null,
   touristsList: [],
 }
 
@@ -36,6 +31,10 @@ const tourSlice = createSlice({
     },
     changeTourInfo: (state, actions: PayloadAction<IChangeInfoPayload>) => {
       state[actions.payload.fieldName] = actions.payload.value
+    },
+    changeTransportType: (state, actions: PayloadAction<IChangeTransportTypePayload>) => {
+      state.transportType = actions.payload.transportType;
+      state.seats = actions.payload.seats;
     },
     resetToDefault: () => {
       return initialState
@@ -56,8 +55,36 @@ const tourSlice = createSlice({
         } else { return tourist}
       });
     },
+    changeSeatNumber: (state, actions: PayloadAction<IChangeSeatPayload>) => {
+      // delete the selected seat if it was already there
+      let touristsList = state.touristsList.map(tourist => {
+        if (tourist.seatNumber === actions.payload.seatNumber) {
+          return { ...tourist, seatNumber: null}
+        } else { return tourist}
+      });
+
+      // if there is a tourist id, then we set the selected seat for him
+      if (actions.payload.clientId) {
+        touristsList = touristsList.map(tourist => {
+          if (tourist.clientId === actions.payload.clientId) {
+            return { ...tourist, seatNumber: actions.payload.seatNumber}
+          } else { return tourist}
+        });
+      };
+
+      state.touristsList = touristsList;
+    },
   },
 });
 
-export const { setTour, changeTourInfo, resetToDefault, addTourist, deleteTourist, changePayment } = tourSlice.actions;
+export const { 
+  setTour, 
+  changeTourInfo, 
+  resetToDefault, 
+  addTourist, 
+  deleteTourist, 
+  changePayment,
+  changeTransportType,
+  changeSeatNumber, 
+} = tourSlice.actions;
 export default tourSlice.reducer;

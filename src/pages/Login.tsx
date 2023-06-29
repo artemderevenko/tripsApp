@@ -55,10 +55,6 @@ const Login: React.FC = () => {
       });
   }
 
-  const afterHideNotify = () => {
-    setNotify({type: '', text: ''});
-  }
-
   return (
     <>
       <AuthForm
@@ -72,7 +68,7 @@ const Login: React.FC = () => {
           <Notification
             type={notify.type}
             message={notify.text}
-            afterHide={afterHideNotify}
+            afterHide={() => setNotify({ type: '', text: '' })}
           /> : null
       }
     </>

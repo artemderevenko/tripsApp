@@ -100,10 +100,6 @@ const Managers: React.FC = () => {
     setActiveSearchValue(value)
   }
 
-  const afterHideNotify = () => {
-    setNotify({type: '', text: ''});
-  }
-
   const textNoSearch = activeSearchValue ?
     'No managers found. Try another search criteria.' :
     <div>You haven`t created any manager yet. <br /> Start with adding a new manager.</div>;
@@ -190,7 +186,7 @@ const Managers: React.FC = () => {
               <Notification
                 type={notify.type}
                 message={notify.text}
-                afterHide={afterHideNotify}
+                afterHide={() => setNotify({ type: '', text: '' })}
               /> : null
           }
         </>

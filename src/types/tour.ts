@@ -11,4 +11,5 @@ export interface ITour {
   managerId: string | null;
   insurance: string | null;
   touristsList: ITourist[];
+  seats: number | null;
 };

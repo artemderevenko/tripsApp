@@ -1,14 +1,10 @@
-import { useState, useRef, ReactNode } from 'react';
+import { useState, useRef } from 'react';
 
 import styles from './CustomButtonSelect.module.sass';
-import { ISelect } from '../../types/select';
 import { useOutsideClick } from '../../hooks/useOutsideClick';
 import { ISelectOption } from '../../types/selectOption';
 import { DropdownOptions } from '../DropdownOptions';
-
-interface TCustomButtonSelectProps extends ISelect {
-  selectIcon?: ReactNode;
-}
+import { TCustomButtonSelectProps } from '../../types/customButtonSelectProps';
 
 const CustomButtonSelect: React.FC<TCustomButtonSelectProps> = ({
   selectIcon,

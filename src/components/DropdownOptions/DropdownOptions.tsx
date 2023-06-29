@@ -6,16 +6,18 @@ interface IDropdownOptionsProps {
   options: ISelectOption[];
   changeOption: (value: ISelectOption) => void;
   checkSelectedClass?: (option: ISelectOption) => boolean;
+  className?: string;
 }
 
 const DropdownOptions: React.FC<IDropdownOptionsProps> = ({
   positionDropDown,
   options,
   changeOption,
-  checkSelectedClass
+  checkSelectedClass,
+  className,
 }) => {
   return (
-    <div className={`${styles['dropdown-menu']} ${positionDropDown === 'left' ? styles.left : styles.right}`}>
+    <div className={`${styles['dropdown-menu']} ${className || ''} ${positionDropDown === 'left' ? styles.left : styles.right}`}>
       {
         options && options.length ?
           options.map((item: ISelectOption, ind: number) => (<div

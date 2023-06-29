@@ -1,9 +1,19 @@
 import { useState, useEffect } from 'react';
 
 import styles from './SeatLayoutMinibus19.module.sass';
+import { SeatLayoutButton } from '../SeatLayoutButton';
+import { useAppDispatch, useAppdSelector } from '../../hooks/reduxHook';
+import { useExcludedList } from '../../hooks/useExcludedList';
+import { ISelectOption } from '../../types/selectOption';
+import { changeSeatNumber } from '../../store/slices/tourSlice';
 
 const SeatLayoutMinibus19: React.FC = () => {
   const [fadeAnimation, setFadeAnimation] = useState<boolean>(true);
+  const [touristsIds, setTouristsIds] = useState<string[]>([]);
+
+  const dispatch = useAppDispatch();
+  const { touristsList } = useAppdSelector(state => state.tour);
+  const excludedTourists = useExcludedList(touristsList, touristsIds, 'clientId');
 
   useEffect(() => {
     setFadeAnimation(true);
@@ -14,7 +24,37 @@ const SeatLayoutMinibus19: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    const touristsIds = touristsList.filter(tourist => tourist.seatNumber).map(item => item.clientId);
+    setTouristsIds(touristsIds);
+  }, [touristsList]);
+
   const seatsList = Array.from({ length: 19 }, (_, index) => index + 1);
+
+  const getTouristOptions = (): ISelectOption[] => {
+    if (excludedTourists && excludedTourists.length) {
+      const options = excludedTourists.map(tourist => ({
+        value: tourist.clientId,
+        label: `${tourist.firstName} ${tourist.lastName} ${tourist.middleName} (${tourist.passport})`
+      }));
+
+      return [
+        { value: '', label: 'No tourist' },
+        ...options
+      ];
+
+    } else { return [{ value: '', label: 'No tourist' }] }
+  }
+
+  const setSeat = (clientId: string, seatNumber: number | null) => {
+    console.log(clientId, seatNumber )
+    dispatch(changeSeatNumber({ clientId, seatNumber }))
+  }
+
+  const checkSeatReserved = (seat: number) => {
+    const seatReserved = touristsList.filter(tourist => tourist.seatNumber === seat);
+    return seatReserved && seatReserved.length > 0;
+  }
 
   return (
     <div className={`${styles['minibus-19']} ${fadeAnimation ? styles['fade'] : ''} `}>
@@ -25,7 +65,14 @@ const SeatLayoutMinibus19: React.FC = () => {
               key={`minibus-19-${seat}`}
               className={`${styles['seat']} ${styles[`seat-${seat}`]}`}
             >
-              {seat}
+              <SeatLayoutButton
+                label={`${seat}`}
+                selectOptions={getTouristOptions()}
+                onChange={(option) => setSeat(option.value, seat)}
+                className={''}
+                positionDropDown='left'
+                isSeatReserved={checkSeatReserved(seat)}
+              />
             </div>
           ))
         }

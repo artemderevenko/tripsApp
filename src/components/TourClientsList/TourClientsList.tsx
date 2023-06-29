@@ -18,7 +18,6 @@ import { ISelectOption } from '../../types/selectOption';
 import { INotify } from '../../types/notify';
 import { MakePaymentModal } from '../MakePaymentModal';
 import { ITourist } from '../../types/tourist';
-export { MakePaymentModal } from '../MakePaymentModal';
 
 const TourClientsList: React.FC = ({ }) => {
   const [touristsIds, setTouristsIds] = useState<string[]>([]);
@@ -28,8 +27,8 @@ const TourClientsList: React.FC = ({ }) => {
 
   const dispatch = useAppDispatch();
   const clients = useAppdSelector(state => state.clients.list);
-  const { touristsList } = useAppdSelector(state => state.tour);
-  const excludedClients = useExcludedList(clients, touristsIds);
+  const { touristsList, seats } = useAppdSelector(state => state.tour);
+  const excludedClients = useExcludedList(clients, touristsIds, 'id');
 
   useEffect(() => {
     const touristsIds = touristsList.map(tourist => tourist.clientId);
@@ -97,12 +96,14 @@ const TourClientsList: React.FC = ({ }) => {
     setPaymentTouristId('');
   }
 
-  const afterHideNotify = () => {
-    setNotify({ type: '', text: '' });
-  }
-
   const getTouristData = () => {
     return touristsList.filter(tourist => tourist.clientId === paymentTouristId)[0] || null
+  }
+
+  const onDisableAddTouristButton = () => {
+    if (seats && touristsList.length >= seats) {
+      setNotify({ type: 'warning', text: 'The number of tourists cannot exceed the number of seats in the selected transport.' });
+    }
   }
 
   return (
@@ -117,6 +118,8 @@ const TourClientsList: React.FC = ({ }) => {
           icon={<svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
             <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
           </svg>}
+          disable={seats && touristsList.length >= seats ? true : false}
+          onDisableAction={onDisableAddTouristButton}
         />
       </PageHeader>
       <Table
@@ -173,7 +176,7 @@ const TourClientsList: React.FC = ({ }) => {
           <Notification
             type={notify.type}
             message={notify.text}
-            afterHide={afterHideNotify}
+            afterHide={() => setNotify({ type: '', text: '' })}
           /> : null
       }
     </div>

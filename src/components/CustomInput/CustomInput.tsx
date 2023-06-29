@@ -1,17 +1,7 @@
 import { useState } from 'react';
 
 import styles from './CustomInput.module.sass';
-
-interface ICustomInputProps {
-  type: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onBlur?: () => void;
-  onFocus?: () => void;
-  placeholder: string;
-  className?: string | null;
-  textError?: string;
-}
+import { ICustomInputProps } from '../../types/customInputProps';
 
 const CustomInput: React.FC<ICustomInputProps> = ({ type='text', value, onChange, onBlur, onFocus, placeholder, className, textError }) => {
   const [isFocus, setIsFocus] = useState<boolean>(false);

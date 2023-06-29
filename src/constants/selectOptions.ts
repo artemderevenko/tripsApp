@@ -16,8 +16,8 @@ export const SEX_OPTIONS = [
 ];
 
 export const TRANSPORT_TYPE_OPTIONS = [
-  { value: 'minibus_19', label: 'Mercedes-Benz (19 seats)'},
-  { value: 'bus_35', label: 'Bus Yutong (35 seats)'},
+  { value: 'minibus_19', label: 'Mercedes-Benz (19 seats)', seats: 19 },
+  { value: 'bus_35', label: 'Bus Yutong (35 seats)', seats: 35 },
 ];
 
 export const INSURANCE_OPTIONS = [

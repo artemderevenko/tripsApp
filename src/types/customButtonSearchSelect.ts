@@ -7,7 +7,9 @@ export interface TCustomButtonSearchSelectProps {
   positionDropDown?: string;
   onChange: (value: ISelectOption) => void;
   onBlur?: (value?:any) => void;
+  onDisableAction?: () => void;
   className?: string;
   icon?: ReactNode;
   label: string;
+  disable?: boolean;
 };

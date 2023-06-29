@@ -5,13 +5,7 @@ import { ROUTES } from '../../constants/routes';
 import { CustomInput } from '../CustomInput';
 import { CustomButton } from '../CustomButton';
 import { useInput } from '../../hooks/useInput';
-
-interface IAuthFormProps {
-  title: string;
-  handleClick: (email: string, password: string) => void;
-  buttonName: string;
-  formType: string;
-}
+import { IAuthFormProps } from '../../types/authFormProps';
 
 const AuthForm: React.FC<IAuthFormProps> = ({ title, handleClick, buttonName, formType }) => {
   const email = useInput({ 

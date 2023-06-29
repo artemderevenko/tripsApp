@@ -5,17 +5,10 @@ import { CustomInput } from '../CustomInput';
 import { CustomModal } from '../CustomModal';
 import { CustomSelect } from '../CustomSelect';
 import { SEX_OPTIONS as sexOptions } from '../../constants/selectOptions';
-import { IPerson } from '../../types/person';
-import { IClient } from '../../types/client';
 import { useGetSelectOption } from '../../hooks/useGetSelectOption';
 import { useInput } from '../../hooks/useInput';
 import { useSelect } from '../../hooks/useSelect';
-
-interface IAddClientModalProps {
-  onClose: () => void;
-  onAddClient: (client: IPerson) => void;
-  data?: IClient;
-}
+import { IAddClientModalProps } from '../../types/addClientModalProps';
 
 const AddClientModal: React.FC<IAddClientModalProps> = ({ onClose, onAddClient, data = {} }) => {
   const firstName = useInput({

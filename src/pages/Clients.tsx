@@ -101,10 +101,6 @@ const Clients: React.FC = () => {
     setActiveSearchValue(value)
   }
 
-  const afterHideNotify = () => {
-    setNotify({type: '', text: ''});
-  }
-
   const textNoSearch = activeSearchValue ?
     'No clients found. Try another search criteria.' :
     <div>You haven`t created any client yet. <br /> Start with adding a new client.</div>;
@@ -191,7 +187,7 @@ const Clients: React.FC = () => {
               <Notification
                 type={notify.type}
                 message={notify.text}
-                afterHide={afterHideNotify}
+                afterHide={() => setNotify({ type: '', text: '' })}
               /> : null
           }
         </>
