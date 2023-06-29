@@ -13,7 +13,7 @@ interface ICustomInputProps {
   textError?: string;
 }
 
-const CustomInput: React.FC<ICustomInputProps> = ({ type, value, onChange, onBlur, onFocus, placeholder, className, textError }) => {
+const CustomInput: React.FC<ICustomInputProps> = ({ type='text', value, onChange, onBlur, onFocus, placeholder, className, textError }) => {
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [passwordShow, setPasswordShow] = useState<boolean>(false);
 
@@ -64,7 +64,7 @@ const CustomInput: React.FC<ICustomInputProps> = ({ type, value, onChange, onBlu
             value={value}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e)}
             placeholder=""
-            type={type === 'password' && !passwordShow && value ? 'password' : 'text'}
+            type={type === 'password' && !passwordShow && value ? 'password' : type}
             onBlur={handleBlur}
             onFocus={handleFocus}
           />

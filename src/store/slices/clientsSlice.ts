@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IClient } from '../../types/client';
 
 interface IClientsState {
-  list: IClient[] | [];
+  list: IClient[];
 };
 
 const initialState: IClientsState = {
@@ -14,7 +14,7 @@ const clientsSlice = createSlice({
   name: 'clients',
   initialState,
   reducers: {
-    setClients: (state, actions: PayloadAction<IClient[] | []>) => {
+    setClients: (state, actions: PayloadAction<IClient[]>) => {
       state.list = actions.payload
     },
   },

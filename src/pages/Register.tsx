@@ -7,9 +7,10 @@ import { setUser } from '../store/slices/userSlice';
 import { AuthForm } from '../components/AuthForm';
 import { ROUTES } from '../constants/routes';
 import { Notification } from '../components/Notification';
+import { INotify } from '../types/notify';
 
 const Register: React.FC = () => {
-  const [notify, setNotify] = useState<string>('');
+  const [notify, setNotify] = useState<INotify>({type: '', text: ''});
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const Register: React.FC = () => {
           id: uid,
         }));
 
-        setNotify('');
+        setNotify({type: '', text: ''});
         navigate(`/${ROUTES.Clients}`);
 
       })
@@ -40,14 +41,14 @@ const Register: React.FC = () => {
           message = 'Email already exists'
         }
 
-        if (notify !== message) {
-          setNotify(message)
+        if (notify.text !== message) {
+          setNotify({type: 'error', text: message});
         }
       });
   }
 
   const afterHideNotify = () => {
-    setNotify('');
+    setNotify({type: '', text: ''});
   }
 
   return (
@@ -59,10 +60,10 @@ const Register: React.FC = () => {
         formType={'register'}
       />
       {
-        notify ?
+        notify && notify.text ?
           <Notification
-            type={'error'}
-            message={notify}
+            type={notify.type}
+            message={notify.text}
             afterHide={afterHideNotify}
           /> : null
       }

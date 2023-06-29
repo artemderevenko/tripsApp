@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { ISelectOption } from './selectOption';
 
 export interface TCustomButtonSearchSelectProps {
-  selectOptions: ISelectOption[] | [];
+  selectOptions: ISelectOption[];
   positionDropDown?: string;
   onChange: (value: ISelectOption) => void;
   onBlur?: (value?:any) => void;

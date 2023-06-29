@@ -20,14 +20,14 @@ import { database } from '../firebase';
 import { ROUTES } from '../constants/routes';
 import { PageTitle } from '../components/PageTitle';
 import { PageContent } from '../components/PageContent';
+import { INotify } from '../types/notify';
 
 const Tours: React.FC = () => {
   const [deleteTourId, setDeleteTourId] = useState<string>('');
   const [isFetching, setIsFetching] = useState<boolean>(true);
-  const [notify, setNotify] = useState<string>('');
+  const [notify, setNotify] = useState<INotify>({type: '', text: ''});
   const [searchValue, setSearchValue] = useState<string>('');
-  const [notifyType, setNotifyType] = useState<string>('');
-  const [filteredTours, setFilteredTours] = useState<ITour[] | []>([]);
+  const [filteredTours, setFilteredTours] = useState<ITour[]>([]);
 
   const dispatch = useAppDispatch();
   const tours: any = [];
@@ -117,7 +117,7 @@ const Tours: React.FC = () => {
     return searchString.toLowerCase().includes(substring.toLowerCase());
   }
 
-  // const filteredTourList = (value: string, toursList: ITour[] | []): void => {
+  // const filteredTourList = (value: string, toursList: ITour[]): void => {
   //   const result: ITour[] = [];
   //   if (toursList && toursList.length) {
   //     toursList.forEach((tour: ITour): void => {
@@ -135,8 +135,7 @@ const Tours: React.FC = () => {
   }
 
   const afterHideNotify = () => {
-    setNotify('');
-    setNotifyType('');
+    setNotify({type: '', text: ''});
   }
 
   const textNoSearch = searchValue ?
@@ -195,7 +194,7 @@ const Tours: React.FC = () => {
                   optionsList={[
                     {
                       label: 'Delete',
-                      className: "delete",
+                      className: 'delete',
                       onClick: () => setDeleteTourId(data.id),
                     }
                   ]}
@@ -236,7 +235,7 @@ const Tours: React.FC = () => {
           </CustomModal> : null
       }
       {
-        notify ?
+        notify && notify.text ?
           <Notification
             type={notifyType}
             message={notify}

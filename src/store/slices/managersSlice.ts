@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IManager } from '../../types/manager';
 
 interface IManagersState {
-  list: IManager[] | [];
+  list: IManager[];
 };
 
 const initialState: IManagersState = {
@@ -14,7 +14,7 @@ const managersSlice = createSlice({
   name: 'managers',
   initialState,
   reducers: {
-    setManagers: (state, actions: PayloadAction<IManager[] | []>) => {
+    setManagers: (state, actions: PayloadAction<IManager[]>) => {
       state.list = actions.payload
     },
   },

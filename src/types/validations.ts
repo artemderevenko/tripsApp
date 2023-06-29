@@ -1,5 +1,7 @@
 export interface IValidations {
   isEmpty?: boolean;
+  isNumber?: boolean;
+  isPrice?: boolean;
   isEmail?: true;
   maxLength?: number;
   minLength?: number;

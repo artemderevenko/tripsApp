@@ -3,7 +3,7 @@ import { ISelectOption } from '../../types/selectOption';
 
 interface IDropdownOptionsProps {
   positionDropDown?: string;
-  options: ISelectOption[] | [];
+  options: ISelectOption[];
   changeOption: (value: ISelectOption) => void;
   checkSelectedClass?: (option: ISelectOption) => boolean;
 }

@@ -7,9 +7,10 @@ import { setUser } from '../store/slices/userSlice';
 import { AuthForm } from '../components/AuthForm';
 import { ROUTES } from '../constants/routes';
 import { Notification } from '../components/Notification';
+import { INotify } from '../types/notify';
 
 const Login: React.FC = () => {
-  const [notify, setNotify] = useState<string>('');
+  const [notify, setNotify] = useState<INotify>({type: '', text: ''});
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const Login: React.FC = () => {
           id: uid,
         }));
 
-        setNotify('');
+        setNotify({type: '', text: ''});
         navigate(`/${ROUTES.Clients}`);
 
       })
@@ -48,14 +49,14 @@ const Login: React.FC = () => {
           message = 'Access to this account has been temporarily disabled due to many failed login attempts. You can try again later'
         }
 
-        if (notify !== message) {
-          setNotify(message)
+        if (notify.text !== message) {
+          setNotify({type: 'error', text: message});
         }
       });
   }
 
   const afterHideNotify = () => {
-    setNotify('');
+    setNotify({type: '', text: ''});
   }
 
   return (
@@ -67,10 +68,10 @@ const Login: React.FC = () => {
         formType={'login'}
       />
       {
-        notify ?
+        notify && notify.text ?
           <Notification
-            type={'error'}
-            message={notify}
+            type={notify.type}
+            message={notify.text}
             afterHide={afterHideNotify}
           /> : null
       }

@@ -44,6 +44,22 @@ export const useValidation = ({
           }
           break;
 
+        case 'isNumber':
+          const isNumber = typeof Number(initialValue) === 'number' && !isNaN(Number(initialValue))
+          if (!isNumber) {
+            validationError = true;
+            validationTextError = `${name} must be a number`;
+          }
+          break;
+
+        case 'isPrice':
+          const isPrice = /^[1-9]\d*$/.test(initialValue)
+          if (!isPrice && initialValue !== '0') {
+            validationError = true;
+            validationTextError = `${name} must be valid`;
+          }
+          break;
+
         case 'isEmail':
           if (!validateEmail(initialValue)) {
             validationError = true;

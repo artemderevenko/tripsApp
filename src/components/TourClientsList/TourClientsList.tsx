@@ -1,4 +1,4 @@
-import React, { useEffect, ReactNode } from 'react';
+import React, { useEffect, useState } from 'react';
 import { collection, getDocs, DocumentData } from "firebase/firestore";
 
 import styles from './TourClientsList.module.sass';
@@ -6,21 +6,35 @@ import { PageHeader } from '../PageHeader';
 import { CustomButtonSearchSelect } from '../CustomButtonSearchSelect';
 import { useAppDispatch, useAppdSelector } from '../../hooks/reduxHook';
 import { setClients } from '../../store/slices/clientsSlice';
-import { addTourist } from '../../store/slices/tourSlice';
+import { addTourist, deleteTourist, changePayment } from '../../store/slices/tourSlice';
 import { database } from '../../firebase';
 import { IClient } from '../../types/client';
-import { ITourist } from '../../types/tourist';
-import { NoResults } from '../../components/NoResults';
-import { TableHeader } from '../../components/TableHeader';
-import { TableRow } from '../../components/TableRow';
 import { TOURISTS_TABLE_FIELDS as tableFields } from '../../constants/touristsTableFields';
-import headerStyles from '../../components/TableHeader/TableHeader.module.sass';
-import rowStyles from '../../components/TableRow/TableRow.module.sass';
+import { useExcludedList } from '../../hooks/useExcludedList';
+import { Notification } from '../Notification';
+import { CustomModal } from '../CustomModal';
+import { Table } from '../Table';
+import { ISelectOption } from '../../types/selectOption';
+import { INotify } from '../../types/notify';
+import { MakePaymentModal } from '../MakePaymentModal';
+import { ITourist } from '../../types/tourist';
+export { MakePaymentModal } from '../MakePaymentModal';
 
 const TourClientsList: React.FC = ({ }) => {
+  const [touristsIds, setTouristsIds] = useState<string[]>([]);
+  const [paymentTouristId, setPaymentTouristId] = useState<string>('');
+  const [deleteTouristId, setDeleteTouristId] = useState<string>('');
+  const [notify, setNotify] = useState<INotify>({ type: '', text: '' });
+
   const dispatch = useAppDispatch();
   const clients = useAppdSelector(state => state.clients.list);
   const { touristsList } = useAppdSelector(state => state.tour);
+  const excludedClients = useExcludedList(clients, touristsIds);
+
+  useEffect(() => {
+    const touristsIds = touristsList.map(tourist => tourist.clientId);
+    setTouristsIds(touristsIds);
+  }, [touristsList]);
 
   useEffect(() => {
     getClientList();
@@ -43,9 +57,9 @@ const TourClientsList: React.FC = ({ }) => {
     }
   }
 
-  const getClientOptions = () => {
-    if (clients && clients.length) {
-      const options = clients.map(client => ({
+  const getClientOptions = (): ISelectOption[] => {
+    if (excludedClients && excludedClients.length) {
+      const options = excludedClients.map(client => ({
         value: client.id,
         label: `${client.firstName} ${client.lastName} ${client.middleName} (${client.passport})`
       }));
@@ -70,6 +84,27 @@ const TourClientsList: React.FC = ({ }) => {
     dispatch(addTourist(tourist));
   }
 
+  const deleteTouristFromTour = () => {
+    dispatch(deleteTourist(deleteTouristId));
+    setDeleteTouristId('');
+    setNotify({ type: 'success', text: 'Tourist deleted successfully!' });
+  }
+
+  const makePayment = (data: ITourist | null, paymentValue: string): void => {
+    const id = paymentTouristId;
+    dispatch(changePayment({ clientId: id, payment: paymentValue }))
+    setNotify({ type: 'success', text: 'Payment changed successfully!' });
+    setPaymentTouristId('');
+  }
+
+  const afterHideNotify = () => {
+    setNotify({ type: '', text: '' });
+  }
+
+  const getTouristData = () => {
+    return touristsList.filter(tourist => tourist.clientId === paymentTouristId)[0] || null
+  }
+
   return (
     <div className={styles['tour-clients']}>
       <PageHeader align={'between'}>
@@ -84,56 +119,62 @@ const TourClientsList: React.FC = ({ }) => {
           </svg>}
         />
       </PageHeader>
+      <Table
+        tableFields={tableFields}
+        textNoSearch={<div>You haven`t added any tourist yet. <br /> Start by adding a tourist from your customer list.</div>}
+        data={touristsList.map(tourist => ({ ...tourist, id: tourist.clientId }))}
+        className={'tourist'}
+        optionsList={(option) => ([
+          {
+            label: 'Make payment',
+            onClick: () => setPaymentTouristId(option.id),
+          },
+          {
+            label: 'Delete',
+            className: 'delete',
+            onClick: () => setDeleteTouristId(option.id),
+          }
+        ])}
+      />
       {
-        !touristsList || !touristsList.length ?
-          <NoResults
-            text={<div>You haven`t added any tourist yet. <br /> Start by adding a tourist from your customer list.</div>}
+        paymentTouristId ?
+          <MakePaymentModal
+            onClose={() => setPaymentTouristId('')}
+            onMakePayment={makePayment}
+            data={getTouristData()}
           /> : null
       }
       {
-        touristsList && touristsList.length && tableFields && tableFields.length ?
-          <>
-            <TableHeader>
+        deleteTouristId ?
+          <CustomModal
+            title={'Delete tourist'}
+            onClose={() => setDeleteTouristId('')}
+            buttonsList={[
               {
-                tableFields.map(field => (
-                  <div
-                    key={field.value}
-                    className={headerStyles[`tourist-${field.value}`]}
-                  >
-                    {field.label}
-                  </div>
-                ))
+                onButtonClick: () => setDeleteTouristId(''),
+                buttonText: 'Cancel',
+                type: 'cancel',
+              },
+              {
+                onButtonClick: deleteTouristFromTour,
+                buttonText: 'Delete',
+                type: 'delete',
               }
-            </TableHeader>
-            {
-              touristsList.map((data: ITourist): ReactNode => (
-                <TableRow
-                  key={data.clientId}
-                  optionsList={[
-                    {
-                      label: 'Delete',
-                      className: "delete",
-                      onClick: () => null,
-                    }
-                  ]}
-                >
-                  {
-                    tableFields.map((field): ReactNode => (
-                      <div
-                        key={field.value}
-                        className={rowStyles[`tourist-${field.value}`]}
-                      >
-                        <div
-                          className={rowStyles['field-value']}
-                        >
-                          {data[field.dataField] || data[field.dataField] === 0 ? data[field.dataField] : '-'}
-                        </div>
-                      </div>))
-                  }
-                </TableRow>
-              ))
-            }
-          </> : null
+            ]}
+          >
+            <div>
+              Are you sure you want to delete this tourist from the tour? <br />
+              Once deleted, you can add it again.
+            </div>
+          </CustomModal> : null
+      }
+      {
+        notify && notify.text ?
+          <Notification
+            type={notify.type}
+            message={notify.text}
+            afterHide={afterHideNotify}
+          /> : null
       }
     </div>
   )

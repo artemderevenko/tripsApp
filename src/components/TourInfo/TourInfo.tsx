@@ -15,6 +15,7 @@ import { INSURANCE_OPTIONS as insuranceOptions } from '../../constants/selectOpt
 import { useGetSelectOption } from '../../hooks/useGetSelectOption';
 import { useInput } from '../../hooks/useInput';
 import { useSelect } from '../../hooks/useSelect';
+import { ISelectOption } from '../../types/selectOption';
 
 const TourInfo: React.FC = ({ }) => {
   const dispatch = useAppDispatch();
@@ -82,6 +83,16 @@ const TourInfo: React.FC = ({ }) => {
     name: 'Tour cost',
   });
 
+  const managerSelect = useSelect({
+    initialValue: managerId || '',
+    name: 'Manager',
+  });
+
+  const insuranceSelect = useSelect({
+    initialValue: insurance || '',
+    name: 'Registration of insurance',
+  });
+
   useEffect(() => {
     getManagerList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -131,12 +142,21 @@ const TourInfo: React.FC = ({ }) => {
     } else { return null }
   }
 
-  const changeField = (
+  const changeInput = (
     name: string,
     e: React.ChangeEvent<HTMLInputElement>,
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   ): void => {
     dispatch(changeTourInfo({ fieldName: name, value: e.target.value }));
+    onChange(e);
+  }
+
+  const changeSelect = (
+    name: string,
+    e: ISelectOption,
+    onChange: (e: ISelectOption) => void
+  ): void => {
+    dispatch(changeTourInfo({ fieldName: name, value: e.value || null }));
     onChange(e);
   }
 
@@ -150,7 +170,7 @@ const TourInfo: React.FC = ({ }) => {
           <CustomInput
             type="text"
             value={nameInput.value}
-            onChange={(e) => changeField('name', e, nameInput.onChange)}
+            onChange={(e) => changeInput('name', e, nameInput.onChange)}
             onBlur={nameInput.onBlur}
             placeholder={nameInput.name}
             textError={nameInput.textError}
@@ -160,7 +180,7 @@ const TourInfo: React.FC = ({ }) => {
           <CustomInput
             type="text"
             value={descriptionInput.value}
-            onChange={(e) => changeField('description', e, descriptionInput.onChange)}
+            onChange={(e) => changeInput('description', e, descriptionInput.onChange)}
             placeholder={descriptionInput.name}
             onBlur={descriptionInput.onBlur}
             textError={descriptionInput.textError}
@@ -171,7 +191,7 @@ const TourInfo: React.FC = ({ }) => {
             <CustomInput
               type="text"
               value={startDateInput.value}
-              onChange={(e) => changeField('startDate', e, startDateInput.onChange)}
+              onChange={(e) => changeInput('startDate', e, startDateInput.onChange)}
               onBlur={startDateInput.onBlur}
               placeholder={startDateInput.name}
               textError={startDateInput.textError}
@@ -181,7 +201,7 @@ const TourInfo: React.FC = ({ }) => {
             <CustomInput
               type="text"
               value={endDateInput.value}
-              onChange={(e) => changeField('endDate', e, endDateInput.onChange)}
+              onChange={(e) => changeInput('endDate', e, endDateInput.onChange)}
               onBlur={endDateInput.onBlur}
               placeholder={endDateInput.name}
               textError={endDateInput.textError}
@@ -193,7 +213,7 @@ const TourInfo: React.FC = ({ }) => {
             <CustomInput
               type="text"
               value={locationInput.value}
-              onChange={(e) => changeField('location', e, locationInput.onChange)}
+              onChange={(e) => changeInput('location', e, locationInput.onChange)}
               onBlur={locationInput.onBlur}
               placeholder={locationInput.name}
               textError={locationInput.textError}
@@ -203,7 +223,7 @@ const TourInfo: React.FC = ({ }) => {
             <CustomInput
               type="text"
               value={costInput.value}
-              onChange={(e) => changeField('cost', e, costInput.onChange)}
+              onChange={(e) => changeInput('cost', e, costInput.onChange)}
               onBlur={costInput.onBlur}
               placeholder={costInput.name}
               textError={costInput.textError}
@@ -213,18 +233,18 @@ const TourInfo: React.FC = ({ }) => {
         <div className={styles['column']}>
           <div className={styles['row']}>
             <CustomSelect
-              placeholder="Manager"
+              placeholder={managerSelect.name}
               selectValue={getManagerValue()}
               selectOptions={getManagerOptions()}
-              onChange={(e) => dispatch(changeTourInfo({ fieldName: 'managerId', value: e.value || null }))}
+              onChange={(e) => changeSelect('managerId', e, managerSelect.onChange)}
             />
           </div>
           <div className={styles['row']}>
             <CustomSelect
-              placeholder="Registration of insurance"
+              placeholder={insuranceSelect.name}
               selectValue={useGetSelectOption(insurance, insuranceOptions)}
               selectOptions={insuranceOptions}
-              onChange={(e) => dispatch(changeTourInfo({ fieldName: 'insurance', value: e.value }))}
+              onChange={(e) => changeSelect('insurance', e, managerSelect.onChange)}
             />
           </div>
         </div>

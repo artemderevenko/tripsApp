@@ -3,7 +3,7 @@ import styles from './TableRowOptions.module.sass';
 import { ITableRowOption } from '../../types/tableRowOptions';
 
 interface ITableRowOptionsProps {
-  optionsList: ITableRowOption[] | [];
+  optionsList: ITableRowOption[];
   visible: boolean;
 }
 

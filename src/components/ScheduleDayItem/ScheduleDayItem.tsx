@@ -27,7 +27,7 @@ const ScheduleDayItem: React.FC<IScheduleDayItemProps> = ({ date }) => {
   const getHolidayList = () => {
     const monthNumber = date.month();
     const holidaysMonth: Array<{}> | IHoliday[] = holidays[monthNumber];
-    let holidayList: IHoliday[] | [] = [];
+    let holidayList: IHoliday[] = [];
 
     if (Array.isArray(holidaysMonth)) {
       holidaysMonth.forEach((holiday) => {

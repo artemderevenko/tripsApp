@@ -4,6 +4,16 @@ import { TRANSPORT_TYPE_OPTIONS as transportTypeOptions } from '../../constants/
 import { ITour } from '../../types/tour';
 import { ITourist } from '../../types/tourist';
 
+interface IChangeInfoPayload {
+  fieldName: string;
+  value: string | number | null;
+};
+
+interface IPaymentPayload {
+  clientId: string;
+  payment: string;
+};
+
 const initialState: ITour = {
   name: '',
   description: '',
@@ -24,7 +34,7 @@ const tourSlice = createSlice({
     setTour: (state, actions: PayloadAction<ITour>) => {
 
     },
-    changeTourInfo: (state, actions) => {
+    changeTourInfo: (state, actions: PayloadAction<IChangeInfoPayload>) => {
       state[actions.payload.fieldName] = actions.payload.value
     },
     resetToDefault: () => {
@@ -36,8 +46,18 @@ const tourSlice = createSlice({
         actions.payload
       ]
     },
+    deleteTourist: (state, actions: PayloadAction<string>) => {
+      state.touristsList = state.touristsList.filter(tourist => tourist.clientId !== actions.payload);
+    },
+    changePayment: (state, actions: PayloadAction<IPaymentPayload>) => {
+      state.touristsList = state.touristsList.map(tourist => {
+        if (tourist.clientId === actions.payload.clientId) {
+          return { ...tourist, paymentAmount: Number(actions.payload.payment)}
+        } else { return tourist}
+      });
+    },
   },
 });
 
-export const { setTour, changeTourInfo, resetToDefault, addTourist } = tourSlice.actions;
+export const { setTour, changeTourInfo, resetToDefault, addTourist, deleteTourist, changePayment } = tourSlice.actions;
 export default tourSlice.reducer;

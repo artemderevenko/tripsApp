@@ -6,7 +6,7 @@ import { ITableRowOption } from '../../types/tableRowOptions';
 
 interface ITableRowProps {
   children: ReactNode;
-  optionsList?: ITableRowOption[] | [];
+  optionsList?: ITableRowOption[];
 }
 
 const TableRow: React.FC<ITableRowProps> = ({ children, optionsList }) => {

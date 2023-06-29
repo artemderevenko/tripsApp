@@ -17,6 +17,7 @@ import { PageTitle } from '../components/PageTitle';
 import { PageContent } from '../components/PageContent';
 import { useFilteredList } from '../hooks/useFilteredList';
 import { Table } from '../components/Table';
+import { INotify } from '../types/notify';
 
 const Clients: React.FC = () => {
 
@@ -27,8 +28,7 @@ const Clients: React.FC = () => {
   const [deleteClientId, setDeleteClientId] = useState<string>('');
   const [editClientData, setEditClientData] = useState<IClient | null>(null);
   const [isFetching, setIsFetching] = useState<boolean>(true);
-  const [notify, setNotify] = useState<string>('');
-  const [notifyType, setNotifyType] = useState<string>('');
+  const [notify, setNotify] = useState<INotify>({type: '', text: ''});
   const [activeSearchValue, setActiveSearchValue] = useState<string>('');
   const filteredClients = useFilteredList(clients, activeSearchValue, ['firstName', 'lastName', 'passport']);
 
@@ -62,13 +62,11 @@ const Clients: React.FC = () => {
       ...client,
       id: newRef.id,
     }).then(() => {
-      setNotify('Client added successfully!');
-      setNotifyType('success');
+      setNotify({type: 'success', text: 'Client added successfully!'});
       getClientList();
     })
       .catch((error) => {
-        setNotify('Something went wrong. Please try again later');
-        setNotifyType('error')
+        setNotify({type: 'error', text: 'Something went wrong. Please try again later.'});
       });
   }
 
@@ -78,13 +76,11 @@ const Clients: React.FC = () => {
       ...client
     })
       .then(() => {
-        setNotify('Client changed successfully!');
-        setNotifyType('success');
+        setNotify({type: 'success', text: 'Client changed successfully!'});
         getClientList();
       })
       .catch((error) => {
-        setNotify('Something went wrong. Please try again later');
-        setNotifyType('error')
+        setNotify({type: 'error', text: 'Something went wrong. Please try again later.'});
       });
   }
 
@@ -92,13 +88,11 @@ const Clients: React.FC = () => {
     const db = database;
     deleteDoc(doc(db, 'clients', deleteClientId))
       .then(() => {
-        setNotify('Client deleted successfully!');
-        setNotifyType('success');
+        setNotify({type: 'success', text: 'Client deleted successfully!'});        
         getClientList();
       })
       .catch((error) => {
-        setNotify('Something went wrong. Please try again later');
-        setNotifyType('error')
+        setNotify({type: 'error', text: 'Something went wrong. Please try again later.'});
       });
     setDeleteClientId('');
   }
@@ -108,8 +102,7 @@ const Clients: React.FC = () => {
   }
 
   const afterHideNotify = () => {
-    setNotify('');
-    setNotifyType('');
+    setNotify({type: '', text: ''});
   }
 
   const textNoSearch = activeSearchValue ?
@@ -152,7 +145,7 @@ const Clients: React.FC = () => {
               },
               {
                 label: 'Delete',
-                className: "delete",
+                className: 'delete',
                 onClick: () => setDeleteClientId(option && option.id ? option.id : ''),
               }
             ])}
@@ -194,10 +187,10 @@ const Clients: React.FC = () => {
               </CustomModal> : null
           }
           {
-            notify ?
+            notify && notify.text ?
               <Notification
-                type={notifyType}
-                message={notify}
+                type={notify.type}
+                message={notify.text}
                 afterHide={afterHideNotify}
               /> : null
           }

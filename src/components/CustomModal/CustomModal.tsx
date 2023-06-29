@@ -12,7 +12,7 @@ interface IButtonsList {
 interface ICustomModalProps {
   title: string;
   onClose: () => void;
-  buttonsList?: IButtonsList[] | [];
+  buttonsList?: IButtonsList[];
   children: ReactNode;
 }
 

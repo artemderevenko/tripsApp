@@ -17,10 +17,10 @@ interface IDataProps {
 
 interface ITableProps {
   tableFields: ITableFields[];
-  isFetching: boolean;
+  isFetching?: boolean;
   textNoSearch: string | ReactNode;
-  data: IDataProps[] | [];
-  optionsList?: (data: IDataProps) => ITableRowOption[] | [];
+  data: IDataProps[];
+  optionsList?: (data: IDataProps) => ITableRowOption[];
   className?: string;
 }
 
