@@ -12,9 +12,13 @@ import { changeTransportType } from '../../store/slices/tourSlice';
 import { ISelectOption } from '../../types/selectOption';
 import { INotify } from '../../types/notify';
 import { Notification } from '../Notification';
+import { CustomModal } from '../CustomModal';
+import { IChangeTransportTypePayload } from '../../types/changeTransportTypePayload';
 
 const TourSeatLayout: React.FC = ({ }) => {
   const [notify, setNotify] = useState<INotify>({ type: '', text: '' });
+  const [showChangeTransportModal, setShowChangeTransportModal] = useState<boolean>(false);
+  const [transportInfo, setTransportInfo] = useState<IChangeTransportTypePayload>({ transportType: '', seats: 0 });
 
   const dispatch = useAppDispatch();
   const { transportType, touristsList } = useAppdSelector(state => state.tour);
@@ -29,12 +33,27 @@ const TourSeatLayout: React.FC = ({ }) => {
     }
   }
 
+  const confirmTransportChange = () => {
+    dispatch(changeTransportType(transportInfo));
+    setTransportInfo({ transportType: '', seats: 0 });
+    setShowChangeTransportModal(false);
+    setNotify({ type: 'success', text: 'Transport type changed successfully!' });
+  }
+
   const handlerChangeTransportType = (option: ISelectOption): void => {
+    if (transportType === option.value) return;
+    
     if (touristsList.length > option.seats) {
       return setNotify({ type: 'warning', text: 'The number of seats of the selected transport is less than the number of tourists.' });
     }
+    
+    setTransportInfo({ transportType: option.value, seats: option.seats });
+    setShowChangeTransportModal(true);
+  }
 
-    dispatch(changeTransportType({ transportType: option.value, seats: option.seats }))
+  const cancelTransportChange = () => {
+    setTransportInfo({ transportType: '', seats: 0 });
+    setShowChangeTransportModal(false);
   }
 
   return (
@@ -58,6 +77,30 @@ const TourSeatLayout: React.FC = ({ }) => {
             message={notify.text}
             afterHide={() => setNotify({ type: '', text: '' })}
           /> : null
+      }
+      {
+        showChangeTransportModal ?
+          <CustomModal
+            title={'Confirm transport change'}
+            onClose={cancelTransportChange}
+            buttonsList={[
+              {
+                onButtonClick: cancelTransportChange,
+                buttonText: 'Cancel',
+                type: 'cancel',
+              },
+              {
+                onButtonClick: confirmTransportChange,
+                buttonText: 'Confirm',
+                type: 'confirm',
+              }
+            ]}
+          >
+            <div>
+              Once the mode of transport is changed, the previous <br /> 
+              seating chart will be cleared.
+            </div>
+          </CustomModal> : null
       }
     </div>
   )

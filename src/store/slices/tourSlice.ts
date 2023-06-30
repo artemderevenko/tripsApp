@@ -9,6 +9,7 @@ import { IChangeTransportTypePayload } from '../../types/changeTransportTypePayl
 import { IChangeSeatPayload } from '../../types/changeSeatPayload';
 
 const initialState: ITour = {
+  id: '',
   name: '',
   description: '',
   startDate: '',
@@ -27,7 +28,7 @@ const tourSlice = createSlice({
   initialState,
   reducers: {
     setTour: (state, actions: PayloadAction<ITour>) => {
-
+      return { ...state, ...actions.payload }
     },
     changeTourInfo: (state, actions: PayloadAction<IChangeInfoPayload>) => {
       state[actions.payload.fieldName] = actions.payload.value
@@ -35,6 +36,7 @@ const tourSlice = createSlice({
     changeTransportType: (state, actions: PayloadAction<IChangeTransportTypePayload>) => {
       state.transportType = actions.payload.transportType;
       state.seats = actions.payload.seats;
+      state.touristsList = state.touristsList.map(tourist => ({...tourist, seatNumber: null}));
     },
     resetToDefault: () => {
       return initialState

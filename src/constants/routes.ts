@@ -6,6 +6,6 @@ export const ROUTES = {
   'Tours': 'tours',
   'Schedule': 'schedule',
   'Report': 'report',
-  'TourDetails': 'tours/:id',
+  'TourDetails': 'tours/',
   'TourNew': 'tours/new',
 };

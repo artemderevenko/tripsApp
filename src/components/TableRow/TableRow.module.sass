@@ -12,24 +12,7 @@
   &:hover
     background-color: $table-row-hover
 
-.clients-first-name,
-.clients-last-name,
-.clients-middle-name,
-.clients-birth,
-.clients-sex,
-.clients-passport,
-.managers-first-name,
-.managers-last-name,
-.managers-middle-name,
-.managers-birth,
-.managers-sex,
-.managers-passport,
-.tourist-first-name,
-.tourist-last-name,
-.tourist-middle-name,
-.tourist-payment-amount,
-.tourist-seat-number,
-.tourist-passport
+.row-item
   height: 100%
   padding: 0 10px
   @include flex-center-start
@@ -69,3 +52,28 @@
 .field-value
   max-width: 100%
   @include ellipsis-text
+
+.tours-name
+  width: 20%
+
+.tours-location
+  width: 17%
+
+.tours-start-date
+  width: 10%
+
+.tours-end-date
+  width: 10%
+
+.tours-manager
+  width: 15%
+
+.tours-transport-type
+  width: 15%
+
+.tours-seats
+  width: 6%
+
+.tours-tourists
+  width: 7%
+  padding-right: 30px !important

@@ -1,5 +1,6 @@
 export interface ITableRowOption {
   label: string;
   className?: string;
-  onClick: () => void;
+  onClick?: () => void;
+  linkPath?: string;
 }

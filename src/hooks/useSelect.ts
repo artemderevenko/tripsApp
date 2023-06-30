@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { ISelectOption } from '../types/selectOption';
 
@@ -24,6 +24,10 @@ export const useSelect = ({
   const [value, setValue] = useState<string>(initialValue);
   const [isValid, setIsValid] = useState<boolean>(true);
   const [textError, setTextError] = useState<string>('');
+
+  useEffect(() => {
+    setValue(initialValue)
+  }, [initialValue]);
 
   const onChange = (e: ISelectOption): void => {
     setValue(e.value);

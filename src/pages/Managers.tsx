@@ -36,7 +36,7 @@ const Managers: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getManagerList = async () => {
+  const getManagerList = async (): Promise<void> => {
     setIsFetching(true);
     const db = database;
     try {

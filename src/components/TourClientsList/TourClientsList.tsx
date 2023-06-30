@@ -40,7 +40,7 @@ const TourClientsList: React.FC = ({ }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getClientList = async () => {
+  const getClientList = async (): Promise<void> => {
     const db = database;
     try {
       const querySnapshot = await getDocs(collection(db, 'clients'));
@@ -106,6 +106,19 @@ const TourClientsList: React.FC = ({ }) => {
     }
   }
 
+  const getTableData = () => {
+    const sorteredTourists = [...touristsList].sort((a, b) => {
+      if (a.seatNumber && !b.seatNumber) { return -1 }
+      if (!a.seatNumber && b.seatNumber) { return 1 }
+      if (a.seatNumber && b.seatNumber) {
+        return a.seatNumber - b.seatNumber;
+      }
+      return 0;
+    });
+
+    return sorteredTourists.map(tourist => ({ ...tourist, id: tourist.clientId }));
+  }
+
   return (
     <div className={styles['tour-clients']}>
       <PageHeader align={'between'}>
@@ -125,7 +138,7 @@ const TourClientsList: React.FC = ({ }) => {
       <Table
         tableFields={tableFields}
         textNoSearch={<div>You haven`t added any tourist yet. <br /> Start by adding a tourist from your customer list.</div>}
-        data={touristsList.map(tourist => ({ ...tourist, id: tourist.clientId }))}
+        data={getTableData()}
         className={'tourist'}
         optionsList={(option) => ([
           {

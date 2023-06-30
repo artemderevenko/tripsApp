@@ -66,7 +66,7 @@ const Table: React.FC<ITableProps> = ({
                     tableFields.map((field): ReactNode => (
                       <div
                         key={field.value}
-                        className={rowStyles[`${className}-${field.value}`]}
+                        className={`${rowStyles[`${className}-${field.value}`]} ${rowStyles['row-item']}`}
                       >
                         <div
                           className={rowStyles['field-value']}

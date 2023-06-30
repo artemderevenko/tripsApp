@@ -55,7 +55,7 @@ const App: React.FC = () => {
             <TourDetails />
           </Suspense>
         } />
-        <Route path={ROUTES.TourDetails} element={
+        <Route path={`${ROUTES.TourDetails}:paramsId`} element={
           <Suspense fallback={<PageLoader />}>
             <TourDetails />
           </Suspense>

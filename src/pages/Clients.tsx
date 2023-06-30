@@ -37,7 +37,7 @@ const Clients: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getClientList = async () => {
+  const getClientList = async (): Promise<void> => {
     setIsFetching(true);
     const db = database;
     try {

@@ -5,6 +5,7 @@ import userReducer from './slices/userSlice';
 import clientsReducer from './slices/clientsSlice';
 import managersReducer from './slices/managersSlice';
 import tourReducer from './slices/tourSlice';
+import toursReducer from './slices/toursSlice';
 
 const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ const store = configureStore({
     clients: clientsReducer,
     managers: managersReducer,
     tour: tourReducer,
+    tours: toursReducer,
   }
 });
 

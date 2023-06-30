@@ -21,7 +21,7 @@ const Schedule: React.FC = () => {
 
   const [calendarMode, setCalendarMode] = useState<string>(mode && mode.week ? mode.week : '');
 
-  const fetchHolidayList = async () => {
+  const fetchHolidayList = async (): Promise<void> => {
     try {
       const countryCode = 'ua';
       const year = '2023';

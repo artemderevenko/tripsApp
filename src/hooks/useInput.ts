@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { useValidation } from './useValidation';
 import { IValidations } from '../types/validations';
@@ -26,6 +26,10 @@ export const useInput = ({
 }: IUseInputProps): IUseInputResult => {
   const [value, setValue] = useState<string>(initialValue);
   const [checkError, setCheckError] = useState<boolean>(false);
+
+  useEffect(() => {
+    setValue(initialValue)
+  }, [initialValue]);
 
   const validation = useValidation({ 
     initialValue: value, 

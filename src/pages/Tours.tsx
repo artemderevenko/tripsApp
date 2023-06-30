@@ -1,140 +1,118 @@
-import { ReactNode, useState, useEffect } from 'react';
-import { collection, doc, getDocs, setDoc, updateDoc, deleteDoc, DocumentData } from "firebase/firestore";
+import { useState, useEffect } from 'react';
+import { collection, doc, getDocs, deleteDoc, DocumentData } from "firebase/firestore";
 
 import { PageHeader } from '../components/PageHeader';
 import { CustomSearchField } from '../components/CustomSearchField';
-// import { MANAGERS_TABLE_FIELDS as tableFields } from '../constants/toursTableFields';
+import { TOURS_TABLE_FIELDS as tableFields } from '../constants/toursTableFields';
+import { TRANSPORT_TYPE_OPTIONS as transportTypeOptions } from '../constants/selectOptions';
 import { ITour } from '../types/tour';
-// import { TableHeader } from '../components/TableHeader';
-// import { TableRow } from '../components/TableRow';
-// import headerStyles from '../components/TableHeader/TableHeader.module.sass';
-// import rowStyles from '../components/TableRow/TableRow.module.sass';
+import { IManager } from '../types/manager';
 import { CustomButton } from '../components/CustomButton';
-import { NoResults } from '../components/NoResults';
 import { Notification } from '../components/Notification';
 import { useAppDispatch, useAppdSelector } from '../hooks/reduxHook';
-// import { setTours } from '../store/slices/toursSlice';
-import { PageLoader } from '../components/PageLoader';
+import { setTours } from '../store/slices/toursSlice';
+import { setManagers } from '../store/slices/managersSlice';
 import { CustomModal } from '../components/CustomModal';
 import { database } from '../firebase';
 import { ROUTES } from '../constants/routes';
 import { PageTitle } from '../components/PageTitle';
 import { PageContent } from '../components/PageContent';
 import { INotify } from '../types/notify';
+import { useFilteredList } from '../hooks/useFilteredList';
+import { Table } from '../components/Table';
 
 const Tours: React.FC = () => {
   const [deleteTourId, setDeleteTourId] = useState<string>('');
   const [isFetching, setIsFetching] = useState<boolean>(true);
-  const [notify, setNotify] = useState<INotify>({type: '', text: ''});
-  const [searchValue, setSearchValue] = useState<string>('');
-  const [filteredTours, setFilteredTours] = useState<ITour[]>([]);
+  const [notify, setNotify] = useState<INotify>({ type: '', text: '' });
+  const [activeSearchValue, setActiveSearchValue] = useState<string>('');
 
   const dispatch = useAppDispatch();
-  const tours: any = [];
+  const tours = useAppdSelector(state => state.tours.list);
+  const managers = useAppdSelector(state => state.managers.list);
+  const filteredTours = useFilteredList(tours, activeSearchValue, ['name', 'location']);
 
   useEffect(() => {
-    // нужно будет удалить это
-    setIsFetching(false)
-    // getTourList()
+    getTourList();
+    getManagerList()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // useEffect(() => {
-  //   if (!searchValue) {
-  //     setFilteredTours(tours)
-  //   } else {
-  //     filteredTourList(searchValue, tours)
-  //   }
-  // }, [searchValue, tours]);
-
-  // const getTourList = async () => {
-  //   setIsFetching(true);
-  //   const db = database;
-  //   try {
-  //     const querySnapshot = await getDocs(collection(db, 'tours'));
-  //     const tourList: DocumentData[] = querySnapshot.docs.map((doc) => doc.data());
-  //     const typedTourList: ITour[] = tourList as ITour[];
-  //     if (tourList && tourList.length) {
-  //       dispatch(setTours(typedTourList));
-  //     } else {
-  //       dispatch(setTours([]));
-  //     }
-  //   } catch (error) {
-  //     dispatch(setTours([]));
-  //   }
-  //   setIsFetching(false);
-  // }
-
-  // const addTour = (tour: IPerson): void => {
-  //   const db = database;
-  //   const newRef = doc(collection(db, 'tours'));
-  //   setDoc(newRef, {
-  //     ...tour,
-  //     id: newRef.id,
-  //   }).then(() => {
-  //     setNotify('Tour added successfully!');
-  //     setNotifyType('success');
-  //     getTourList();
-  //   })
-  //     .catch((error) => {
-  //       setNotify('Something went wrong. Please try again later');
-  //       setNotifyType('error')
-  //     });
-  // }
-
-  // const editTour = (tour: IPerson): void => {
-  //   const db = database;
-  //   updateDoc(doc(db, 'tours', tour.id), {
-  //     ...tour
-  //   })
-  //     .then(() => {
-  //       setNotify('Tour changed successfully!');
-  //       setNotifyType('success');
-  //       getTourList();
-  //     })
-  //     .catch((error) => {
-  //       setNotify('Something went wrong. Please try again later');
-  //       setNotifyType('error')
-  //     });
-  // }
-
-  // const deleteTour = () => {
-  //   const db = database;
-  //   deleteDoc(doc(db, 'tours', deleteTourId))
-  //     .then(() => {
-  //       setNotify('Tour deleted successfully!');
-  //       setNotifyType('success');
-  //       getTourList();
-  //     })
-  //     .catch((error) => {
-  //       setNotify('Something went wrong. Please try again later');
-  //       setNotifyType('error')
-  //     });
-  //   setDeleteTourId('');
-  // }
-
-  const searchSubstring = (searchString: string, substring: string): boolean => {
-    return searchString.toLowerCase().includes(substring.toLowerCase());
+  const getManagerList = async (): Promise<void> => {
+    setIsFetching(true);
+    const db = database;
+    try {
+      const querySnapshot = await getDocs(collection(db, 'managers'));
+      const managerList: DocumentData[] = querySnapshot.docs.map((doc) => doc.data());
+      const typedManagerList: IManager[] = managerList as IManager[];
+      if (managerList && managerList.length) {
+        dispatch(setManagers(typedManagerList));
+      } else {
+        dispatch(setManagers([]));
+      }
+    } catch (error) {
+      dispatch(setManagers([]));
+    }
+    setIsFetching(false);
   }
 
-  // const filteredTourList = (value: string, toursList: ITour[]): void => {
-  //   const result: ITour[] = [];
-  //   if (toursList && toursList.length) {
-  //     toursList.forEach((tour: ITour): void => {
-  //       if (searchSubstring(tour.firstName, value) || searchSubstring(tour.name, value) || searchSubstring(tour.passport, value)) {
-  //         result.push(tour)
-  //       }
-  //     })
-  //   }
+  const getTourList = async (): Promise<void> => {
+    setIsFetching(true);
+    const db = database;
+    try {
+      const querySnapshot = await getDocs(collection(db, 'tours'));
+      const tourList: DocumentData[] = querySnapshot.docs.map((doc) => doc.data());
+      const typedTourList: ITour[] = tourList as ITour[];
+      if (tourList && tourList.length) {
+        dispatch(setTours(typedTourList));
+      } else {
+        dispatch(setTours([]));
+      }
+    } catch (error) {
+      dispatch(setTours([]));
+    }
+    setIsFetching(false);
+  }
 
-  //   setFilteredTours(result);
-  // }
+  const deleteTour = (): void => {
+    const db = database;
+    deleteDoc(doc(db, 'tours', deleteTourId))
+      .then(() => {
+        setNotify({ type: 'success', text: 'Tour deleted successfully!' });
+        getTourList();
+      })
+      .catch((error) => {
+        setNotify({ type: 'error', text: 'Something went wrong. Please try again later.' });
+      });
+    setDeleteTourId('');
+  }
 
   const onSearch = (value: string): void => {
-    setSearchValue(value)
+    setActiveSearchValue(value)
   }
 
-  const textNoSearch = searchValue ?
+  const getTableData = (): ITour[] => {
+    const tableData = [...filteredTours].map(tour => {
+      let managerName = '';
+      let transportName = '';
+      let touristsrCount = tour.touristsList?.length;
+
+      if (tour.managerId) {
+        const manager = managers.filter((item) => item.id === tour.managerId)[0];
+        managerName = manager ? `${manager.firstName} ${manager.lastName} ${manager.middleName}` : '';
+      }
+
+      if (tour.transportType) {
+        const transportType = transportTypeOptions.filter(item => item.value === tour.transportType)[0];
+        transportName = transportType ? transportType.label : '';
+      }
+
+      return { ...tour, managerName, transportName, touristsrCount }
+    })
+    return tableData;
+  }
+
+  const textNoSearch = activeSearchValue ?
     'No tours found. Try another search criteria.' :
     <div>You haven`t created any tour yet. <br /> Start with adding a new tour.</div>;
 
@@ -156,88 +134,59 @@ const Tours: React.FC = () => {
                 linkPath={`/${ROUTES.TourNew}`}
               />
               <CustomSearchField
-                placeholder={'Search by first name, last name or passport'}
-                disable={isFetching || ((!filteredTours || !filteredTours.length) && !searchValue)}
+                placeholder={'Search by tour name or location'}
+                disable={isFetching || ((!filteredTours || !filteredTours.length) && !activeSearchValue)}
                 onSearch={onSearch}
               />
             </>
           </PageHeader>
-          {
-            isFetching ? <PageLoader /> : null
-          }
-          {
-            !isFetching && (!filteredTours || !filteredTours.length) ? <NoResults text={textNoSearch} /> : null
-          }
-          {/* {
-        !isFetching && filteredTours && filteredTours.length && tableFields && tableFields.length ?
-          <>
-            <TableHeader>
+          <Table
+            tableFields={tableFields}
+            isFetching={isFetching}
+            textNoSearch={textNoSearch}
+            data={getTableData()}
+            className={'tours'}
+            optionsList={(option) => ([
               {
-                tableFields.map(field => (
-                  <div
-                    key={field.value}
-                    className={headerStyles[`tours-${field.value}`]}
-                  >
-                    {field.label}
-                  </div>
-                ))
-              }
-            </TableHeader>
-            {
-              filteredTours.map((data: ITour): ReactNode => (
-                <TableRow
-                  key={data.passport}
-                  optionsList={[
-                    {
-                      label: 'Delete',
-                      className: 'delete',
-                      onClick: () => setDeleteTourId(data.id),
-                    }
-                  ]}
-                >
-                  {
-                    tableFields.map((field): ReactNode => (
-                      <div
-                        key={field.value}
-                        className={rowStyles[`tours-${field.value}`]}
-                      >
-                        <div className={rowStyles['field-value']}>{data[field.dataField]}</div>
-                      </div>))
-                  }
-                </TableRow>
-              ))
-            }
-          </> : null
-      } */}
-          {/* {
-        deleteTourId ?
-          <CustomModal
-            title={'Delete tour'}
-            onClose={() => setDeleteTourId('')}
-            buttonsList={[
-              {
-                onButtonClick: () => setDeleteTourId(''),
-                buttonText: 'Cancel',
-                type: 'cancel',
+                label: 'Edit',
+                linkPath: `/${ROUTES.TourDetails}${option.id}`
               },
               {
-                onButtonClick: deleteTour,
-                buttonText: 'Delete',
-                type: 'delete',
+                label: 'Delete',
+                className: 'delete',
+                onClick: () => setDeleteTourId(option && option.id ? option.id : ''),
               }
-            ]}
-          >
-            <div>After you delete a tour, it's permanently deleted.</div>
-          </CustomModal> : null
-      }
-      {
-        notify && notify.text ?
-          <Notification
-            type={notifyType}
-            message={notify}
-            afterHide={() => setNotify({ type: '', text: '' })}
-          /> : null
-      } */}
+            ])}
+          />
+          {
+            deleteTourId ?
+              <CustomModal
+                title={'Delete tour'}
+                onClose={() => setDeleteTourId('')}
+                buttonsList={[
+                  {
+                    onButtonClick: () => setDeleteTourId(''),
+                    buttonText: 'Cancel',
+                    type: 'cancel',
+                  },
+                  {
+                    onButtonClick: deleteTour,
+                    buttonText: 'Delete',
+                    type: 'delete',
+                  }
+                ]}
+              >
+                <div>After you delete a tour, it's permanently deleted.</div>
+              </CustomModal> : null
+          }
+          {
+            notify && notify.text ?
+              <Notification
+                type={notify.type}
+                message={notify.text}
+                afterHide={() => setNotify({ type: '', text: '' })}
+              /> : null
+          }
         </>
       </PageContent>
     </>

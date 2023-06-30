@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+
 import styles from './TableRowOptions.module.sass';
 import { ITableRowOption } from '../../types/tableRowOptions';
 
@@ -26,13 +28,23 @@ const TableRowOptions: React.FC<ITableRowOptionsProps> = ({ visible, optionsList
       <div className={`${styles['options-list']} ${isVisibleList ? styles['options-list-visible'] : ''}`}>
         {
           optionsList.map(option => {
-            return (<div
-              key={option.label}
-              className={`${styles['options-list-item']} ${option.className ? styles[option.className] : ''}`}
-              onClick={option.onClick}
-            >
-              {option.label}
-            </div>)
+            return option.linkPath ?
+
+              (<NavLink
+                key={option.label}
+                to={option.linkPath}
+                className={`${styles['options-list-item']} ${option.className ? styles[option.className] : ''}`}
+              >
+                {option.label}
+              </NavLink>) :
+
+              (<div
+                key={option.label}
+                className={`${styles['options-list-item']} ${option.className ? styles[option.className] : ''}`}
+                onClick={option.onClick}
+              >
+                {option.label}
+              </div>)
           })
         }
       </div>

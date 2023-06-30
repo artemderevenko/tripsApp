@@ -29,7 +29,7 @@ export const useValidation = ({
     return regex.test(email);
   }
 
-  useEffect(() => {
+  useEffect(() => { console.log(initialValue)
     if (!checkError) return;
 
     let validationError: boolean = false;
