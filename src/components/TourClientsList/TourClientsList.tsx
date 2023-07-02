@@ -133,6 +133,7 @@ const TourClientsList: React.FC = ({ }) => {
           </svg>}
           disable={seats && touristsList.length >= seats ? true : false}
           onDisableAction={onDisableAddTouristButton}
+          id="add-tourist-hide-in-pdf"
         />
       </PageHeader>
       <Table

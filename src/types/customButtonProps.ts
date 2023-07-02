@@ -8,4 +8,5 @@ export interface ICustomButtonProps {
   disable?: boolean;
   icon?: ReactNode;
   linkPath?: string;
+  id?: string;
 }

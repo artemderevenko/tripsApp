@@ -12,4 +12,5 @@ export interface TCustomButtonSearchSelectProps {
   icon?: ReactNode;
   label: string;
   disable?: boolean;
+  id?: string
 };

@@ -47,7 +47,6 @@ const SeatLayoutBus35: React.FC = () => {
   }
 
   const setSeat = (clientId: string, seatNumber: number | null) => {
-    console.log(clientId, seatNumber)
     dispatch(changeSeatNumber({ clientId, seatNumber }))
   }
 

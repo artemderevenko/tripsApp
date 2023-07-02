@@ -65,6 +65,7 @@ const TourSeatLayout: React.FC = ({ }) => {
           selectOptions={transportTypeOptions}
           onChange={handlerChangeTransportType}
           className={styles['transport-type']}
+          id="transport-hide-in-pdf"
         />
       </PageHeader>
       <div className={styles['seat-layout-box']}>

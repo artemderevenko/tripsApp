@@ -48,11 +48,11 @@ const TourDetails: React.FC = () => {
     <>
       <PageTitle>{paramsId ? 'Tour Details' : 'Add new tour'}</PageTitle>
       <PageContent>
-        <>
+        <div id='tour-info-pdf'>
           <TourInfo />
           <TourClientsList />
           <TourSeatLayout />
-        </>
+        </div>
       </PageContent>
     </>
   )

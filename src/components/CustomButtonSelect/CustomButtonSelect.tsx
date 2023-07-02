@@ -14,6 +14,7 @@ const CustomButtonSelect: React.FC<TCustomButtonSelectProps> = ({
   positionDropDown,
   onChange,
   className,
+  id='',
 }) => {
 
   const [optionsIsOpened, setOptionsIsOpened] = useState<boolean>(false);
@@ -39,6 +40,7 @@ const CustomButtonSelect: React.FC<TCustomButtonSelectProps> = ({
     <div
       className={`${className || ''} ${styles['custom-select']} ${selectIcon ? styles['is-icon'] : ''} ${optionsIsOpened ? styles['is-opened'] : ''}`}
       ref={wrapperRef}
+      id={id}
     >
       <div className={styles['select-box']} onClick={handleOpenedOptions}>
         {

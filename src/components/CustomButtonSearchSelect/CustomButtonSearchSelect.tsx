@@ -16,6 +16,7 @@ const CustomButtonSearchSelect: React.FC<TCustomButtonSearchSelectProps> = ({
   className,
   disable,
   onDisableAction,
+  id='',
 }) => {
 
   const [optionsIsOpened, setOptionsIsOpened] = useState<boolean>(false);
@@ -62,6 +63,7 @@ const CustomButtonSearchSelect: React.FC<TCustomButtonSearchSelectProps> = ({
     <div
       className={`${className || ''} ${styles['custom-button-search-select']} ${optionsIsOpened ? styles['is-opened'] : ''}`}
       ref={wrapperRef}
+      id={id}
     >
       <div className={styles['button-box']} onClick={handleOpenedOptions}>
         {
