@@ -1,10 +1,5 @@
-import { ReactNode } from 'react';
-
 import styles from './PageTitle.module.sass';
-
-interface IPageTitleProps {
-  children: ReactNode;
-};
+import { IPageTitleProps } from '../../types/pageTitleProps';
 
 const PageTitle: React.FC<IPageTitleProps> = ({ children }) => {
   return (

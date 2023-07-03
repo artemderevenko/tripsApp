@@ -1,9 +1,6 @@
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-
-interface IDownloadPdfResult {
-  downloadAsPdf: () => void
-}
+import { IDownloadPdfResult } from '../types/downloadPdfResult';
 
 export const useDownloadPdf = (
   elementId: string,

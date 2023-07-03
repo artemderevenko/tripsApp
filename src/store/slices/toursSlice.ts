@@ -1,10 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { ITour } from '../../types/tour';
-
-interface IToursState {
-  list: ITour[];
-};
+import { IToursState } from '../../types/toursState';
 
 const initialState: IToursState = {
   list: [],

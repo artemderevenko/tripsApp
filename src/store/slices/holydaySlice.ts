@@ -1,10 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { IHoliday } from '../../types/holiday';
-
-interface IHolidayState {
-  list: Array<Array<{}> | IHoliday[]>;
-};
+import { IHolidayState } from '../../types/holidayState';
 
 const initialState: IHolidayState = {
   list: [],

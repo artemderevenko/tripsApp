@@ -1,12 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import styles from './Notification.module.sass';
-
-interface INotificationProps {
-  message: string;
-  type: string;
-  afterHide: () => void;
-}
+import { INotificationProps } from '../../types/notificationProps';
 
 const Notification: React.FC<INotificationProps> = ({ message, type, afterHide }) => {
   const [isVisible, setIsVisible] = useState<boolean>(true);

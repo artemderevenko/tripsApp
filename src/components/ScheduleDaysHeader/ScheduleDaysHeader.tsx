@@ -1,9 +1,6 @@
 import { DAYS_OF_WEEK as daysOfWeek } from '../../constants/daysOfWeek';
 import styles from './ScheduleDaysHeader.module.sass';
-
-interface IScheduleDaysHeaderProps {
-  mode: string;
-}
+import { IScheduleDaysHeaderProps } from '../../types/scheduleDaysHeaderProps';
 
 const ScheduleDaysHeader: React.FC<IScheduleDaysHeaderProps> = ({ mode }) => {
   return (

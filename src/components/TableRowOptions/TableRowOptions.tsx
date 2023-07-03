@@ -2,12 +2,7 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import styles from './TableRowOptions.module.sass';
-import { ITableRowOption } from '../../types/tableRowOptions';
-
-interface ITableRowOptionsProps {
-  optionsList: ITableRowOption[];
-  visible: boolean;
-}
+import { ITableRowOptionsProps } from '../../types/tableRowOptionsProps';
 
 const TableRowOptions: React.FC<ITableRowOptionsProps> = ({ visible, optionsList }) => {
   const [isVisibleList, setIsVisibleList] = useState<boolean>(false);

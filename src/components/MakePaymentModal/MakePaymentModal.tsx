@@ -2,13 +2,7 @@ import styles from './MakePaymentModal.module.sass';
 import { CustomModal } from '../../components/CustomModal';
 import { useInput } from '../../hooks/useInput';
 import { CustomInput } from '../CustomInput';
-import { ITourist } from '../../types/tourist';
-
-interface IMakePaymentModalProps {
-  onClose: () => void,
-  onMakePayment: (data: ITourist | null, value: string) => void,
-  data: ITourist | null
-}
+import { IMakePaymentModalProps } from '../../types/makePaymentModalProps';
 
 const MakePaymentModal: React.FC<IMakePaymentModalProps> = ({ onClose, onMakePayment, data }) => {
   const payment = useInput({

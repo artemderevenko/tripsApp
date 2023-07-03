@@ -3,11 +3,7 @@ import moment from 'moment';
 
 import styles from './ScheduleMonthItem.module.sass';
 import { ScheduleDaysHeader } from '../ScheduleDaysHeader';
-
-interface IScheduleMonthItemProps {
-  month: any;
-  year: number;
-}
+import { IScheduleMonthItemProps } from '../../types/scheduleMonthItemProps';
 
 const ScheduleMonthItem: React.FC<IScheduleMonthItemProps> = ({ month, year }) => {
   const [daysMonth, setDaysMonth] = useState<(moment.Moment | null)[]>([]);

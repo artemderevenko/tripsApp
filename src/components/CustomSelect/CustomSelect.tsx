@@ -1,14 +1,10 @@
 import { useState, useRef } from 'react';
 
 import styles from './CustomSelect.module.sass';
-import { ISelect } from '../../types/select';
+import { ICustomSelectProps } from '../../types/customSelectProps';
 import { useOutsideClick } from '../../hooks/useOutsideClick';
 import { ISelectOption } from '../../types/selectOption';
 import { DropdownOptions } from '../DropdownOptions';
-
-interface ICustomSelectProps extends ISelect {
-  textError?: string;
-}
 
 const CustomSelect: React.FC<ICustomSelectProps> = ({
   placeholder,

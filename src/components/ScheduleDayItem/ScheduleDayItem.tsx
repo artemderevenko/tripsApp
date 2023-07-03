@@ -4,10 +4,7 @@ import moment from 'moment';
 import styles from './ScheduleDayItem.module.sass';
 import { useAppdSelector } from '../../hooks/reduxHook';
 import { IHoliday } from '../../types/holiday';
-
-interface IScheduleDayItemProps {
-  date: moment.Moment;
-}
+import { IScheduleDayItemProps } from '../../types/scheduleDayItemProps';
 
 const ScheduleDayItem: React.FC<IScheduleDayItemProps> = ({ date }) => {
 

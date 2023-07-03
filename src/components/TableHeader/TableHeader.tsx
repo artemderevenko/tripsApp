@@ -1,11 +1,6 @@
-import { ReactNode } from 'react';
-
 import styles from './TableHeader.module.sass';
-
-interface ITableHeaderProps {
-  children: ReactNode;
-}
-
+import { ITableHeaderProps } from '../../types/tableHeaderProps';
+ 
 const TableHeader: React.FC<ITableHeaderProps> = ({ children }) => {
   return (
     <div className={styles['table-header']}>

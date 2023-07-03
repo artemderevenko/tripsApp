@@ -1,23 +1,8 @@
 import { useState, useEffect } from 'react';
 
 import { useValidation } from './useValidation';
-import { IValidations } from '../types/validations';
-
-interface IUseInputProps {
-  initialValue: string;
-  name: string;
-  validations?: IValidations;
-}
-
-interface IUseInputResult {
-  value: string;
-  name: string;
-  isValid?: boolean;
-  textError?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onBlur: () => void;
-  onCheckError: () => void,
-}
+import { IUseInputProps } from '../types/useInputProps';
+import { IUseInputResult } from '../types/useInputResult';
 
 export const useInput = ({
   initialValue,

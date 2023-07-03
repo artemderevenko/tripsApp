@@ -1,21 +1,8 @@
 import { useState, useEffect } from 'react';
 
 import { ISelectOption } from '../types/selectOption';
-
-interface IUseSelectProps {
-  initialValue: string;
-  name: string;
-}
-
-interface IUseSelectResult {
-  value: string;
-  name: string;
-  isValid: boolean;
-  textError: string;
-  onChange: (e: ISelectOption) => void;
-  onBlur: () => void;
-  onCheckError: () => void,
-}
+import { IUseSelectProps } from '../types/useSelectProps';
+import { IUseSelectResult } from '../types/useSelectResult';
 
 export const useSelect = ({
   initialValue,

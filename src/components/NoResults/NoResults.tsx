@@ -1,9 +1,5 @@
-import { ReactNode } from 'react';
 import styles from './NoResults.module.sass';
-
-interface INoResultsProps {
-  text: ReactNode | string;
-}
+import { INoResultsProps } from '../../types/noResultsProps'
 
 const NoResults: React.FC<INoResultsProps> = ({ text }) => {
   return (

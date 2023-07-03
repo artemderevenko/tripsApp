@@ -1,10 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { IManager } from '../../types/manager';
-
-interface IManagersState {
-  list: IManager[];
-};
+import { IManagersState } from '../../types/managersState';
 
 const initialState: IManagersState = {
   list: [],

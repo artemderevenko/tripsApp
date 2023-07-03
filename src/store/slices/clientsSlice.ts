@@ -1,10 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { IClient } from '../../types/client';
-
-interface IClientsState {
-  list: IClient[];
-};
+import { IClientsState } from '../../types/clientsState';
 
 const initialState: IClientsState = {
   list: [],

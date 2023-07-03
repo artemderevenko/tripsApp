@@ -1,19 +1,8 @@
 import { useState, useEffect } from 'react';
 import moment from 'moment';
 
-import { IValidations } from '../types/validations';
-
-interface IUseValidationProps {
-  initialValue: string;
-  name: string;
-  validations: IValidations;
-  checkError: boolean;
-}
-
-interface IUseValidationResult {
-  isValid: boolean;
-  textError: string;
-}
+import { IUseValidationProps } from '../types/useValidationProps';
+import { IUseValidationResult } from '../types/useValidationResult';
 
 export const useValidation = ({
   initialValue,

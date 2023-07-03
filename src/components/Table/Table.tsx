@@ -7,22 +7,8 @@ import headerStyles from '../TableHeader/TableHeader.module.sass';
 import rowStyles from '../TableRow/TableRow.module.sass';
 import { NoResults } from '../NoResults';
 import { PageLoader } from '../PageLoader';
-import { ITableFields } from '../../types/tableFields';
-import { ITableRowOption } from '../../types/tableRowOptions';
-
-interface IDataProps {
-  id: string;
-  [key: string]: any;
-}
-
-interface ITableProps {
-  tableFields: ITableFields[];
-  isFetching?: boolean;
-  textNoSearch: string | ReactNode;
-  data: IDataProps[];
-  optionsList?: (data: IDataProps) => ITableRowOption[];
-  className?: string;
-}
+import { ITableProps } from '../../types/tableProps';
+import { IDataProps } from '../../types/dataProps';
 
 const Table: React.FC<ITableProps> = ({
   tableFields,

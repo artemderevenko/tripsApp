@@ -1,10 +1,5 @@
-import { ReactNode } from 'react';
-
 import styles from './PageContent.module.sass';
-
-interface IPageContentProps {
-  children: ReactNode;
-};
+import { IPageContentProps } from '../../types/pageContentProps';
 
 const PageContent: React.FC<IPageContentProps> = ({ children }) => {
   return (

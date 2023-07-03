@@ -1,12 +1,7 @@
-import { ReactNode } from 'react';
 import { NavLink, useMatch } from 'react-router-dom';
 
 import styles from './MenuItem.module.sass';
-
-interface IMenuItemProps {
-  children: ReactNode;
-  to: string;
-}
+import { IMenuItemProps } from '../../types/menuItemProps'
 
 const MenuItem: React.FC<IMenuItemProps> = ({ children, to }) => {
   const match = useMatch(to);
