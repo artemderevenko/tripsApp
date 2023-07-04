@@ -21,6 +21,7 @@ const initialState: ITour = {
   transportType: transportTypeOptions && transportTypeOptions[0] ? transportTypeOptions[0].value : '',
   seats: transportTypeOptions && transportTypeOptions[0] ? transportTypeOptions[0].seats : null,
   touristsList: [],
+  color: null,
 }
 
 const tourSlice = createSlice({

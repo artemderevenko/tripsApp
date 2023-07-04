@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
 import { collection, getDocs, DocumentData, doc, setDoc, updateDoc } from "firebase/firestore";
+import { useNavigate } from 'react-router-dom';
 
 import styles from './TourInfo.module.sass';
 import { PageHeader } from '../PageHeader';
@@ -18,13 +19,14 @@ import { useGetSelectOption } from '../../hooks/useGetSelectOption';
 import { useInput } from '../../hooks/useInput';
 import { useSelect } from '../../hooks/useSelect';
 import { ISelectOption } from '../../types/selectOption';
-import { INotify } from '../../types/notify';
-import { Notification } from '../Notification';
 import { useDownloadPdf } from '../../hooks/useDownloadPdf';
+import { ROUTES } from '../../constants/routes';
+import { useNotify } from '../../hooks/useNotify';
 
 const TourInfo: React.FC = ({ }) => {
-  const [notify, setNotify] = useState<INotify>({ type: '', text: '' });
+  const { setNotify } = useNotify();
 
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const managers = useAppdSelector(state => state.managers.list);
   const tour = useAppdSelector(state => state.tour);
@@ -200,17 +202,28 @@ const TourInfo: React.FC = ({ }) => {
     }
   }
 
+  const getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
   const addTour = (): void => {
     const db = database;
     const newRef = doc(collection(db, 'tours'));
     setDoc(newRef, {
       ...tour,
       id: newRef.id,
+      color: getRandomColor(),
     }).then(() => {
-      setNotify({ type: 'success', text: 'Tour added successfully!' });
+      setNotify({ isActive: true, message: 'Tour added successfully!', type: 'success' });
+      navigate(`/${ROUTES.Tours}`);
     })
       .catch((error) => {
-        setNotify({ type: 'error', text: 'Something went wrong. Please try again later.' });
+        setNotify({ isActive: true, message: 'Something went wrong. Please try again later.', type: 'error' });
       });
   }
 
@@ -220,10 +233,11 @@ const TourInfo: React.FC = ({ }) => {
       ...tour
     })
       .then(() => {
-        setNotify({ type: 'success', text: 'Tour changed successfully!' });
+        setNotify({ isActive: true, message: 'Tour changed successfully!', type: 'success' });
+        navigate(`/${ROUTES.Tours}`);
       })
       .catch((error) => {
-        setNotify({ type: 'error', text: 'Something went wrong. Please try again later.' });
+        setNotify({ isActive: true, message: 'Something went wrong. Please try again later.', type: 'error' });
       });
   }
 
@@ -340,14 +354,6 @@ const TourInfo: React.FC = ({ }) => {
           </div>
         </div>
       </div>
-      {
-        notify && notify.text ?
-          <Notification
-            type={notify.type}
-            message={notify.text}
-            afterHide={() => setNotify({ type: '', text: '' })}
-          /> : null
-      }
     </div>
   )
 };

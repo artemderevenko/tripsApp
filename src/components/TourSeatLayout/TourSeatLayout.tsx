@@ -10,13 +10,12 @@ import { SeatLayoutBus35 } from '../SeatLayoutBus35';
 import { useAppDispatch, useAppdSelector } from '../../hooks/reduxHook';
 import { changeTransportType } from '../../store/slices/tourSlice';
 import { ISelectOption } from '../../types/selectOption';
-import { INotify } from '../../types/notify';
-import { Notification } from '../Notification';
 import { CustomModal } from '../CustomModal';
 import { IChangeTransportTypePayload } from '../../types/changeTransportTypePayload';
+import { useNotify } from '../../hooks/useNotify';
 
 const TourSeatLayout: React.FC = ({ }) => {
-  const [notify, setNotify] = useState<INotify>({ type: '', text: '' });
+  const { setNotify } = useNotify();
   const [showChangeTransportModal, setShowChangeTransportModal] = useState<boolean>(false);
   const [transportInfo, setTransportInfo] = useState<IChangeTransportTypePayload>({ transportType: '', seats: 0 });
 
@@ -37,14 +36,14 @@ const TourSeatLayout: React.FC = ({ }) => {
     dispatch(changeTransportType(transportInfo));
     setTransportInfo({ transportType: '', seats: 0 });
     setShowChangeTransportModal(false);
-    setNotify({ type: 'success', text: 'Transport type changed successfully!' });
+    setNotify({ isActive: true, message: 'Transport type changed successfully!', type: 'success' });
   }
 
   const handlerChangeTransportType = (option: ISelectOption): void => {
     if (transportType === option.value) return;
     
     if (touristsList.length > option.seats) {
-      return setNotify({ type: 'warning', text: 'The number of seats of the selected transport is less than the number of tourists.' });
+      return setNotify({ isActive: true, type: 'warning', message: 'The number of seats of the selected transport is less than the number of tourists.' });
     }
     
     setTransportInfo({ transportType: option.value, seats: option.seats });
@@ -71,14 +70,6 @@ const TourSeatLayout: React.FC = ({ }) => {
       <div className={styles['seat-layout-box']}>
         {getSeatLayoutBox()}
       </div>
-      {
-        notify && notify.text ?
-          <Notification
-            type={notify.type}
-            message={notify.text}
-            afterHide={() => setNotify({ type: '', text: '' })}
-          /> : null
-      }
       {
         showChangeTransportModal ?
           <CustomModal

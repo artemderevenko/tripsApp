@@ -8,7 +8,6 @@ import { TRANSPORT_TYPE_OPTIONS as transportTypeOptions } from '../constants/sel
 import { ITour } from '../types/tour';
 import { IManager } from '../types/manager';
 import { CustomButton } from '../components/CustomButton';
-import { Notification } from '../components/Notification';
 import { useAppDispatch, useAppdSelector } from '../hooks/reduxHook';
 import { setTours } from '../store/slices/toursSlice';
 import { setManagers } from '../store/slices/managersSlice';
@@ -17,20 +16,20 @@ import { database } from '../firebase';
 import { ROUTES } from '../constants/routes';
 import { PageTitle } from '../components/PageTitle';
 import { PageContent } from '../components/PageContent';
-import { INotify } from '../types/notify';
 import { useFilteredList } from '../hooks/useFilteredList';
 import { Table } from '../components/Table';
+import { useNotify } from '../hooks/useNotify';
 
 const Tours: React.FC = () => {
   const [deleteTourId, setDeleteTourId] = useState<string>('');
   const [isFetching, setIsFetching] = useState<boolean>(true);
-  const [notify, setNotify] = useState<INotify>({ type: '', text: '' });
   const [activeSearchValue, setActiveSearchValue] = useState<string>('');
 
   const dispatch = useAppDispatch();
   const tours = useAppdSelector(state => state.tours.list);
   const managers = useAppdSelector(state => state.managers.list);
   const filteredTours = useFilteredList(tours, activeSearchValue, ['name', 'location']);
+  const { setNotify } = useNotify();
 
   useEffect(() => {
     getTourList();
@@ -78,11 +77,11 @@ const Tours: React.FC = () => {
     const db = database;
     deleteDoc(doc(db, 'tours', deleteTourId))
       .then(() => {
-        setNotify({ type: 'success', text: 'Tour deleted successfully!' });
+        setNotify({ isActive: true, type: 'success', message: 'Tour deleted successfully!' });
         getTourList();
       })
       .catch((error) => {
-        setNotify({ type: 'error', text: 'Something went wrong. Please try again later.' });
+        setNotify({ isActive: true, type: 'error', message: 'Something went wrong. Please try again later.' });
       });
     setDeleteTourId('');
   }
@@ -178,14 +177,6 @@ const Tours: React.FC = () => {
               >
                 <div>After you delete a tour, it's permanently deleted.</div>
               </CustomModal> : null
-          }
-          {
-            notify && notify.text ?
-              <Notification
-                type={notify.type}
-                message={notify.text}
-                afterHide={() => setNotify({ type: '', text: '' })}
-              /> : null
           }
         </>
       </PageContent>

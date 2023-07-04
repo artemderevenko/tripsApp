@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
@@ -6,12 +5,10 @@ import { useAppDispatch } from '../hooks/reduxHook';
 import { setUser } from '../store/slices/userSlice';
 import { AuthForm } from '../components/AuthForm';
 import { ROUTES } from '../constants/routes';
-import { Notification } from '../components/Notification';
-import { INotify } from '../types/notify';
+import { useNotify } from '../hooks/useNotify';
 
 const Login: React.FC = () => {
-  const [notify, setNotify] = useState<INotify>({type: '', text: ''});
-
+  const { notify, setNotify } = useNotify();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -28,7 +25,7 @@ const Login: React.FC = () => {
           id: uid,
         }));
 
-        setNotify({type: '', text: ''});
+        setNotify({isActive: false, type: '', message: ''});
         navigate(`/${ROUTES.Clients}`);
 
       })
@@ -49,8 +46,8 @@ const Login: React.FC = () => {
           message = 'Access to this account has been temporarily disabled due to many failed login attempts. You can try again later'
         }
 
-        if (notify.text !== message) {
-          setNotify({type: 'error', text: message});
+        if (notify.message !== message) {
+          setNotify({isActive: true, type: 'error', message: message});
         }
       });
   }
@@ -63,14 +60,6 @@ const Login: React.FC = () => {
         buttonName={'Sign in'}
         formType={'login'}
       />
-      {
-        notify && notify.text ?
-          <Notification
-            type={notify.type}
-            message={notify.text}
-            afterHide={() => setNotify({ type: '', text: '' })}
-          /> : null
-      }
     </>
   )
 };

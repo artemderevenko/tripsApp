@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
@@ -6,12 +5,10 @@ import { useAppDispatch } from '../hooks/reduxHook';
 import { setUser } from '../store/slices/userSlice';
 import { AuthForm } from '../components/AuthForm';
 import { ROUTES } from '../constants/routes';
-import { Notification } from '../components/Notification';
-import { INotify } from '../types/notify';
+import { useNotify } from '../hooks/useNotify';
 
 const Register: React.FC = () => {
-  const [notify, setNotify] = useState<INotify>({type: '', text: ''});
-
+  const { notify, setNotify } = useNotify();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -28,7 +25,7 @@ const Register: React.FC = () => {
           id: uid,
         }));
 
-        setNotify({type: '', text: ''});
+        setNotify({isActive: false, type: '', message: ''});
         navigate(`/${ROUTES.Clients}`);
 
       })
@@ -41,8 +38,8 @@ const Register: React.FC = () => {
           message = 'Email already exists'
         }
 
-        if (notify.text !== message) {
-          setNotify({type: 'error', text: message});
+        if (notify.message !== message) {
+          setNotify({isActive: true, type: 'error', message: message});
         }
       });
   }
@@ -55,14 +52,6 @@ const Register: React.FC = () => {
         buttonName={'Sign up'}
         formType={'register'}
       />
-      {
-        notify && notify.text ?
-          <Notification
-            type={notify.type}
-            message={notify.text}
-            afterHide={() => setNotify({ type: '', text: '' })}
-          /> : null
-      }
     </>
   )
 };

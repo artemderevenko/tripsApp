@@ -14,4 +14,5 @@ export interface ITour {
   seats: number | null;
   id: string;
   transportType: string;
+  color: string | null;
 };

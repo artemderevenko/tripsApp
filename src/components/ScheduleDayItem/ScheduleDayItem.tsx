@@ -54,13 +54,6 @@ const ScheduleDayItem: React.FC<IScheduleDayItemProps> = ({ date }) => {
             holidayList && holidayList.length ?
               holidayList.map((holiday) => (<div key={holiday.date} className={styles['event-holiday']}>{holiday.name}</div>)) : null
           }
-          {date.day() % 3 === 0 ?
-            <div>
-              <div className={styles['event-task']}>Call a friend to check the train departure time</div>
-              <div className={styles['event-more']}>5 more</div>
-            </div> : null
-          }
-
         </div>
       </div>
     </div>

@@ -3,7 +3,6 @@
 .day
   width: calc(100% / 7)
   height: auto
-  min-height: 100px
   margin-top: 20px
   @include flex-start-center
 
@@ -26,6 +25,7 @@
   border-radius: 50%
   cursor: pointer
   background-color: $content-bgd
+  margin-bottom: 10px
   transition: background-color .3s ease
   @include montserrat-normal(20px, 24px, $primary-text-color-dark)
   @include flex-center
@@ -43,31 +43,13 @@
 
 .events-list
   width: 100%
-  margin-top: 10px
 
 .event-holiday
   width: calc( 100% - 6px )
   margin: 2px 3px 0px 3px
-  background-color: $holiday-bgd
-  padding: 2px 4px
+  border: 1px solid $holiday-color
+  padding: 3px 4px
   border-radius: 4px
+  text-align: center
   @include ellipsis-text
-  @include montserrat-normal(12px, 14px, $primary-text-color-light)
-
-.event-task
-  width: calc( 100% - 8px )
-  margin: 3px 4px 0px 4px
-  background-color: $task-bgd
-  padding: 2px 4px
-  border-radius: 4px
-  @include ellipsis-text
-  @include montserrat-normal(12px, 14px, $primary-text-color-light)
-
-.event-more
-  width: calc( 100% - 6px )
-  margin: 2px 3px 0px 3px
-  background-color: $neutral-bgd
-  padding: 2px 4px
-  border-radius: 4px
-  @include ellipsis-text
-  @include montserrat-normal(12px, 14px, $primary-text-color-dark)
+  @include montserrat-normal(13px, 17px, $holiday-color)

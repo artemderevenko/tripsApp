@@ -11,19 +11,18 @@ import { database } from '../../firebase';
 import { IClient } from '../../types/client';
 import { TOURISTS_TABLE_FIELDS as tableFields } from '../../constants/touristsTableFields';
 import { useExcludedList } from '../../hooks/useExcludedList';
-import { Notification } from '../Notification';
 import { CustomModal } from '../CustomModal';
 import { Table } from '../Table';
 import { ISelectOption } from '../../types/selectOption';
-import { INotify } from '../../types/notify';
 import { MakePaymentModal } from '../MakePaymentModal';
 import { ITourist } from '../../types/tourist';
+import { useNotify } from '../../hooks/useNotify';
 
 const TourClientsList: React.FC = ({ }) => {
   const [touristsIds, setTouristsIds] = useState<string[]>([]);
   const [paymentTouristId, setPaymentTouristId] = useState<string>('');
   const [deleteTouristId, setDeleteTouristId] = useState<string>('');
-  const [notify, setNotify] = useState<INotify>({ type: '', text: '' });
+  const { setNotify } = useNotify();
 
   const dispatch = useAppDispatch();
   const clients = useAppdSelector(state => state.clients.list);
@@ -86,13 +85,13 @@ const TourClientsList: React.FC = ({ }) => {
   const deleteTouristFromTour = () => {
     dispatch(deleteTourist(deleteTouristId));
     setDeleteTouristId('');
-    setNotify({ type: 'success', text: 'Tourist deleted successfully!' });
+    setNotify({ isActive: true, message: 'Tourist deleted successfully!', type: 'success' });
   }
 
   const makePayment = (data: ITourist | null, paymentValue: string): void => {
     const id = paymentTouristId;
     dispatch(changePayment({ clientId: id, payment: paymentValue }))
-    setNotify({ type: 'success', text: 'Payment changed successfully!' });
+    setNotify({ isActive: true, message: 'Payment changed successfully!', type: 'success' });
     setPaymentTouristId('');
   }
 
@@ -102,7 +101,7 @@ const TourClientsList: React.FC = ({ }) => {
 
   const onDisableAddTouristButton = () => {
     if (seats && touristsList.length >= seats) {
-      setNotify({ type: 'warning', text: 'The number of tourists cannot exceed the number of seats in the selected transport.' });
+      setNotify({ isActive: true, message: 'The number of tourists cannot exceed the number of seats in the selected transport.', type: 'warning' });
     }
   }
 
@@ -184,14 +183,6 @@ const TourClientsList: React.FC = ({ }) => {
               Once deleted, you can add it again.
             </div>
           </CustomModal> : null
-      }
-      {
-        notify && notify.text ?
-          <Notification
-            type={notify.type}
-            message={notify.text}
-            afterHide={() => setNotify({ type: '', text: '' })}
-          /> : null
       }
     </div>
   )

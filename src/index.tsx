@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import './firebase';
 
 import { App } from './components/App';
 import './index.sass';
 import store from './store';
-import './firebase';
-
+import { NotifyProvider } from './hoc/NotifyProvider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,7 +16,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <Provider store={store}>
     <BrowserRouter>
-      <App />
+      <NotifyProvider>
+        <App />
+      </NotifyProvider>
     </BrowserRouter>
   </Provider>
 );

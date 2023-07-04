@@ -8,7 +8,7 @@ import { IPerson } from '../types/person';
 import { IManager } from '../types/manager';
 import { CustomButton } from '../components/CustomButton';
 import { AddManagerModal } from '../components/AddManagerModal';
-import { Notification } from '../components/Notification';
+
 import { useAppDispatch, useAppdSelector } from '../hooks/reduxHook';
 import { setManagers } from '../store/slices/managersSlice';
 import { CustomModal } from '../components/CustomModal';
@@ -17,17 +17,17 @@ import { PageTitle } from '../components/PageTitle';
 import { PageContent } from '../components/PageContent';
 import { useFilteredList } from '../hooks/useFilteredList';
 import { Table } from '../components/Table';
-import { INotify } from '../types/notify';
+import { useNotify } from '../hooks/useNotify';
 
 const Managers: React.FC = () => {
   const dispatch = useAppDispatch();
   const managers = useAppdSelector(state => state.managers.list);
+  const { setNotify } = useNotify();
 
   const [showAddManagerModal, setShowAddManagerModal] = useState<boolean>(false);
   const [deleteManagerId, setDeleteManagerId] = useState<string>('');
   const [editManagerData, setEditManagerData] = useState<IManager | null>(null);
   const [isFetching, setIsFetching] = useState<boolean>(true);
-  const [notify, setNotify] = useState<INotify>({type: '', text: ''});
   const [activeSearchValue, setActiveSearchValue] = useState<string>('');
   const filteredManagers = useFilteredList(managers, activeSearchValue, ['firstName', 'lastName', 'passport']);
 
@@ -61,11 +61,11 @@ const Managers: React.FC = () => {
       ...manager,
       id: newRef.id,
     }).then(() => {
-      setNotify({type: 'success', text: 'Manager added successfully!'});
+      setNotify({isActive: true, type: 'success', message: 'Manager added successfully!'});
       getManagerList();
     })
       .catch((error) => {
-        setNotify({type: 'error', text: 'Something went wrong. Please try again later.'});
+        setNotify({isActive: true, type: 'error', message: 'Something went wrong. Please try again later.'});
       });
   }
 
@@ -75,11 +75,11 @@ const Managers: React.FC = () => {
       ...manager
     })
       .then(() => {
-        setNotify({type: 'success', text: 'Manager changed successfully!'});
+        setNotify({isActive: true, type: 'success', message: 'Manager changed successfully!'});
         getManagerList();
       })
       .catch((error) => {
-        setNotify({type: 'error', text: 'Something went wrong. Please try again later.'});
+        setNotify({isActive: true, type: 'error', message: 'Something went wrong. Please try again later.'});
       });
   }
 
@@ -87,11 +87,11 @@ const Managers: React.FC = () => {
     const db = database;
     deleteDoc(doc(db, 'managers', deleteManagerId))
       .then(() => {
-        setNotify({type: 'success', text: 'Manager deleted successfully!'});
+        setNotify({isActive: true, type: 'success', message: 'Manager deleted successfully!'});
         getManagerList();
       })
       .catch((error) => {
-        setNotify({type: 'error', text: 'Something went wrong. Please try again later.'});
+        setNotify({isActive: true, type: 'error', message: 'Something went wrong. Please try again later.'});
       });
     setDeleteManagerId('');
   }
@@ -180,14 +180,6 @@ const Managers: React.FC = () => {
               >
                 <div>After you delete a manager, it's permanently deleted.</div>
               </CustomModal> : null
-          }
-          {
-            notify && notify.text ?
-              <Notification
-                type={notify.type}
-                message={notify.text}
-                afterHide={() => setNotify({ type: '', text: '' })}
-              /> : null
           }
         </>
       </PageContent>
