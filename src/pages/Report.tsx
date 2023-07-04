@@ -1,16 +1,17 @@
 import { PageTitle } from '../components/PageTitle';
 import { PageContent } from '../components/PageContent';
+import { NoResults } from '../components/NoResults';
 
 const Report: React.FC = () => {
   return (
     <>
       <PageTitle>Report</PageTitle>
       <PageContent>
-        <>
-          <div className="report-page">
-            Report
-          </div>
-        </>
+        <NoResults
+          text={(<div>
+            Coming Soon: This page under development
+          </div>)}
+        />
       </PageContent>
     </>
   )

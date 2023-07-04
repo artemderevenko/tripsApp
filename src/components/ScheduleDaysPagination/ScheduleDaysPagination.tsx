@@ -3,9 +3,15 @@ import { Pagination } from '../Pagination';
 import { CustomButton } from '../CustomButton';
 import { IScheduleDaysPaginationProps } from '../../types/scheduleDaysPaginationProps';
 
-const ScheduleDaysPagination: React.FC<IScheduleDaysPaginationProps> = ({ handlePrev, handleNext, scheduleTitle, backToToday }) => {
+const ScheduleDaysPagination: React.FC<IScheduleDaysPaginationProps> = ({ 
+  handlePrev, 
+  handleNext, 
+  scheduleTitle, 
+  backToToday,
+  className,
+}) => {
   return (
-    <div className={styles['schedule-days-pagination']}>
+    <div className={`${styles['schedule-days-pagination']} ${className || ''}`}>
       <div className={styles['today-button']}>
       <CustomButton
         onClick={backToToday}

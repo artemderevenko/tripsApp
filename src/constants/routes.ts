@@ -4,7 +4,7 @@ export const ROUTES = {
   'Clients': 'clients',
   'Managers': 'managers',
   'Tours': 'tours',
-  'Schedule': 'schedule',
+  'Schedule': 'schedule/',
   'Report': 'report',
   'TourDetails': 'tours/',
   'TourNew': 'tours/new',

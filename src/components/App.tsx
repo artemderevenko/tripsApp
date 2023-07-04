@@ -6,7 +6,7 @@ import { PageLoader } from './PageLoader';
 import { Layout } from './Layout';
 import { AuthChecker } from '../hoc/AuthChecker';
 import { useNotify } from '../hooks/useNotify';
-import { Notification } from '../components/Notification';
+import { Notification } from './Notification';
 
 const Register = lazy(() => import('../pages/Register'));
 const Login = lazy(() => import('../pages/Login'));
@@ -65,16 +65,16 @@ const App: React.FC = () => {
               <TourDetails />
             </Suspense>
           } />
-          <Route path={ROUTES.Schedule} element={
+          <Route path={`${ROUTES.Schedule}:paramsMode/:paramsDate?`} element={
             <Suspense fallback={<PageLoader />}>
               <Schedule />
-            </Suspense>
-          } />
+              </Suspense>
+            } />
           <Route path={ROUTES.Report} element={
-            <Suspense fallback={<PageLoader />}>
+              <Suspense fallback={<PageLoader />}>
               <Report />
-            </Suspense>
-          } />
+              </Suspense>
+            } />
           <Route path="*" element={
             <Suspense fallback={<PageLoader />}>
               <NotFoundPage />

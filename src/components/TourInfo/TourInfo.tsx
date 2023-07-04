@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import { collection, getDocs, DocumentData, doc, setDoc, updateDoc } from "firebase/firestore";
-import { useNavigate } from 'react-router-dom';
 
 import styles from './TourInfo.module.sass';
 import { PageHeader } from '../PageHeader';

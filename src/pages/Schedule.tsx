@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import moment from 'moment';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import { PageHeader } from '../components/PageHeader';
 import { CustomButtonSelect } from '../components/CustomButtonSelect';
 import { IHoliday } from '../types/holiday';
 import { CALENDAR_MODE_OPTIONS as calendarModeOptions, CALENDAR_MODE as mode } from '../constants/selectOptions';
-import { ISelectOption } from '../types/selectOption';
 import { ScheduleWeek } from '../components/ScheduleWeek';
 import { ScheduleMonth } from '../components/ScheduleMonth';
 import { ScheduleYear } from '../components/ScheduleYear';
@@ -15,11 +15,14 @@ import { addHolidays } from '../store/slices/holydaySlice';
 import { PageTitle } from '../components/PageTitle';
 import { PageContent } from '../components/PageContent';
 import { useGetSelectOption } from '../hooks/useGetSelectOption';
+import { ROUTES } from '../constants/routes';
 
 const Schedule: React.FC = () => {
   const dispatch = useAppDispatch();
+  const { paramsMode } = useParams();
+  const navigate = useNavigate();
 
-  const [calendarMode, setCalendarMode] = useState<string>(mode && mode.week ? mode.week : '');
+  const [calendarMode, setCalendarMode] = useState<string>(paramsMode || mode.week);
 
   const fetchHolidayList = async (): Promise<void> => {
     try {
@@ -64,6 +67,11 @@ const Schedule: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handlerSetCalendarMode = (value: string) => {
+    setCalendarMode(value);
+    navigate(`/${ROUTES.Schedule}${value}/`);
+  }
+
   return (
     <>
       <PageTitle>Tour schedule</PageTitle>
@@ -73,7 +81,7 @@ const Schedule: React.FC = () => {
             <CustomButtonSelect
               selectValue={useGetSelectOption(calendarMode, calendarModeOptions)}
               selectOptions={calendarModeOptions}
-              onChange={(option) => setCalendarMode(option.value)}
+              onChange={(option) => handlerSetCalendarMode(option.value)}
             />
           </PageHeader>
           {
