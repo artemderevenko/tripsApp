@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import moment from 'moment';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 
 import { PageHeader } from '../components/PageHeader';
 import { CustomButtonSelect } from '../components/CustomButtonSelect';
@@ -19,10 +19,22 @@ import { ROUTES } from '../constants/routes';
 
 const Schedule: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { paramsMode } = useParams();
+  const { modeParam } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const dateParam = params.get('date');
 
-  const [calendarMode, setCalendarMode] = useState<string>(paramsMode || mode.week);
+  const [calendarMode, setCalendarMode] = useState<string>(modeParam || mode.week);
+
+  useEffect(() => {
+    fetchHolidayList()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    setCalendarMode(modeParam || '');
+  }, [modeParam]);
 
   const fetchHolidayList = async (): Promise<void> => {
     try {
@@ -62,14 +74,9 @@ const Schedule: React.FC = () => {
     return listOfMonths;
   }
 
-  useEffect(() => {
-    fetchHolidayList()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const handlerSetCalendarMode = (value: string) => {
     setCalendarMode(value);
-    navigate(`/${ROUTES.Schedule}${value}/`);
+    navigate(`/${ROUTES.Schedule}${value}`);
   }
 
   return (

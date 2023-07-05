@@ -4,4 +4,5 @@ export interface IScheduleDaysPaginationProps {
   scheduleTitle: string;
   backToToday: () => void;
   className?: string;
+  titleClassName?: string;
 }

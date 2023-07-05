@@ -65,7 +65,7 @@ const App: React.FC = () => {
               <TourDetails />
             </Suspense>
           } />
-          <Route path={`${ROUTES.Schedule}:paramsMode/:paramsDate?`} element={
+          <Route path={`${ROUTES.Schedule}:modeParam/`} element={
             <Suspense fallback={<PageLoader />}>
               <Schedule />
               </Suspense>

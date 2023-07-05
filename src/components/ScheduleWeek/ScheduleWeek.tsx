@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import moment from 'moment';
 import { collection, getDocs, DocumentData } from "firebase/firestore";
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 
 import styles from './ScheduleWeek.module.sass';
 import stylesWeekRow from '../ScheduleWeekRow/ScheduleWeekRow.module.sass';
+import stylesPagination from '../ScheduleDaysPagination/ScheduleDaysPagination.module.sass';
 import { ScheduleDaysPagination } from '../ScheduleDaysPagination';
 import { ScheduleDaysHeader } from '../ScheduleDaysHeader';
 import { ITour } from '../../types/tour';
@@ -11,6 +13,7 @@ import { setTours } from '../../store/slices/toursSlice';
 import { database } from '../../firebase';
 import { useAppDispatch, useAppdSelector } from '../../hooks/reduxHook';
 import { ScheduleWeekRow } from '../ScheduleWeekRow';
+import { ROUTES } from '../../constants/routes';
 
 const ScheduleWeek: React.FC = () => {
   const [daysWeek, setDaysWeek] = useState<moment.Moment[]>([]);
@@ -20,9 +23,14 @@ const ScheduleWeek: React.FC = () => {
 
   const dispatch = useAppDispatch();
   const tours = useAppdSelector(state => state.tours.list);
+  const { modeParam } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const dateParam = params.get('date');
 
   useEffect(() => {
-    getStartDaysWeek();
+    getStartDaysWeek(dateParam);
     getTourList();
     // eslint-disable-next-line react-hooks/exhaustive-deps  
   }, []);
@@ -57,8 +65,8 @@ const ScheduleWeek: React.FC = () => {
     setScheduleTitle(scheduleTitle);
   }
 
-  const getStartDaysWeek = (): void => {
-    const currentDate = moment();
+  const getStartDaysWeek = (date?: string | null): void => {
+    const currentDate = date ? moment(date, 'DD/MM/YYYY', true) : moment();
     const currentDateDay = currentDate.day();
     const getFirstDayWeek = currentDate.startOf('week').add(currentDateDay === 0 ? -6 : 1, 'day');
     const daysList = Array.from({ length: 7 }, (_, index) => {
@@ -96,7 +104,10 @@ const ScheduleWeek: React.FC = () => {
       const copyFirstDay = daysWeek[0].clone();
       return moment(copyFirstDay).add(index - 7, 'day');
     });
+
+    const dateString = daysList[0].format('DD/MM/YYYY');
     handleScrollDirection('right', daysList);
+    navigate(`/${ROUTES.Schedule}${modeParam}?date=${encodeURIComponent(dateString)}`);
   }
 
   const handleNext = (): void => {
@@ -104,7 +115,9 @@ const ScheduleWeek: React.FC = () => {
       const copyFirstDay = daysWeek[daysWeek.length - 1].clone();
       return moment(copyFirstDay).add(index + 1, 'day');
     });
+    const dateString = daysList[0].format('DD/MM/YYYY');
     handleScrollDirection('left', daysList);
+    navigate(`/${ROUTES.Schedule}${modeParam}?date=${encodeURIComponent(dateString)}`);
   }
 
   const getScrollClass = (): string => {
@@ -112,7 +125,8 @@ const ScheduleWeek: React.FC = () => {
   }
 
   const backToToday = (): void => {
-    getStartDaysWeek()
+    getStartDaysWeek();
+    navigate(`/${ROUTES.Schedule}${modeParam}`);
   }
 
   return (
@@ -122,15 +136,16 @@ const ScheduleWeek: React.FC = () => {
         handleNext={handleNext}
         scheduleTitle={scheduleTitle}
         backToToday={backToToday}
+        titleClassName={`${fadeAnimation ? stylesPagination['fade'] : ''}`}
       />
       {
         daysWeek && daysWeek.length ?
           <div className={styles['schedule-week-wrap']}>
             <ScheduleDaysHeader mode={'week'} />
-            <ScheduleWeekRow 
-            tours={tours}
-            daysWeek={daysWeek}
-            className={getScrollClass()}
+            <ScheduleWeekRow
+              tours={tours}
+              daysWeek={daysWeek}
+              className={getScrollClass()}
             />
           </div> : null
       }

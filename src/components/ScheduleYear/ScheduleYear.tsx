@@ -2,18 +2,19 @@ import { useState, useEffect } from 'react';
 import moment from 'moment';
 
 import styles from './ScheduleYear.module.sass';
-import paginationStyles from '../ScheduleDaysPagination/ScheduleDaysPagination.module.sass';
+import stylesPagination from '../ScheduleDaysPagination/ScheduleDaysPagination.module.sass';
 import { MONTHS_LIST as monthsList } from '../../constants/monthsList';
 import { ScheduleDaysPagination } from '../ScheduleDaysPagination';
 import { ScheduleMonthItem } from '../ScheduleMonthItem';
 
 const ScheduleYear: React.FC = () => {
-  const [year, setYear] = useState<number>();
+  const [year, setYear] = useState<number | ''>('');
   const [scrollDirection, setScrollDirection] = useState<string>('');
   const [fadeAnimation, setFadeAnimation] = useState<boolean>(true);
 
   const getStartYear = (): void => {
-    setYear(moment().year());
+    const currentDate = moment();
+    setYear(currentDate.year());
     setFadeAnimation(true);
 
     setTimeout(() => {
@@ -65,7 +66,8 @@ const ScheduleYear: React.FC = () => {
           handleNext={handleNext}
           scheduleTitle={`${year}`}
           backToToday={backToToday}
-          className={paginationStyles['schedule-year-pagination']}
+          className={stylesPagination['schedule-year-pagination']}
+          titleClassName={`${fadeAnimation ? stylesPagination['fade'] : ''}`}
         />
         {
           monthsList && monthsList.length ?

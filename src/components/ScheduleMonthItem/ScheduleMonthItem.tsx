@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import moment from 'moment';
+import { NavLink } from 'react-router-dom';
 
 import styles from './ScheduleMonthItem.module.sass';
 import { ScheduleDaysHeader } from '../ScheduleDaysHeader';
 import { IScheduleMonthItemProps } from '../../types/scheduleMonthItemProps';
+import { CALENDAR_MODE as mode } from '../../constants/selectOptions';
+import { ROUTES } from '../../constants/routes';
 
 const ScheduleMonthItem: React.FC<IScheduleMonthItemProps> = ({ month, year }) => {
   const [daysMonth, setDaysMonth] = useState<(moment.Moment | null)[]>([]);
@@ -44,6 +47,11 @@ const ScheduleMonthItem: React.FC<IScheduleMonthItemProps> = ({ month, year }) =
     return dateA.format(format) === dateB.format(format);
   }
 
+  const getPath = (date: moment.Moment): string => {
+    const dateString = date.format('DD/MM/YYYY');
+    return `/${ROUTES.Schedule}${mode.week}?date=${encodeURIComponent(dateString)}`;
+  }
+
   return (
     <div className={styles['schedule-month-item']}>
       <div className={styles['month-name']}>{month.label}</div>
@@ -58,9 +66,12 @@ const ScheduleMonthItem: React.FC<IScheduleMonthItemProps> = ({ month, year }) =
                     key={item.format()}
                     className={`${styles['month-days-item']} ${getScrollClass()}`}
                   >
-                    <div className={`${styles['date-button']} ${compareDates(moment(), item, 'D-M-YY') ? styles['date-button-today'] : ''}`}>
+                    <NavLink
+                      className={`${styles['date-button']} ${compareDates(moment(), item, 'D-M-YY') ? styles['date-button-today'] : ''}`}
+                      to={getPath(item)}
+                    >
                       {item.format('D')}
-                    </div>
+                    </NavLink>
                   </div> :
 
                   <div

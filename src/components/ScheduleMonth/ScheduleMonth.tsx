@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import moment from 'moment';
 import { collection, getDocs, DocumentData } from "firebase/firestore";
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 
 import styles from './ScheduleMonth.module.sass';
 import stylesWeekRow from '../ScheduleWeekRow/ScheduleWeekRow.module.sass';
+import stylesPagination from '../ScheduleDaysPagination/ScheduleDaysPagination.module.sass';
 import { ScheduleDaysPagination } from '../ScheduleDaysPagination';
 import { ScheduleDaysHeader } from '../ScheduleDaysHeader';
 import { ITour } from '../../types/tour';
@@ -11,6 +13,7 @@ import { setTours } from '../../store/slices/toursSlice';
 import { database } from '../../firebase';
 import { useAppDispatch, useAppdSelector } from '../../hooks/reduxHook';
 import { ScheduleWeekRow } from '../ScheduleWeekRow';
+import { ROUTES } from '../../constants/routes';
 
 const ScheduleMonth: React.FC = () => {
   const [daysWeek, setDaysWeek] = useState<Array<[] | moment.Moment[]>>([]);
@@ -21,9 +24,14 @@ const ScheduleMonth: React.FC = () => {
 
   const dispatch = useAppDispatch();
   const tours = useAppdSelector(state => state.tours.list);
+  const { modeParam } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const dateParam = params.get('date');
 
   useEffect(() => {
-    getStartDaysMonth();
+    getStartDaysMonth(dateParam);
     getTourList();
     // eslint-disable-next-line react-hooks/exhaustive-deps  
   }, []);
@@ -72,8 +80,8 @@ const ScheduleMonth: React.FC = () => {
     return daysList;
   };
 
-  const getStartDaysMonth = (): void => {
-    const currentDate = moment();
+  const getStartDaysMonth = (date?: string | null): void => {
+    const currentDate = date ? moment(date, 'DD/MM/YYYY', true) : moment();;
     const daysMonthList = getDaysMonth(currentDate);
     setDaysMonth(daysMonthList);
     setDaysWeek(getWeeksList(daysMonthList, 7))
@@ -104,13 +112,19 @@ const ScheduleMonth: React.FC = () => {
   const handlePrev = (): void => {
     const currentMonthFirstDay = daysMonth[0];
     const middlePrevMonth = moment(currentMonthFirstDay).add(-15, 'day');
-    handleScrollDirection('right', getDaysMonth(middlePrevMonth));
+    const days = getDaysMonth(middlePrevMonth);
+    const firstDayOfMonth = days[15].startOf('month').format('DD/MM/YYYY');
+    handleScrollDirection('right', days);
+    navigate(`/${ROUTES.Schedule}${modeParam}?date=${encodeURIComponent(firstDayOfMonth)}`);
   }
 
   const handleNext = (): void => {
     const currentMonthLastDay = daysMonth[daysMonth.length - 1];
     const middleNextMonth = moment(currentMonthLastDay).add(15, 'day');
-    handleScrollDirection('left', getDaysMonth(middleNextMonth));
+    const days = getDaysMonth(middleNextMonth);
+    const firstDayOfMonth = days[15].startOf('month').format('DD/MM/YYYY');
+    handleScrollDirection('left', days);
+    navigate(`/${ROUTES.Schedule}${modeParam}?date=${encodeURIComponent(firstDayOfMonth)}`);
   }
 
   const getScrollClass = (): string => {
@@ -118,7 +132,8 @@ const ScheduleMonth: React.FC = () => {
   }
 
   const backToToday = (): void => {
-    getStartDaysMonth()
+    getStartDaysMonth();
+    navigate(`/${ROUTES.Schedule}${modeParam}`);
   }
 
   return (
@@ -128,6 +143,7 @@ const ScheduleMonth: React.FC = () => {
         handleNext={handleNext}
         scheduleTitle={scheduleTitle}
         backToToday={backToToday}
+        titleClassName={`${fadeAnimation ? stylesPagination['fade'] : ''}`}
       />
       {
         daysMonth && daysMonth.length ?

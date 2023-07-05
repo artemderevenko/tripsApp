@@ -9,6 +9,7 @@ const ScheduleDaysPagination: React.FC<IScheduleDaysPaginationProps> = ({
   scheduleTitle, 
   backToToday,
   className,
+  titleClassName,
 }) => {
   return (
     <div className={`${styles['schedule-days-pagination']} ${className || ''}`}>
@@ -23,7 +24,7 @@ const ScheduleDaysPagination: React.FC<IScheduleDaysPaginationProps> = ({
         handlePrev={handlePrev}
         handleNext={handleNext}
       />
-      <div className={styles['schedule-title']}>{scheduleTitle}</div>
+      <div className={`${styles['schedule-title']} ${titleClassName || ''}`}>{scheduleTitle}</div>
     </div>
   )
 };
