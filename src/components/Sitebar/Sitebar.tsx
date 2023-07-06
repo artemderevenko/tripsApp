@@ -1,20 +1,11 @@
 import { MenuItem } from '../MenuItem';
-import { useNavigate } from 'react-router-dom';
 
 import styles from './Sitebar.module.sass';
-import { removeUser } from '../../store/slices/userSlice';
-import { useAppDispatch } from '../../hooks/reduxHook';
 import { MENU as menu } from '../../constants/menu';
-import { ROUTES } from '../../constants/routes';
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 const Sitebar: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
-  const logOut = () => {
-    dispatch(removeUser());
-    navigate(ROUTES.Login);
-  }
+  const { logOut } = useAuthContext();
 
   return (
     <div className={styles.sitebar}>

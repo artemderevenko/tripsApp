@@ -4,9 +4,10 @@ import { Route, Routes } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 import { PageLoader } from './PageLoader';
 import { Layout } from './Layout';
-import { AuthChecker } from '../hoc/AuthChecker';
+import { AuthProvider } from '../hoc/AuthProvider';
 import { useNotify } from '../hooks/useNotify';
 import { Notification } from './Notification';
+import { RequireAuth } from '../hoc/RequireAuth';
 
 const Register = lazy(() => import('../pages/Register'));
 const Login = lazy(() => import('../pages/Login'));
@@ -22,7 +23,7 @@ const App: React.FC = () => {
   const { notify, setNotify } = useNotify();
 
   return (
-    <>
+    <AuthProvider>
       <Routes>
         <Route path={ROUTES.Register} element={
           <Suspense fallback={<PageLoader />}>
@@ -36,49 +37,67 @@ const App: React.FC = () => {
         } />
         <Route path="/" element={<Layout />}>
           <Route index element={
-            <Suspense fallback={<PageLoader />}>
-              <Clients />
-            </Suspense>
+            <RequireAuth>
+              <Suspense fallback={<PageLoader />}>
+                <Clients />
+              </Suspense>
+            </RequireAuth>
           } />
           <Route path={ROUTES.Clients} element={
-            <Suspense fallback={<PageLoader />}>
-              <Clients />
-            </Suspense>
+            <RequireAuth>
+              <Suspense fallback={<PageLoader />}>
+                <Clients />
+              </Suspense>
+            </RequireAuth>
           } />
           <Route path={ROUTES.Managers} element={
-            <Suspense fallback={<PageLoader />}>
-              <Managers />
-            </Suspense>
+            <RequireAuth>
+              <Suspense fallback={<PageLoader />}>
+                <Managers />
+              </Suspense>
+            </RequireAuth>
           } />
           <Route path={ROUTES.Tours} element={
-            <Suspense fallback={<PageLoader />}>
-              <Tours />
-            </Suspense>
+            <RequireAuth>
+              <Suspense fallback={<PageLoader />}>
+                <Tours />
+              </Suspense>
+            </RequireAuth>
           } />
           <Route path={ROUTES.TourNew} element={
-            <Suspense fallback={<PageLoader />}>
-              <TourDetails />
-            </Suspense>
+            <RequireAuth>
+              <Suspense fallback={<PageLoader />}>
+                <TourDetails />
+              </Suspense>
+            </RequireAuth>
           } />
           <Route path={`${ROUTES.TourDetails}:paramsId`} element={
-            <Suspense fallback={<PageLoader />}>
-              <TourDetails />
-            </Suspense>
+            <RequireAuth>
+              <Suspense fallback={<PageLoader />}>
+                <TourDetails />
+              </Suspense>
+            </RequireAuth>
           } />
           <Route path={`${ROUTES.Schedule}:modeParam/`} element={
-            <Suspense fallback={<PageLoader />}>
-              <Schedule />
-              </Suspense>
-            } />
-          <Route path={ROUTES.Report} element={
+            <RequireAuth>
               <Suspense fallback={<PageLoader />}>
-              <Report />
+                <Schedule />
               </Suspense>
-            } />
+            </RequireAuth>
+          } />
+          <Route path={ROUTES.Report} element={
+            <RequireAuth>
+              <Suspense fallback={<PageLoader />}>
+                <Report />
+              </Suspense>
+            </RequireAuth>
+          } />
           <Route path="*" element={
-            <Suspense fallback={<PageLoader />}>
-              <NotFoundPage />
-            </Suspense>
+            <RequireAuth>
+              <Suspense fallback={<PageLoader />}>
+                <NotFoundPage />
+              </Suspense>
+            </RequireAuth>
           } />
         </Route>
       </Routes>
@@ -90,7 +109,7 @@ const App: React.FC = () => {
             afterHide={() => setNotify({ isActive: false, message: '', type: '' })}
           /> : null
       }
-    </>
+    </AuthProvider>
   )
 };
 

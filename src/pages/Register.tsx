@@ -23,6 +23,7 @@ const Register: React.FC = () => {
           email: email,
           token: refreshToken,
           id: uid,
+          isFetchingAuth: false
         }));
 
         setNotify({isActive: false, type: '', message: ''});

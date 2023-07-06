@@ -6,6 +6,7 @@ const initialState: IUser = {
   email: null,
   token: null,
   id: null,
+  isFetchingAuth: true,
 }
 
 const userSlice = createSlice({
@@ -16,14 +17,19 @@ const userSlice = createSlice({
       state.email = actions.payload.email;
       state.token = actions.payload.token;
       state.id = actions.payload.id;
+      state.isFetchingAuth = actions.payload.isFetchingAuth;
     },
     removeUser: (state) => {
       state.email = null;
       state.token = null;
       state.id = null;
+      state.isFetchingAuth = false;
+    },
+    changefetchStatus: (state, actions: PayloadAction<boolean>) => {
+      state.isFetchingAuth = actions.payload;
     },
   },
 });
 
-export const { setUser, removeUser } = userSlice.actions;
+export const { setUser, removeUser, changefetchStatus } = userSlice.actions;
 export default userSlice.reducer;
