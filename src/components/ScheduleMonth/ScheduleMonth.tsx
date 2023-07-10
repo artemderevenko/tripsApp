@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import moment from 'moment';
-import { collection, getDocs, DocumentData } from "firebase/firestore";
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 
 import styles from './ScheduleMonth.module.sass';
@@ -10,10 +9,10 @@ import { ScheduleDaysPagination } from '../ScheduleDaysPagination';
 import { ScheduleDaysHeader } from '../ScheduleDaysHeader';
 import { ITour } from '../../types/tour';
 import { setTours } from '../../store/slices/toursSlice';
-import { database } from '../../firebase';
-import { useAppDispatch, useAppdSelector } from '../../hooks/reduxHook';
+import { useAppdSelector } from '../../hooks/reduxHook';
 import { ScheduleWeekRow } from '../ScheduleWeekRow';
 import { ROUTES } from '../../constants/routes';
+import { useListFetching } from '../../hooks/useListFetching';
 
 const ScheduleMonth: React.FC = () => {
   const [daysWeek, setDaysWeek] = useState<Array<[] | moment.Moment[]>>([]);
@@ -22,13 +21,13 @@ const ScheduleMonth: React.FC = () => {
   const [fadeAnimation, setFadeAnimation] = useState<boolean>(true);
   const [scheduleTitle, setScheduleTitle] = useState<string>('');
 
-  const dispatch = useAppDispatch();
   const tours = useAppdSelector(state => state.tours.list);
   const { modeParam } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const dateParam = params.get('date');
+  const { fetchData } = useListFetching<ITour>(setTours, 'tours');
 
   useEffect(() => {
     getStartDaysMonth(dateParam);
@@ -93,20 +92,8 @@ const ScheduleMonth: React.FC = () => {
     }, 300);
   }
 
-  const getTourList = async (): Promise<void> => {
-    const db = database;
-    try {
-      const querySnapshot = await getDocs(collection(db, 'tours'));
-      const tourList: DocumentData[] = querySnapshot.docs.map((doc) => doc.data());
-      const typedTourList: ITour[] = tourList as ITour[];
-      if (tourList && tourList.length) {
-        dispatch(setTours(typedTourList));
-      } else {
-        dispatch(setTours([]));
-      }
-    } catch (error) {
-      dispatch(setTours([]));
-    }
+  const getTourList = () => {
+    fetchData();
   }
 
   const handlePrev = (): void => {

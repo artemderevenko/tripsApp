@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { collection, doc, getDocs, setDoc, updateDoc, deleteDoc, DocumentData } from "firebase/firestore";
+import { collection, doc, setDoc, updateDoc, deleteDoc } from "firebase/firestore";
 
 import { PageHeader } from '../components/PageHeader';
 import { CustomSearchField } from '../components/CustomSearchField';
@@ -8,7 +8,7 @@ import { IPerson } from '../types/person';
 import { IClient } from '../types/client';
 import { CustomButton } from '../components/CustomButton';
 import { AddClientModal } from '../components/AddClientModal';
-import { useAppDispatch, useAppdSelector } from '../hooks/reduxHook';
+import { useAppdSelector } from '../hooks/reduxHook';
 import { setClients } from '../store/slices/clientsSlice';
 import { CustomModal } from '../components/CustomModal';
 import { database } from '../firebase';
@@ -17,41 +17,27 @@ import { PageContent } from '../components/PageContent';
 import { useFilteredList } from '../hooks/useFilteredList';
 import { Table } from '../components/Table';
 import { useNotify } from '../hooks/useNotify';
+import { useListFetching } from '../hooks/useListFetching';
 
 const Clients: React.FC = () => {
 
-  const dispatch = useAppDispatch();
   const clients = useAppdSelector(state => state.clients.list);
   const { setNotify } = useNotify();
 
   const [showAddClientModal, setShowAddClientModal] = useState<boolean>(false);
   const [deleteClientId, setDeleteClientId] = useState<string>('');
   const [editClientData, setEditClientData] = useState<IClient | null>(null);
-  const [isFetching, setIsFetching] = useState<boolean>(true);
   const [activeSearchValue, setActiveSearchValue] = useState<string>('');
   const filteredClients = useFilteredList(clients, activeSearchValue, ['firstName', 'lastName', 'passport']);
+  const { fetchData, isFetching } = useListFetching<IClient>(setClients, 'clients');
 
   useEffect(() => {
     getClientList()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getClientList = async (): Promise<void> => {
-    setIsFetching(true);
-    const db = database;
-    try {
-      const querySnapshot = await getDocs(collection(db, 'clients'));
-      const clientList: DocumentData[] = querySnapshot.docs.map((doc) => doc.data());
-      const typedClientList: IClient[] = clientList as IClient[];
-      if (clientList && clientList.length) {
-        dispatch(setClients(typedClientList));
-      } else {
-        dispatch(setClients([]));
-      }
-    } catch (error) {
-      dispatch(setClients([]));
-    }
-    setIsFetching(false);
+  const getClientList = () => {
+    fetchData();
   }
 
   const addClient = (client: IPerson): void => {

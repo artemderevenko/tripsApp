@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { collection, doc, getDocs, setDoc, updateDoc, deleteDoc, DocumentData } from "firebase/firestore";
+import { collection, doc, setDoc, updateDoc, deleteDoc } from "firebase/firestore";
 
 import { PageHeader } from '../components/PageHeader';
 import { CustomSearchField } from '../components/CustomSearchField';
@@ -8,8 +8,7 @@ import { IPerson } from '../types/person';
 import { IManager } from '../types/manager';
 import { CustomButton } from '../components/CustomButton';
 import { AddManagerModal } from '../components/AddManagerModal';
-
-import { useAppDispatch, useAppdSelector } from '../hooks/reduxHook';
+import { useAppdSelector } from '../hooks/reduxHook';
 import { setManagers } from '../store/slices/managersSlice';
 import { CustomModal } from '../components/CustomModal';
 import { database } from '../firebase';
@@ -18,40 +17,26 @@ import { PageContent } from '../components/PageContent';
 import { useFilteredList } from '../hooks/useFilteredList';
 import { Table } from '../components/Table';
 import { useNotify } from '../hooks/useNotify';
+import { useListFetching } from '../hooks/useListFetching';
 
 const Managers: React.FC = () => {
-  const dispatch = useAppDispatch();
   const managers = useAppdSelector(state => state.managers.list);
   const { setNotify } = useNotify();
 
   const [showAddManagerModal, setShowAddManagerModal] = useState<boolean>(false);
   const [deleteManagerId, setDeleteManagerId] = useState<string>('');
   const [editManagerData, setEditManagerData] = useState<IManager | null>(null);
-  const [isFetching, setIsFetching] = useState<boolean>(true);
   const [activeSearchValue, setActiveSearchValue] = useState<string>('');
   const filteredManagers = useFilteredList(managers, activeSearchValue, ['firstName', 'lastName', 'passport']);
+  const { fetchData, isFetching } = useListFetching<IManager>(setManagers, 'managers');
 
   useEffect(() => {
     getManagerList()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getManagerList = async (): Promise<void> => {
-    setIsFetching(true);
-    const db = database;
-    try {
-      const querySnapshot = await getDocs(collection(db, 'managers'));
-      const managerList: DocumentData[] = querySnapshot.docs.map((doc) => doc.data());
-      const typedManagerList: IManager[] = managerList as IManager[];
-      if (managerList && managerList.length) {
-        dispatch(setManagers(typedManagerList));
-      } else {
-        dispatch(setManagers([]));
-      }
-    } catch (error) {
-      dispatch(setManagers([]));
-    }
-    setIsFetching(false);
+  const getManagerList = () => {
+    fetchData();
   }
 
   const addManager = (manager: IPerson): void => {

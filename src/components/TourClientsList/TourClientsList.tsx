@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { collection, getDocs, DocumentData } from "firebase/firestore";
 
 import styles from './TourClientsList.module.sass';
 import { PageHeader } from '../PageHeader';
@@ -7,7 +6,6 @@ import { CustomButtonSearchSelect } from '../CustomButtonSearchSelect';
 import { useAppDispatch, useAppdSelector } from '../../hooks/reduxHook';
 import { setClients } from '../../store/slices/clientsSlice';
 import { addTourist, deleteTourist, changePayment } from '../../store/slices/tourSlice';
-import { database } from '../../firebase';
 import { IClient } from '../../types/client';
 import { TOURISTS_TABLE_FIELDS as tableFields } from '../../constants/touristsTableFields';
 import { useExcludedList } from '../../hooks/useExcludedList';
@@ -17,6 +15,7 @@ import { ISelectOption } from '../../types/selectOption';
 import { MakePaymentModal } from '../MakePaymentModal';
 import { ITourist } from '../../types/tourist';
 import { useNotify } from '../../hooks/useNotify';
+import { useListFetching } from '../../hooks/useListFetching';
 
 const TourClientsList: React.FC = ({ }) => {
   const [touristsIds, setTouristsIds] = useState<string[]>([]);
@@ -28,6 +27,7 @@ const TourClientsList: React.FC = ({ }) => {
   const clients = useAppdSelector(state => state.clients.list);
   const { touristsList, seats } = useAppdSelector(state => state.tour);
   const excludedClients = useExcludedList(clients, touristsIds, 'id');
+  const { fetchData } = useListFetching<IClient>(setClients, 'clients');
 
   useEffect(() => {
     const touristsIds = touristsList.map(tourist => tourist.clientId);
@@ -40,19 +40,7 @@ const TourClientsList: React.FC = ({ }) => {
   }, []);
 
   const getClientList = async (): Promise<void> => {
-    const db = database;
-    try {
-      const querySnapshot = await getDocs(collection(db, 'clients'));
-      const clientList: DocumentData[] = querySnapshot.docs.map((doc) => doc.data());
-      const typedClientList: IClient[] = clientList as IClient[];
-      if (clientList && clientList.length) {
-        dispatch(setClients(typedClientList));
-      } else {
-        dispatch(setClients([]));
-      }
-    } catch (error) {
-      dispatch(setClients([]));
-    }
+    fetchData();
   }
 
   const getClientOptions = (): ISelectOption[] => {

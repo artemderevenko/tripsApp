@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { collection, doc, getDocs, deleteDoc, DocumentData } from "firebase/firestore";
+import { doc, deleteDoc } from "firebase/firestore";
 
 import { PageHeader } from '../components/PageHeader';
 import { CustomSearchField } from '../components/CustomSearchField';
@@ -8,7 +8,7 @@ import { TRANSPORT_TYPE_OPTIONS as transportTypeOptions } from '../constants/sel
 import { ITour } from '../types/tour';
 import { IManager } from '../types/manager';
 import { CustomButton } from '../components/CustomButton';
-import { useAppDispatch, useAppdSelector } from '../hooks/reduxHook';
+import { useAppdSelector } from '../hooks/reduxHook';
 import { setTours } from '../store/slices/toursSlice';
 import { setManagers } from '../store/slices/managersSlice';
 import { CustomModal } from '../components/CustomModal';
@@ -19,17 +19,18 @@ import { PageContent } from '../components/PageContent';
 import { useFilteredList } from '../hooks/useFilteredList';
 import { Table } from '../components/Table';
 import { useNotify } from '../hooks/useNotify';
+import { useListFetching } from '../hooks/useListFetching';
 
 const Tours: React.FC = () => {
   const [deleteTourId, setDeleteTourId] = useState<string>('');
-  const [isFetching, setIsFetching] = useState<boolean>(true);
   const [activeSearchValue, setActiveSearchValue] = useState<string>('');
 
-  const dispatch = useAppDispatch();
   const tours = useAppdSelector(state => state.tours.list);
   const managers = useAppdSelector(state => state.managers.list);
   const filteredTours = useFilteredList(tours, activeSearchValue, ['name', 'location']);
   const { setNotify } = useNotify();
+  const fetchManagerList = useListFetching<IManager>(setManagers, 'managers');
+  const fetchTourList = useListFetching<ITour>(setTours, 'tours');
 
   useEffect(() => {
     getTourList();
@@ -37,40 +38,12 @@ const Tours: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getManagerList = async (): Promise<void> => {
-    setIsFetching(true);
-    const db = database;
-    try {
-      const querySnapshot = await getDocs(collection(db, 'managers'));
-      const managerList: DocumentData[] = querySnapshot.docs.map((doc) => doc.data());
-      const typedManagerList: IManager[] = managerList as IManager[];
-      if (managerList && managerList.length) {
-        dispatch(setManagers(typedManagerList));
-      } else {
-        dispatch(setManagers([]));
-      }
-    } catch (error) {
-      dispatch(setManagers([]));
-    }
-    setIsFetching(false);
+  const getManagerList = () => {
+    fetchManagerList.fetchData();
   }
 
-  const getTourList = async (): Promise<void> => {
-    setIsFetching(true);
-    const db = database;
-    try {
-      const querySnapshot = await getDocs(collection(db, 'tours'));
-      const tourList: DocumentData[] = querySnapshot.docs.map((doc) => doc.data());
-      const typedTourList: ITour[] = tourList as ITour[];
-      if (tourList && tourList.length) {
-        dispatch(setTours(typedTourList));
-      } else {
-        dispatch(setTours([]));
-      }
-    } catch (error) {
-      dispatch(setTours([]));
-    }
-    setIsFetching(false);
+  const getTourList = () => {
+    fetchTourList.fetchData();
   }
 
   const deleteTour = (): void => {
@@ -126,7 +99,7 @@ const Tours: React.FC = () => {
                 onClick={() => null}
                 buttonText={'Add new tour'}
                 type={'confirm'}
-                disable={isFetching}
+                disable={fetchManagerList.isFetching || fetchTourList.isFetching}
                 icon={<svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
                   <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
                 </svg>}
@@ -134,14 +107,14 @@ const Tours: React.FC = () => {
               />
               <CustomSearchField
                 placeholder={'Search by tour name or location'}
-                disable={isFetching || ((!filteredTours || !filteredTours.length) && !activeSearchValue)}
+                disable={fetchManagerList.isFetching || fetchTourList.isFetching || ((!filteredTours || !filteredTours.length) && !activeSearchValue)}
                 onSearch={onSearch}
               />
             </>
           </PageHeader>
           <Table
             tableFields={tableFields}
-            isFetching={isFetching}
+            isFetching={fetchManagerList.isFetching || fetchTourList.isFetching}
             textNoSearch={textNoSearch}
             data={getTableData()}
             className={'tours'}

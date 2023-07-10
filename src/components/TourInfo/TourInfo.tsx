@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import moment from 'moment';
-import { collection, getDocs, DocumentData, doc, setDoc, updateDoc } from "firebase/firestore";
+import { collection, doc, setDoc, updateDoc } from "firebase/firestore";
 
 import styles from './TourInfo.module.sass';
 import { PageHeader } from '../PageHeader';
@@ -21,10 +21,10 @@ import { ISelectOption } from '../../types/selectOption';
 import { useDownloadPdf } from '../../hooks/useDownloadPdf';
 import { ROUTES } from '../../constants/routes';
 import { useNotify } from '../../hooks/useNotify';
+import { useListFetching } from '../../hooks/useListFetching';
 
 const TourInfo: React.FC = ({ }) => {
   const { setNotify } = useNotify();
-
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const managers = useAppdSelector(state => state.managers.list);
@@ -37,6 +37,7 @@ const TourInfo: React.FC = ({ }) => {
     10,
     ['download-tour-hide-in-pdf', 'save-tour-hide-in-pdf', 'add-tourist-hide-in-pdf', 'transport-hide-in-pdf']
   );
+  const { fetchData } = useListFetching<IManager>(setManagers, 'managers');
 
   const nameInput = useInput({
     initialValue: name,
@@ -117,20 +118,8 @@ const TourInfo: React.FC = ({ }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getManagerList = async (): Promise<void> => {
-    const db = database;
-    try {
-      const querySnapshot = await getDocs(collection(db, 'managers'));
-      const managerList: DocumentData[] = querySnapshot.docs.map((doc) => doc.data());
-      const typedManagerList: IManager[] = managerList as IManager[];
-      if (managerList && managerList.length) {
-        dispatch(setManagers(typedManagerList));
-      } else {
-        dispatch(setManagers([]));
-      }
-    } catch (error) {
-      dispatch(setManagers([]));
-    }
+  const getManagerList = () => {
+    fetchData()
   }
 
   const getManagerOptions = () => {
