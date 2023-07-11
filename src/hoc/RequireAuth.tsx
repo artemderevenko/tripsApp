@@ -7,7 +7,7 @@ import { ROUTES } from '../constants/routes';
 const RequireAuth = ({ children }: any) => {
   const navigate = useNavigate();
   const { isAuth, isFetchingAuth } = useAuth();
-console.log(useAuth())
+
   useEffect(() => {
     if (!isAuth && !isFetchingAuth) {
       navigate(ROUTES.Login, { replace: true });

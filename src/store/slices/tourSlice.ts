@@ -15,13 +15,14 @@ const initialState: ITour = {
   startDate: '',
   endDate: '',
   location: '',
-  cost: '',
+  cost: null,
   managerId: '',
   insurance: '',
   transportType: transportTypeOptions && transportTypeOptions[0] ? transportTypeOptions[0].value : '',
   seats: transportTypeOptions && transportTypeOptions[0] ? transportTypeOptions[0].seats : null,
   touristsList: [],
   color: null,
+  expenses: [],
 }
 
 const tourSlice = createSlice({
@@ -34,7 +35,7 @@ const tourSlice = createSlice({
     changeTourInfo: (state, actions: PayloadAction<IChangeInfoPayload>) => {
       state[actions.payload.fieldName] = actions.payload.value
     },
-    changeTransportType: (state, actions: PayloadAction<IChangeTransportTypePayload>) => {
+    changeTransportType: (state, actions: PayloadAction<IChangeTransportTypePayload>) => { 
       state.transportType = actions.payload.transportType;
       state.seats = actions.payload.seats;
       state.touristsList = state.touristsList.map(tourist => ({...tourist, seatNumber: null}));

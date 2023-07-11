@@ -1,4 +1,5 @@
 import { ITourist } from './tourist';
+import { ITourExpenses } from './tourExpenses';
 
 export interface ITour {
   [key: string]: any;
@@ -7,7 +8,7 @@ export interface ITour {
   startDate: string;
   endDate: string;
   location: string;
-  cost: string;
+  cost: number | null;
   managerId: string | null;
   insurance: string | null;
   touristsList: ITourist[];
@@ -15,4 +16,5 @@ export interface ITour {
   id: string;
   transportType: string;
   color: string | null;
+  expenses: ITourExpenses[];
 };

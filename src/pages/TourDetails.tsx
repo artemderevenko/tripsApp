@@ -11,6 +11,7 @@ import { TourSeatLayout } from '../components/TourSeatLayout';
 import { useAppDispatch } from '../hooks/reduxHook';
 import { resetToDefault } from '../store/slices/tourSlice';
 import { TourClientsList } from '../components/TourClientsList';
+import { TourExpenses } from '../components/TourExpenses';
 import { setTour } from '../store/slices/tourSlice';
 
 const TourDetails: React.FC = () => {
@@ -50,6 +51,7 @@ const TourDetails: React.FC = () => {
       <PageContent>
         <div id='tour-info-pdf'>
           <TourInfo />
+          <TourExpenses />
           <TourClientsList />
           <TourSeatLayout />
         </div>

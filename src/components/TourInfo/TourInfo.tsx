@@ -35,7 +35,11 @@ const TourInfo: React.FC = ({ }) => {
     'tour-info-pdf',
     'tour.pdf',
     10,
-    ['download-tour-hide-in-pdf', 'save-tour-hide-in-pdf', 'add-tourist-hide-in-pdf', 'transport-hide-in-pdf']
+    [ 'download-tour-hide-in-pdf',
+      'tour-expenses-hide-in-pdf',
+      'save-tour-hide-in-pdf',
+      'add-tourist-hide-in-pdf',
+      'transport-hide-in-pdf' ]
   );
   const { fetchData } = useListFetching<IManager>(setManagers, 'managers');
 
@@ -96,7 +100,7 @@ const TourInfo: React.FC = ({ }) => {
   });
 
   const costInput = useInput({
-    initialValue: cost,
+    initialValue: cost ? `${cost}` : '',
     name: 'Tour cost',
     validations: cost ? {
       isPrice: true
@@ -155,7 +159,10 @@ const TourInfo: React.FC = ({ }) => {
     e: React.ChangeEvent<HTMLInputElement>,
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   ): void => {
-    dispatch(changeTourInfo({ fieldName: name, value: e.target.value }));
+    dispatch(changeTourInfo({
+      fieldName: name,
+      value: name === 'cost' ? Number(e.target.value) : e.target.value
+    }));
     onChange(e);
   }
 
@@ -201,9 +208,13 @@ const TourInfo: React.FC = ({ }) => {
 
   const addTour = (): void => {
     const db = database;
+    const requestData = {
+      ...tour,
+      expenses: tour.expenses.filter(item => Object.values(item).every((value) => !!value))
+    };
     const newRef = doc(collection(db, 'tours'));
     setDoc(newRef, {
-      ...tour,
+      ...requestData,
       id: newRef.id,
       color: getRandomColor(),
     }).then(() => {
@@ -217,8 +228,12 @@ const TourInfo: React.FC = ({ }) => {
 
   const editTour = (): void => {
     const db = database;
+    const requestData = {
+      ...tour,
+      expenses: tour.expenses.filter(item => Object.values(item).every((value) => !!value))
+    };
     updateDoc(doc(db, 'tours', id), {
-      ...tour
+      ...requestData
     })
       .then(() => {
         setNotify({ isActive: true, message: 'Tour changed successfully!', type: 'success' });
