@@ -46,7 +46,7 @@ const CustomButtonSelect: React.FC<TCustomButtonSelectProps> = ({
         {
           selectValue ?
             <div className={styles['select-box-value']}>{selectValue.label}</div> :
-            <div className={styles['select-box-placeholder']}>{placeholder || 'Select ...'}</div>
+            <div className={styles['select-box-placeholder']}>{placeholder || ''}</div>
         }
         {
           selectIcon ?

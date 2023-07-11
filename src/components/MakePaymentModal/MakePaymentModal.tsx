@@ -1,4 +1,3 @@
-import styles from './MakePaymentModal.module.sass';
 import { CustomModal } from '../../components/CustomModal';
 import { useInput } from '../../hooks/useInput';
 import { CustomInput } from '../CustomInput';

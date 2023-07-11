@@ -3,6 +3,7 @@
 .dropdown-menu
   position: absolute
   min-width: 100%
+  max-width: 750px
   top: calc(100% + 5px)
   border: 1px solid $primary-border-color
   border-radius: 4px
@@ -26,7 +27,6 @@
   transition: background-color .3s ease
   white-space: nowrap
   @include flex-center-start
-  @include montserrat-normal(13px, 15px, $primary-text-color-dark)
 
   &:hover
     background-color: $select-bgd-hover
@@ -36,6 +36,11 @@
 
   &:last-child
     border-radius: 0 0 4px 4px
+
+.value
+  width: 100%
+  @include ellipsis-text
+  @include montserrat-normal(13px, 15px, $primary-text-color-dark)
 
 .no-result
   min-width: 100%

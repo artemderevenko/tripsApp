@@ -10,7 +10,7 @@ export const useListFetching = <T>(
   setAction: (data: T[]) => PayloadAction<T[]>,
   path: string
 ): IUseListFetchingResult => {
-  const [isFetching, setIsFetching] = useState<boolean>(false);
+  const [isFetching, setIsFetching] = useState<boolean>(true);
   const dispatch = useAppDispatch();
 
   const fetchData = async (): Promise<void> => {

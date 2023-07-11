@@ -18,7 +18,7 @@ const DropdownOptions: React.FC<IDropdownOptionsProps> = ({
             className={`${styles['dropdown-menu-item']} ${checkSelectedClass && checkSelectedClass(item) ? styles['is-selected'] : ''}`}
             onClick={() => changeOption(item)}
           >
-            {item.optionRenderer ? item.optionRenderer : item.label}
+            <div className={styles['value']}>{item.optionRenderer ? item.optionRenderer : item.label}</div>
           </div>)) :
           <div className={`${styles['no-result']}`}>
             No options

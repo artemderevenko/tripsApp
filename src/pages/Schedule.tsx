@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import moment from 'moment';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import { PageHeader } from '../components/PageHeader';
 import { CustomButtonSelect } from '../components/CustomButtonSelect';
@@ -21,9 +21,6 @@ const Schedule: React.FC = () => {
   const dispatch = useAppDispatch();
   const { modeParam } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const dateParam = params.get('date');
 
   const [calendarMode, setCalendarMode] = useState<string>(modeParam || mode.week);
 

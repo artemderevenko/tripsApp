@@ -1,4 +1,4 @@
 export interface IUseListFetchingResult {
-  fetchData: () => void,
+  fetchData: () => Promise<void>,
   isFetching: boolean
 }

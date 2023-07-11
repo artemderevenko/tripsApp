@@ -13,6 +13,7 @@ import { ISelectOption } from '../../types/selectOption';
 import { CustomModal } from '../CustomModal';
 import { IChangeTransportTypePayload } from '../../types/changeTransportTypePayload';
 import { useNotify } from '../../hooks/useNotify';
+import buttonStyles from '../CustomButtonSelect/CustomButtonSelect.module.sass';
 
 const TourSeatLayout: React.FC = ({ }) => {
   const { setNotify } = useNotify();
@@ -63,7 +64,7 @@ const TourSeatLayout: React.FC = ({ }) => {
           selectValue={useGetSelectOption(transportType, transportTypeOptions)}
           selectOptions={transportTypeOptions}
           onChange={handlerChangeTransportType}
-          className={styles['transport-type']}
+          className={buttonStyles['long']}
           id="transport-hide-in-pdf"
         />
       </PageHeader>
