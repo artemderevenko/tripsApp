@@ -1,2 +1,33 @@
 @import '../../variables'
   
+.pie-chart
+  width: auto
+  @include flex-center
+  
+.chart-legends
+  width: auto
+  max-width: 360px
+  margin-left: 30px
+  @include flex-start
+
+.legend-item
+  width: 100%
+  margin-bottom: 15px
+  @include flex-center-start
+  
+  &:last-child
+    margin-bottom: 0
+
+.legend-item-value
+  width: 80px 
+  margin-right: 15px
+  @include flex-center-end
+  @include montserrat-normal(16px, 18px, $primary-text-color-dark)
+
+.legend-item-color
+  width: 15px
+  height: 15px
+  margin-right: 15px
+
+.legend-item-label
+  @include montserrat-normal(13px, 15px, $primary-text-color-dark)

@@ -26,14 +26,14 @@ export const INSURANCE_OPTIONS = [
 ];
 
 export const EXPENSE_CATEGORY = [
-  { value: 'transport', label: 'Transportation Expenses'},
-  { value: 'accommodation', label: 'Accommodation Expenses'},
-  { value: 'guide', label: 'Guide Services'},
-  { value: 'meals', label: 'Meals and Dining'},
-  { value: 'entertainment', label: 'Entertainment and Activities'},
-  { value: 'equipment-rental', label: 'Equipment Rental'},
-  { value: 'insurance', label: 'Insurance Costs'},
-  { value: 'marketing', label: 'Marketing and Advertising'},
-  { value: 'administrative', label: 'Administrative Expenses'},
-  { value: 'other', label: 'Other'},
+  { value: 'transport', label: 'Transportation Expenses', color: '#ffdcb5'},
+  { value: 'accommodation', label: 'Accommodation Expenses', color: '#abcec1'},
+  { value: 'guide', label: 'Guide Services', color: '#238f8a'},
+  { value: 'meals', label: 'Meals and Dining', color: '#005064'},
+  { value: 'entertainment', label: 'Entertainment and Activities', color: '#6f8ad6'},
+  { value: 'equipment-rental', label: 'Equipment Rental', color: '#ecd2df'},
+  { value: 'insurance', label: 'Insurance Costs', color: '#6eaae3'},
+  { value: 'marketing', label: 'Marketing and Advertising', color: '#dd9199'},
+  { value: 'administrative', label: 'Administrative Expenses', color: '#d9c659'},
+  { value: 'other', label: 'Other', color: '#778899'},
 ];

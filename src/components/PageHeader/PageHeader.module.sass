@@ -18,3 +18,12 @@
 
 .between
   justify-content: space-between
+
+.title 
+  width: auto
+  max-width: calc(100% - 340px)
+  @include montserrat-normal(20px, 24px, $active-menu-bgd)
+  @include ellipsis-text
+
+.fade
+  @include fade()
