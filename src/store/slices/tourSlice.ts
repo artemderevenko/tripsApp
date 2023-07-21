@@ -55,7 +55,11 @@ const tourSlice = createSlice({
     changePayment: (state, actions: PayloadAction<IPaymentPayload>) => {
       state.touristsList = state.touristsList.map(tourist => {
         if (tourist.clientId === actions.payload.clientId) {
-          return { ...tourist, paymentAmount: Number(actions.payload.payment)}
+          return { 
+            ...tourist, 
+            paymentAmount: Number(actions.payload.payment),
+            paymentDate: actions.payload.paymentDate,
+          }
         } else { return tourist}
       });
     },

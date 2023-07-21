@@ -13,6 +13,7 @@ import { useListFetching } from '../hooks/useListFetching';
 import buttonStyles from '../components/CustomButtonSelect/CustomButtonSelect.module.sass';
 import headerStyles from '../components/PageHeader/PageHeader.module.sass';
 import { ReportExpensesPieChart } from '../components/ReportExpensesPieChart';
+import { ReportIncomeExpenseChart } from '../components/ReportIncomeExpenseChart';
 import { PageLoader } from '../components/PageLoader';
 
 const Report: React.FC = () => {
@@ -98,12 +99,13 @@ const Report: React.FC = () => {
           }
           {
             !isFetching && tours && tours.length ?
-              <div>
+              <>
                 <ReportExpensesPieChart expenses={selectedTour ? selectedTour.expenses : []} />
-              </div> : null
+                <ReportIncomeExpenseChart tour={selectedTour || null} />
+              </> : null
           }
-        </>
-      </PageContent>
+      </>
+    </PageContent>
     </>
   )
 };

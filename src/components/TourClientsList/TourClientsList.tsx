@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import moment from 'moment';
 
 import styles from './TourClientsList.module.sass';
 import { PageHeader } from '../PageHeader';
@@ -61,6 +62,7 @@ const TourClientsList: React.FC = ({ }) => {
     const tourist = {
       clientId: id,
       paymentAmount: 0,
+      paymentDate: '',
       seatNumber: null,
       firstName: client.firstName || '',
       lastName: client.lastName || '',
@@ -77,9 +79,9 @@ const TourClientsList: React.FC = ({ }) => {
     setNotify({ isActive: true, message: 'Tourist deleted successfully!', type: 'success' });
   }
 
-  const makePayment = (data: ITourist | null, paymentValue: string): void => {
+  const makePayment = (data: ITourist | null, paymentValue: string): void => { 
     const id = paymentTouristId;
-    dispatch(changePayment({ clientId: id, payment: paymentValue }))
+    dispatch(changePayment({ clientId: id, payment: paymentValue, paymentDate: moment().format('DD/MM/YYYY') }))
     setNotify({ isActive: true, message: 'Payment changed successfully!', type: 'success' });
     setPaymentTouristId('');
   }
